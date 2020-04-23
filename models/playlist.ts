@@ -1,3 +1,5 @@
+import{Track} from "./track"
+
 class Playlist{
     name:String;
     tracks:Array<Track>
@@ -20,4 +22,3 @@ class Playlist{
 }
 
 
-import{Track} from "./track"
