@@ -1,3 +1,4 @@
+
 class Artist{
     name:String;
     country:String;
