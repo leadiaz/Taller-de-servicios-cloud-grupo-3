@@ -1,10 +1,16 @@
-
+'use strict';
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
+const Artist = require('./models/artist');
+const Album = require('./models/album');
+const Track = require('./models/track');
+
+const artistas = new Array();
+const albumes = new Array();
+const tracks = new Array();
 
 
 class UNQfy {
-
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
@@ -15,6 +21,11 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
+    const artista = new Artist();
+    artista.id = artistas.length;
+    artista.name = artistData.name;
+    artista.country = artistData.country;
+    return artista;
   }
 
 
@@ -28,6 +39,17 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
+    const album = new Album();
+    album.id = albumes.length;
+    album.name = albumData.name;
+    album.year =albumData.year;
+    artistas.forEach( artista => {
+      if(artista.id === artistId){
+        artista.addAlbum(album);
+      }
+    });
+    return album;
+    
   }
 
 
@@ -43,6 +65,18 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
+    const track = new Track();
+    track.id = tracks.length;
+    track.name = trackData.name;
+    track.duration = trackData.duration;
+    track.genres = trackData.genres;
+    albumes.forEach(album => {
+      if(album.id === albumId){
+        console.log(album);
+        album.addTrack(track);
+      }
+    });
+    return track;
   }
 
   getArtistById(id) {
@@ -101,7 +135,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy];
+    const classes = [UNQfy, Artist];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
