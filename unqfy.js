@@ -80,7 +80,7 @@ class UNQfy {
   }
 
   getArtistById(id) {
-
+    
   }
 
   getAlbumById(id) {
