@@ -5,9 +5,23 @@ const Artist = require('./models/artist');
 const Album = require('./models/album');
 const Track = require('./models/track');
 
+
 const artistas = new Array();
 const albumes = new Array();
 const tracks = new Array();
+const playlist = new Array();
+
+
+// funcion auxiliar para obtener un elemento del array, si no la encuentra
+// lanza una excepcion 
+const getPorId= (listaARecorrer, id, excepcion) =>{
+  const elementEncontrado = listaARecorrer.find(element => element.id === id);
+  if(!elementEncontrado){
+    throw excepcion;
+  }else{
+    return elementEncontrado;
+  }
+};
 
 
 class UNQfy {
@@ -80,19 +94,19 @@ class UNQfy {
   }
 
   getArtistById(id) {
-    
+    return getPorId(artistas, id, new Error('No existe el artista')); 
   }
 
   getAlbumById(id) {
-
+    return getPorId(albumes, id,new Error('No existes el album'));
   }
 
   getTrackById(id) {
-
+    return getPorId(tracks, id, new Error('No existe el track'));
   }
 
   getPlaylistById(id) {
-
+    return getPorId(playlist, id, new Error('No existe la playlist'));
   }
 
   // genres: array de generos(strings)
@@ -135,7 +149,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist];
+    const classes = [UNQfy, Artist, Album, Track];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
