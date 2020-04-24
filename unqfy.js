@@ -57,11 +57,11 @@ class UNQfy {
     album.id = albumes.length;
     album.name = albumData.name;
     album.year =albumData.year;
-    artistas.forEach( artista => {
-      if(artista.id === artistId){
-        artista.addAlbum(album);
-      }
-    });
+    try{
+      this.getArtistById(artistId).addAlbum(album);
+    }catch(error){
+      console.log(error.message);
+    }
     return album;
     
   }
@@ -84,12 +84,11 @@ class UNQfy {
     track.name = trackData.name;
     track.duration = trackData.duration;
     track.genres = trackData.genres;
-    albumes.forEach(album => {
-      if(album.id === albumId){
-        console.log(album);
-        album.addTrack(track);
-      }
-    });
+    try{
+      getAlbumById(albumId).addTrack(track)
+    }catch(error){
+      console.log(error.message);
+    }
     return track;
   }
 
