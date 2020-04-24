@@ -85,7 +85,7 @@ class UNQfy {
     track.duration = trackData.duration;
     track.genres = trackData.genres;
     try{
-      getAlbumById(albumId).addTrack(track)
+      this.getAlbumById(albumId).addTrack(track);
     }catch(error){
       console.log(error.message);
     }
