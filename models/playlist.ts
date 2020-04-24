@@ -1,6 +1,6 @@
 import{Track} from "./track"
 
-class Playlist{
+export class Playlist{
     name:String;
     tracks:Array<Track>
 

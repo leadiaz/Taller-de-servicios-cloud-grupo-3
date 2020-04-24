@@ -1,4 +1,4 @@
-  class Album{
+  export class Album{
     name:String;
     year:Number
 
@@ -8,4 +8,4 @@
     }
 }
 
-export{Album}
+

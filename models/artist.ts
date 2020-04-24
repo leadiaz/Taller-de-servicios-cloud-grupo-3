@@ -1,5 +1,5 @@
 
-class Artist{
+export class Artist{
     name:String;
     country:String;
     albumes:Array<Album>
@@ -14,5 +14,5 @@ class Artist{
     }
 }
 
-export{Artist}
+
 import { Album } from "./album";
