@@ -1,18 +1,21 @@
-var fs = require('fs'); // necesitado para guardar/cargar unqfy
-var unqmod = require('./unqfy'); // importamos el modulo unqfy
+
+
+const fs = require('fs'); // necesitado para guardar/cargar unqfy
+const unqmod = require('./unqfy'); // importamos el modulo unqfy
+
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
-function getUNQfy(filename) {
-    if (filename === void 0) { filename = 'data.json'; }
-    var unqfy = new unqmod.UNQfy();
-    if (fs.existsSync(filename)) {
-        unqfy = unqmod.UNQfy.load(filename);
-    }
-    return unqfy;
+function getUNQfy(filename = 'data.json') {
+  let unqfy = new unqmod.UNQfy();
+  if (fs.existsSync(filename)) {
+    unqfy = unqmod.UNQfy.load(filename);
+  }
+  return unqfy;
 }
-function saveUNQfy(unqfy, filename) {
-    if (filename === void 0) { filename = 'data.json'; }
-    unqfy.save(filename);
+
+function saveUNQfy(unqfy, filename = 'data.json') {
+  unqfy.save(filename);
 }
+
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
  e implementar los diferentes comandos.
@@ -42,8 +45,37 @@ function saveUNQfy(unqfy, filename) {
    4. Guardar el estado de UNQfy (saveUNQfy)
 
 */
+
 function main() {
-    console.log('arguments: ');
-    process.argv.forEach(function (argument) { return console.log(argument); });
+  // console.log('arguments: ');
+  // process.argv.forEach(argument => console.log(argument));
+  let comando = process.argv[2]
+  const comandos = process.argv.splice(3)
+   if(comando.includes("add")){
+     switch(comando){
+       case "addArtist": 
+       operacionAddArtist({name:comandos[3],country:comandos[4]})
+       break;
+     
+     default:
+         null
+     break
+     }
+   }
+
+   console.log(comando)
+
+
+}
+
+
+function operacionAddArtist(artistData){
+  const unqfy = getUNQfy()
+  unqfy.addArtist(artistData)
+  saveUNQfy(unqfy)
+
+
+
 }
 main();
+console.log(getUNQfy());
