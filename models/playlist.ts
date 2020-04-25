@@ -1,13 +1,12 @@
 import{Track} from "./track"
 
 export class Playlist{
-    name:String;
-    tracks:Array<Track>
-
-
-
-    constructor(name){
-        this.name = name;
+    
+    constructor(
+        public id?: Number,
+        public name?: String,
+        public tracks?: Array<Track>
+    ){
         this.tracks = new Array();
     }
 
@@ -19,6 +18,9 @@ export class Playlist{
     hasTrack(aTrack):Boolean{
         return null;
     }
+    addTracks(tracks: Track[], maxDuration: Number) {
+        // var item = items[Math.floor(Math.random() * items.length)];
+      }
 }
 
 
