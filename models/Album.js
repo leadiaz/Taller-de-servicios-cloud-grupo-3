@@ -4,7 +4,7 @@ const Track = require("./track")
 
 class Album{
     constructor(){
-        this.id;
+        this.id = IDAutoIncremental.getId()
         this.name;
         this.year;
         this.tracks = new Array()

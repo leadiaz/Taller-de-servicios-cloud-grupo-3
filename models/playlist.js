@@ -4,7 +4,7 @@ const idAutoIncremental = new IDAutoIncremental()
 
 class PlayList{
     constructor(){
-        this.id;
+        this.id = IDAutoIncremental.getId()
         this.name
         this.tracks = new Array()
     }
@@ -23,3 +23,5 @@ class PlayList{
     }
 
 }
+
+module.exports = PlayList

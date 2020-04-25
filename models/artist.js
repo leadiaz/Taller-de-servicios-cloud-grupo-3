@@ -5,7 +5,7 @@ const idAutoIncremental = new IDAutoIncremental()
 class Artist{
     
     constructor(){
-        this.id;
+        this.id = IDAutoIncremental.getId();
         this.name;
         this.country;
         this.albumes = new Array()

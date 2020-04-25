@@ -4,7 +4,7 @@ const idAutoIncremental = new IDAutoIncremental()
 
 class Track{
     constructor(){
-        this.id;
+        this.id = IDAutoIncremental.getId()
         this.name;
         this.duration;
         this.genres = new Array()

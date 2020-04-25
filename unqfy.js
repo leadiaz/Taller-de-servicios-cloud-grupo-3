@@ -33,7 +33,6 @@ class UNQfy {
     - una propiedad country (string)
   */
     const artist = new Artist()
-    artist.id = IDAutoIncremental.getId()
     artist.name = artistData.name
     artist.country = artistData.country
     this.artists.push(artist)
@@ -80,6 +79,7 @@ class UNQfy {
     track.duration = trackData.duration
     track.genres = trackData.genres
     track.id = idAutoIncremental.getId()
+    album.addTrack(track)
 
   }
 
@@ -127,6 +127,10 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
+     const playlist = new PlayList()
+     playlist.name = name;
+     playlist.tracks = this.getTracksMatchingGenres(genresToInclude)
+
 
   }
 
