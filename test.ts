@@ -1,7 +1,9 @@
 /* eslint-env node, mocha */
 // require('mocha');
+import{UNQfy} from "./models/unqfy"
 const assert = require('chai').assert;
-const libunqfy = require('./unqfy');
+const libunqfy = require('./models/unqfy');
+const io = require ('socket.io')
 
 
 function createAndAddArtist(unqfy, artistName, country) {
