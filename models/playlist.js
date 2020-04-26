@@ -14,8 +14,15 @@ var Playlist = /** @class */ (function () {
         return this.tracks.includes(aTrack);
     };
     Playlist.prototype.addTracks = function (tracks, maxDuration) {
+        var _this = this;
         // var item = items[Math.floor(Math.random() * items.length)];
-        this.tracks = this.tracks.concat(tracks);
+        var n = 0;
+        tracks.forEach(function (track) {
+            if (n < maxDuration && track.duration < maxDuration) {
+                _this.tracks.push(track);
+                n = n + track.duration;
+            }
+        });
     };
     Playlist.prototype.removeAtrack = function (aTrack) {
         this.tracks.splice(this.tracks.indexOf(aTrack), 1);

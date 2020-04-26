@@ -268,6 +268,11 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     return this.tracks.filter(track => track.anyGenre(genres))
   }
 
+  //retorna: los tracks de un genero en particular
+  getTracksMatchingGenre(genre:String){
+    return this.tracks.filter(track => track.genres.includes(genre))
+  }
+
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
@@ -298,6 +303,7 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     playlist.addTracks(tracks, maxDuration)
     this.playlists.push(playlist)
     return playlist;
+    
   }
 
 

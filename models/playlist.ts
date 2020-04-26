@@ -21,8 +21,18 @@ export class Playlist{
     }
     addTracks(tracks: Track[], maxDuration: Number) {
         // var item = items[Math.floor(Math.random() * items.length)];
-        this.tracks = this.tracks.concat(tracks)
+        var n: any = 0
+        tracks.forEach((track) => {
+            if(n < maxDuration && track.duration < maxDuration){
+               this.tracks.push(track)
+               n = n + track.duration
+            }
+            
+        })
+        
       }
+
+    
 
     removeAtrack(aTrack){
         this.tracks.splice(this.tracks.indexOf(aTrack),1)

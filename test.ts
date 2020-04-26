@@ -60,6 +60,7 @@ describe('Add, remove and filter data', () => {
     const playlist = unqfy.createPlaylist('Roses playlist', ['pop'], 1400);
 
     const results = unqfy.searchByName('Roses');
+    // console.log(results)
     assert.deepEqual(results, {
       artists: [artist1],
       albums: [album1],
@@ -106,7 +107,7 @@ describe('Add, remove and filter data', () => {
     createAndAddTrack(unqfy, album3.id, 'Another song', 500, ['classic']);
     createAndAddTrack(unqfy, album3.id, 'Another song II', 500, ['movie']);
 
-    const matchingTracks = unqfy.getTracksMatchingArtist(artist);
+    const matchingTracks = unqfy.getTracksMatchingArtist(artist.name); // agregue el artist.name antes estaba artist
 
     assert.isArray(matchingTracks);
     assert.lengthOf(matchingTracks, 3);
@@ -136,6 +137,8 @@ describe('Playlist Creation and properties', () => {
     const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
 
     const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+
 
     assert.equal(playlist.name, 'my playlist');
     assert.isAtMost(playlist.duration(), 1400);

@@ -219,6 +219,10 @@ var UNQfy = /** @class */ (function () {
     UNQfy.prototype.getTracksMatchingGenres = function (genres) {
         return this.tracks.filter(function (track) { return track.anyGenre(genres); });
     };
+    //retorna: los tracks de un genero en particular
+    UNQfy.prototype.getTracksMatchingGenre = function (genre) {
+        return this.tracks.filter(function (track) { return track.genres.includes(genre); });
+    };
     // artistName: nombre de artista(string)
     // retorna: los tracks interpredatos por el artista con nombre artistName
     UNQfy.prototype.getTracksMatchingArtist = function (artistName) {

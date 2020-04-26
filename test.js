@@ -44,6 +44,7 @@ describe('Add, remove and filter data', function () {
         var track = createAndAddTrack(unqfy, album1.id, 'Roses track', 200, ['pop', 'movie']);
         var playlist = unqfy.createPlaylist('Roses playlist', ['pop'], 1400);
         var results = unqfy.searchByName('Roses');
+        // console.log(results)
         assert.deepEqual(results, {
             artists: [artist1],
             albums: [album1],
@@ -82,7 +83,7 @@ describe('Add, remove and filter data', function () {
         createAndAddTrack(unqfy, album3.id, 'Thriller', 200, ['pop', 'movie']);
         createAndAddTrack(unqfy, album3.id, 'Another song', 500, ['classic']);
         createAndAddTrack(unqfy, album3.id, 'Another song II', 500, ['movie']);
-        var matchingTracks = unqfy.getTracksMatchingArtist(artist);
+        var matchingTracks = unqfy.getTracksMatchingArtist(artist.name); // agregue el artist.name antes estaba artist
         assert.isArray(matchingTracks);
         assert.lengthOf(matchingTracks, 3);
         assert.isTrue(matchingTracks.includes(t1));
