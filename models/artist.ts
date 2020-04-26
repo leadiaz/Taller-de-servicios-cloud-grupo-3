@@ -12,6 +12,7 @@ export class Artist{
     addAlbum(anAlbum:Album){
         this.albums.push(anAlbum)
     }
+    
     getTracks():Track[]{
         return this.albums.reduce((accumulator, album) => {return accumulator.concat(album.tracks)}, [])  
     }

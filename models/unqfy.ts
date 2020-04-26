@@ -2,6 +2,11 @@ import {Artist} from "./artist"
 import {Album} from './album'
 import {Track} from './track'
 import {Playlist} from './playlist'
+import { ArtistExistsWithThatName } from "../Exceptions/artistExcepcion";
+import {TrackExistsInAlbumError} from "../Exceptions/trackExcepcion"
+import { SearchResult } from "./SearchResult";
+
+
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
@@ -35,6 +40,45 @@ const fs = require('fs'); // para cargar/guarfar unqfy
         return elementEncontrado;
       }
     }
+
+    private seachArtistByName(name){
+      const bool = this.artists.some(artist=> artist.name === name)
+      if(bool){
+        throw new ArtistExistsWithThatName('Ya existe ese artirta','No se pudo agregra ese artista',name);
+      }
+    }
+    
+    //Error si el track ya existe en algun album de unqfy
+    private existTrackInAlbum(atrack){
+      const bool = this.albums.some(album=> album.tracks.some(track=> track.name === atrack))
+      if(bool){
+        throw new TrackExistsInAlbumError('TrackExistsInAlbumError','Ya existe el track en algun album',atrack);
+      }
+    }
+
+
+    private removeElem(listaARecorrer,elemAEliminar,excepcion){
+      if(listaARecorrer.indexOf(elemAEliminar) >= 0){
+        listaARecorrer.splice(elemAEliminar,1)
+      }
+      else{
+         throw excepcion;
+      }
+    }
+
+    searchByName(nombre:string) {
+      const result:SearchResult = new SearchResult()
+      this.artists.forEach((artist) =>{ if(artist.name.includes(nombre)){result.addArtist(artist)}})
+      this.albums.forEach((album) =>{ if(album.name.includes(nombre)){result.addAbum(album)}})
+      this.tracks.forEach((track) =>{ if(track.name.includes(nombre)){result.addTrack(track)}})
+      this.playlists.forEach((playList) =>{ if(playList.name.includes(nombre)){result.addPlaylist(playList)}})
+      return result
+    }
+
+
+  
+
+    
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
@@ -46,6 +90,17 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     - una propiedad name (string)
     - una propiedad country (string)
   */
+ try{
+  this.seachArtistByName(artistData.name)
+ }
+ catch(error){
+   if(error instanceof ArtistExistsWithThatName){
+       console.log(error.name)
+       console.log(error.message)
+       console.log(error.nameArtist)
+   }
+  
+ }
     const artista = new Artist();
     artista.id = this.idArtist;
     artista.name = artistData.name;
@@ -54,6 +109,35 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     this.artists.push(artista)
     return artista;
   }
+
+  //remove artist
+  removeArtist(aArtist){ 
+    this.removeElem(this.artists,aArtist,new Error('No existe el artista'))
+    
+  }
+
+  //Elimino por id
+  removeArtistById(id){
+    const artist: Artist = this.getArtistById(id)
+    const tracksFromArtist = this.tracksFromAlbumes(artist.albums)
+    this.artists.splice(this.artists.indexOf(artist),1)
+    this.removeTracksFromPlayLists(tracksFromArtist)
+
+
+  }
+  //Denoto todos los tracks de los albumes
+ private tracksFromAlbumes(albumes:Array<Album>){
+    var tracks:Array<Track> = new Array()
+    albumes.forEach((album)=>{
+      tracks = tracks.concat(album.tracks)
+    })
+    return tracks
+  }
+
+
+
+
+
 
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -80,6 +164,22 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     return album;
   }
 
+  removeAlbum(aAlbum){
+    this.removeElem(this.albums,aAlbum,new Error('No existe el Album'))
+
+  }
+
+  removeAlbumById(id){
+    const album:Album = this.getAlbumById(id)
+    const tracksFromAlbum = album.tracks
+    this.albums.splice(this.albums.indexOf(album),1)
+    this.removeTracksFromPlayLists(tracksFromAlbum)
+  }
+
+  
+
+
+
 
   // trackData: objeto JS con los datos necesarios para crear un track
   //   trackData.name (string)
@@ -100,13 +200,51 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     track.genres = trackData.genres;
     try{
       this.getAlbumById(albumId).addTrack(track);
+      this.existTrackInAlbum(trackData.name)
     }catch(error){
       console.log(error.message);
+      if(error instanceof TrackExistsInAlbumError) {
+        console.log(error.name)
+        console.log(error.message)
+        console.log(error.trackName)
+      }
+            
     }
     this.idTrack += 1
     this.tracks.push(track)
     return track;
   }
+  
+
+  removeTrack(aTrack){
+    this.removeElem(this.tracks,aTrack,new Error('No existe el Track'))
+
+  }
+  //Elimino por id
+  removeTrackById(id){
+    const track:Track = this.getTrackById(id)
+    this.tracks.splice(this.tracks.indexOf(track),1)
+    this.removeTrackFromPlayList(track)
+  }
+  
+  //Elimina un track de todas las playList
+  private removeTrackFromPlayList(aTrack){
+    this.playlists.forEach((playlist)=>{
+      playlist.removeAtrack(aTrack)
+    })
+  }
+
+  
+ //Elimina los tracks de las playlists
+  private removeTracksFromPlayLists(tracksList){
+    this.playlists.forEach((playlist) =>{
+        tracksList.forEach(track => {
+          playlist.removeAtrack(track)
+        });
+    })
+
+  }
+
 
   getArtistById(id) {
     return this.getPorId(this.artists, id, new Error('No existe el artista')); 
@@ -136,6 +274,8 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     return this.artists.find(artist => artist.name === artistName).getTracks()
   }
 
+  
+
 
   // name: nombre de la playlist
   // genresToInclude: array de generos
@@ -153,9 +293,22 @@ const fs = require('fs'); // para cargar/guarfar unqfy
 
     playlist.id = this.idPlaylist
     playlist.name = name
+  
 
     playlist.addTracks(tracks, maxDuration)
     this.playlists.push(playlist)
+    return playlist;
+  }
+
+
+  removePlayList(aPlayList){
+    this.playlists.splice(this.playlists.indexOf(aPlayList),1)
+
+  }
+  
+  removePlayListById(id){
+    const playlist = this.getPlaylistById(id)
+    this.playlists.splice(this.playlists.indexOf(playlist),1)
   }
 
   save(filename) {
