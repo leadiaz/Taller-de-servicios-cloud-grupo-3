@@ -1,27 +1,32 @@
-const IDAutoIncremental =  require("./IdAutoIncremental")
-const idAutoIncremental = new IDAutoIncremental()
-
-
-class PlayList{
-    constructor(){
-        this.id = IDAutoIncremental.getId()
-        this.name
-        this.tracks = new Array()
+"use strict";
+exports.__esModule = true;
+var Playlist = /** @class */ (function () {
+    function Playlist(id, name, tracks) {
+        this.id = id;
+        this.name = name;
+        this.tracks = tracks;
+        this.tracks = new Array();
     }
-
-    duration(){
-        let resul = 0
-        for (let i = 0; i < this.tracks.length; i++) {
-            resul = resul + this.tracks[i].duration
-            
-        }
-        return resul;
-    }
-
-    hasTrack(aTrack){
-       return this.tracks.includes(aTrack)
-    }
-
-}
-
-module.exports = PlayList
+    Playlist.prototype.duration = function () {
+        return 0;
+    };
+    Playlist.prototype.hasTrack = function (aTrack) {
+        return this.tracks.includes(aTrack);
+    };
+    Playlist.prototype.addTracks = function (tracks, maxDuration) {
+        var _this = this;
+        // var item = items[Math.floor(Math.random() * items.length)];
+        var n = 0;
+        tracks.forEach(function (track) {
+            if (n < maxDuration && track.duration < maxDuration) {
+                _this.tracks.push(track);
+                n = n + track.duration;
+            }
+        });
+    };
+    Playlist.prototype.removeAtrack = function (aTrack) {
+        this.tracks.splice(this.tracks.indexOf(aTrack), 1);
+    };
+    return Playlist;
+}());
+exports.Playlist = Playlist;
