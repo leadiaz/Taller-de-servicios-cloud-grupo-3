@@ -1,7 +1,9 @@
 /* eslint-env node, mocha */
 // require('mocha');
+import{UNQfy} from "./models/unqfy"
 const assert = require('chai').assert;
 const libunqfy = require('./models/unqfy');
+const io = require ('socket.io')
 
 
 function createAndAddArtist(unqfy, artistName, country) {
@@ -60,7 +62,6 @@ describe('Add, remove and filter data', () => {
     const playlist = unqfy.createPlaylist('Roses playlist', ['pop'], 1400);
 
     const results = unqfy.searchByName('Roses');
-    // console.log(results)
     assert.deepEqual(results, {
       artists: [artist1],
       albums: [album1],
@@ -137,8 +138,6 @@ describe('Playlist Creation and properties', () => {
     const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
 
     const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
-
-
 
     assert.equal(playlist.name, 'my playlist');
     assert.isAtMost(playlist.duration(), 1400);

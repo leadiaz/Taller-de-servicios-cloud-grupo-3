@@ -11,21 +11,10 @@ var Playlist = /** @class */ (function () {
         return 0;
     };
     Playlist.prototype.hasTrack = function (aTrack) {
-        return this.tracks.includes(aTrack);
+        return null;
     };
     Playlist.prototype.addTracks = function (tracks, maxDuration) {
-        var _this = this;
         // var item = items[Math.floor(Math.random() * items.length)];
-        var n = 0;
-        tracks.forEach(function (track) {
-            if (n < maxDuration && track.duration < maxDuration) {
-                _this.tracks.push(track);
-                n = n + track.duration;
-            }
-        });
-    };
-    Playlist.prototype.removeAtrack = function (aTrack) {
-        this.tracks.splice(this.tracks.indexOf(aTrack), 1);
     };
     return Playlist;
 }());

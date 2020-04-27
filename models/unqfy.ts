@@ -4,7 +4,7 @@ import {Track} from './track'
 import {Playlist} from './playlist'
 import { ArtistExistsWithThatName } from "../Exceptions/artistExcepcion";
 import {TrackExistsInAlbumError} from "../Exceptions/trackExcepcion"
-import { SearchResult } from "./SearchResult";
+import { SearchResult } from "./searchResult";
 
 
 
@@ -316,7 +316,55 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     const playlist = this.getPlaylistById(id)
     this.playlists.splice(this.playlists.indexOf(playlist),1)
   }
+  // drop(){
+  //   this.artists = new Array<Artist>()
+  //   this.albums = new Array<Album>()
+  //   this.tracks = new Array<Track>()
+  //   this.playlists = new Array<Playlist>()
+  // }
 
+  evalMethod(metodo:string, argumentos:Array<any>){
+        switch (metodo) {
+            case 'addArtist':
+                this.addArtist({name: argumentos[0], country: argumentos[1]})
+                break
+            case  'addAlbum':
+                this.addAlbum(argumentos[0], {name: argumentos[1], year: argumentos[2]})
+                break
+            case 'addTrack':
+                this.addTrack(argumentos[0],{name: argumentos[1], duration: argumentos[2], genres: argumentos[3]})
+                break
+            case 'deleteArtist':
+                //la implentacion de eliminar Artista
+                break
+            case 'deleteAlbum':
+                //deleteAlbum()
+                break
+            case 'delete':
+                //deleteTrack()
+                break
+            case 'printArtist':
+                //printArtist()
+                break
+            case 'printAlbum':
+                //printAlbum()
+                break
+            case 'printTrack':
+                //printTrack()
+                break
+            case 'getTracksMatchingArtist':
+                this.getTracksMatchingArtist(argumentos[0])
+                break
+            case 'getTracksMatchingGenres':
+                this.getTracksMatchingGenres(argumentos[0])
+            case 'createPlaylist':
+                this.createPlaylist(argumentos[0], argumentos[1], argumentos[2])
+            case 'searchByName':
+                //implementar searchByName()
+            default :
+                console.log("no existe el metodo: ", typeof metodo)
+        }
+  }
   save(filename) {
     const listenersBkp = this.listeners;
     this.listeners = [];

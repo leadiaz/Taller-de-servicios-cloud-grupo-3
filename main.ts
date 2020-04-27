@@ -47,8 +47,15 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 */
 
 function main() {
-  console.log('arguments: ');
-  process.argv.forEach(argument => console.log(argument));
+  // console.log('arguments: ');
+  const unqfy = getUNQfy()
+  const method = process.argv.length > 2 ? process.argv[2] : ''
+  const argumetos = new Array()
+  for(let i=3; i < process.argv.length; i++){
+    argumetos.push(process.argv[i])
+  }
+  unqfy.evalMethod(method, argumetos)
+  saveUNQfy(unqfy)
 }
 
 main();
