@@ -9,6 +9,9 @@ export class Album{
     ){
       this.tracks = new Array()
   }
+  toJSON(){
+    return {id: this.id, name:this.name, year: this.year, tracks: this.tracks}
+  }
   addTrack(anTrack: Track){
     this.tracks.push(anTrack)
   }

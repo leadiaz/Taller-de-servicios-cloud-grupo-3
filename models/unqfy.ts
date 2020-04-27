@@ -196,12 +196,12 @@ const fs = require('fs'); // para cargar/guarfar unqfy
             case 'getTracksMatchingArtist':
                 this.getTracksMatchingArtist(argumentos[0])
                 break
-            // case 'getTracksMatchingGenres':
-            //     this.getTracksMatchingGenres(argumentos[0])
-            // case 'createPlaylist':
-            //     this.createPlaylist(argumentos[0], argumentos[1], argumentos[2])
-            // case 'searchByName':
-            //     //implementar searchByName()
+            case 'getTracksMatchingGenres':
+                this.getTracksMatchingGenres(argumentos[0])
+            case 'createPlaylist':
+                this.createPlaylist(argumentos[0], argumentos[1], argumentos[2])
+            case 'searchByName':
+                //implementar searchByName()
             default :
                 console.log("no existe el metodo: ", typeof metodo)
         }

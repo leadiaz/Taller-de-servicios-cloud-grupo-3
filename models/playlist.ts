@@ -9,6 +9,9 @@ export class Playlist{
     ){
         this.tracks = new Array();
     }
+    toJSON(){
+        return {id: this.id, name: this.name, tracks: this.tracks}
+    }
 
 
     duration():Number{

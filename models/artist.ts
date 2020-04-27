@@ -9,6 +9,9 @@ export class Artist{
     ){
         this.albums = new Array()
     }
+    toJSON(){
+        return {id: this.id, name: this.name, country:this.country, albums: this.albums }
+    }
     addAlbum(anAlbum:Album){
         this.albums.push(anAlbum)
     }

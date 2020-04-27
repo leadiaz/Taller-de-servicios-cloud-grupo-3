@@ -7,6 +7,9 @@ export class Track{
     ){
         this.genres = new Array()
     }
+    toJSON(){
+        return {id: this.id, name: this.name, duration: this.duration, genres: this.genres}
+    }
     anyGenre(genres:Array<String>){
         return genres.some(genre => this.genres.includes(genre))
     }
