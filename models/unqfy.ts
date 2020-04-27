@@ -157,7 +157,45 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     playlist.addTracks(tracks, maxDuration)
     this.playlists.push(playlist)
   }
+  drop(){
+    this.artists = new Array<Artist>()
+    this.albums = new Array<Album>()
+    this.tracks = new Array<Track>()
+    this.playlists = new Array<Playlist>()
+  }
 
+  evalMethod(metodo:string, argumentos:Array<any>){
+        switch (metodo) {
+            case 'addArtist':
+                this.addArtist({name: argumentos[0], country: argumentos[1]})
+            case  'addAlbum':
+                this.addAlbum(argumentos[0], {name: argumentos[1], year: argumentos[2]})
+            case 'addTrack':
+                this.addTrack(argumentos[0],{name: argumentos[1], duration: argumentos[2], genres: argumentos[3]})
+            case 'deleteArtist':
+                //la implentacion de eliminar Artista
+            case 'deleteAlbum':
+                //deleteAlbum()
+            case 'delete':
+                //deleteTrack()
+            case 'printArtist':
+                //printArtist()
+            case 'printAlbum':
+                //printAlbum()
+            case 'printTrack':
+                //printTrack()
+            case 'getTracksMatchingArtist':
+                this.getTracksMatchingArtist(argumentos[0])
+            case 'getTracksMatchingGenres':
+                this.getTracksMatchingGenres(argumentos[0])
+            case 'createPlaylist':
+                this.createPlaylist(argumentos[0], argumentos[1], argumentos[2])
+            case 'searchByName':
+                //implementar searchByName()
+            default :
+                console.log("no existe el metodo: ", metodo)
+        }
+  }
   save(filename) {
     const listenersBkp = this.listeners;
     this.listeners = [];
