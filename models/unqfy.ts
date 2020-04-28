@@ -72,7 +72,7 @@ const fs = require('fs'); // para cargar/guarfar unqfy
       this.albums.forEach((album) =>{ if(album.name.includes(nombre)){result.addAbum(album)}})
       this.tracks.forEach((track) =>{ if(track.name.includes(nombre)){result.addTrack(track)}})
       this.playlists.forEach((playList) =>{ if(playList.name.includes(nombre)){result.addPlaylist(playList)}})
-      return result
+      return result.toJSON()
     }
 
 

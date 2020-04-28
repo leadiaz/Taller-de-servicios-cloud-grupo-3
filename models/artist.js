@@ -8,6 +8,9 @@ var Artist = /** @class */ (function () {
         this.albums = albums;
         this.albums = new Array();
     }
+    Artist.prototype.toJSON = function () {
+        return { id: this.id, name: this.name, country: this.country, albums: this.albums };
+    };
     Artist.prototype.addAlbum = function (anAlbum) {
         this.albums.push(anAlbum);
     };

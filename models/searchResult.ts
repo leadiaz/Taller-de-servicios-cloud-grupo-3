@@ -17,7 +17,9 @@ export class SearchResult {
         this.tracks = new Array()
 
     }
-
+    toJSON(){
+        return {artists: this.artists, albums: this.albums, tracks: this.tracks, playlists: this.playlists}
+    }
     addAbum(album){
       this.albums.push(album)
     }

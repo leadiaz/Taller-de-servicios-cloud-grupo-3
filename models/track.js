@@ -8,6 +8,9 @@ var Track = /** @class */ (function () {
         this.genres = genres;
         this.genres = new Array();
     }
+    Track.prototype.toJSON = function () {
+        return { id: this.id, name: this.name, duration: this.duration, genres: this.genres };
+    };
     Track.prototype.anyGenre = function (genres) {
         var _this = this;
         return genres.some(function (genre) { return _this.genres.includes(genre); });
