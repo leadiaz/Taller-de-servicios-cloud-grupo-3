@@ -5,6 +5,7 @@ import {Playlist} from './playlist'
 import { ArtistExistsWithThatName } from "../Exceptions/artistExcepcion";
 import {TrackExistsInAlbumError} from "../Exceptions/trackExcepcion"
 import { SearchResult } from "./searchResult";
+import { User } from "./user";
 
 
 
@@ -16,11 +17,13 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     albums: Array<Album>
     tracks: Array<Track>
     playlists: Array<Playlist>
+    users:Array<User>
 
     private idArtist = 0
     private idAlbum = 0
     private idTrack = 0
     private idPlaylist = 0
+    private idUser = 0 
     
     private listeners: any[]
     
@@ -30,6 +33,7 @@ const fs = require('fs'); // para cargar/guarfar unqfy
       this.albums = new Array()
       this.tracks = new Array()
       this.playlists = new Array()
+      // this.users = new Array()
     }
 
     private getPorId(listaARecorrer, id, excepcion){
@@ -110,6 +114,43 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     return artista;
   }
 
+  //Usuario
+    addUser(name){
+    const user = new User()
+     user.name = name
+     user.id = this.idUser
+     this.idUser += 1
+    }
+
+    tracksEscuchdosDeUnArtista(artist:Artist){
+      const top3 = new Array()
+      const tracksEscuchadosPorUsuarios = this.tracksEscuchadosByUsers()
+      //const tracksEscuchadosDeArtista = tracksEscuchadosPorUsuarios.filter(track=> artist.getTracks().includes(track))    
+      
+    }
+
+    private tracksEscuchadosByUsers():Array<Track>{
+      return this.users.reduce((accumulator, user) => {return accumulator.concat(user.tracks)}, [])
+    }
+
+    private count(elem,list){
+      var count = 0;
+      for(var i = 0; i < list.length; ++i){
+          if(list[i] === elem)
+              count++;
+      }
+      return count
+       
+      }
+      
+
+  
+
+
+  
+
+
+
   //remove artist
   removeArtist(aArtist){ 
     this.removeElem(this.artists,aArtist,new Error('No existe el artista'))
@@ -175,6 +216,8 @@ const fs = require('fs'); // para cargar/guarfar unqfy
     this.albums.splice(this.albums.indexOf(album),1)
     this.removeTracksFromPlayLists(tracksFromAlbum)
   }
+
+
 
   
 
