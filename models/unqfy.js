@@ -104,10 +104,49 @@ var UNQfy = /** @class */ (function () {
         user.id = this.idUser;
         this.idUser += 1;
     };
-    UNQfy.prototype.tracksEscuchdosDeUnArtista = function (artist) {
+    //MEJORAR 
+    UNQfy.prototype.top3TracksDeUnArtista = function (artist) {
         var top3 = new Array();
         var tracksEscuchadosPorUsuarios = this.tracksEscuchadosByUsers();
-        //const tracksEscuchadosDeArtista = tracksEscuchadosPorUsuarios.filter(track=> artist.getTracks().includes(track))    
+        var tracksEscuchadosDeArtista = tracksEscuchadosPorUsuarios.filter(function (track) { return artist.getTracks().includes(track); });
+        var jsonOrdenado = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista);
+        this.ordenarListaDeJson(jsonOrdenado);
+        var n = 0;
+        while (n !== 3 && jsonOrdenado.length > 0) {
+            top3.push(jsonOrdenado[n]);
+            n = n - 1;
+        }
+        return top3;
+    };
+    UNQfy.prototype.ordenarListaDeJson = function (lista) {
+        lista.sort(function (a, b) {
+            if (a.cant > b.cant) {
+                return -1;
+            }
+            if (a.cant < b.cant) {
+                return 1;
+            }
+            // a must be equal to b
+            return 0;
+        });
+    };
+    //Denota una array de json, [{track: track , cant: 0}]
+    UNQfy.prototype.cantDeVecesQueSeRepite = function (listaRepetidas) {
+        var _this = this;
+        var newList = [];
+        this.sinRepetidos(listaRepetidas).forEach(function (elem) {
+            newList.push({ numero: elem, cant: _this.count(elem, listaRepetidas) });
+        });
+        return newList;
+    };
+    UNQfy.prototype.sinRepetidos = function (list) {
+        var newList = [];
+        list.forEach(function (elem) {
+            if (!newList.includes(elem)) {
+                newList.push(elem);
+            }
+        });
+        return newList;
     };
     UNQfy.prototype.tracksEscuchadosByUsers = function () {
         return this.users.reduce(function (accumulator, user) { return accumulator.concat(user.tracks); }, []);

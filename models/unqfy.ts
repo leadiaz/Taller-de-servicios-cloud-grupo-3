@@ -122,12 +122,54 @@ const fs = require('fs'); // para cargar/guarfar unqfy
      this.idUser += 1
     }
 
-    tracksEscuchdosDeUnArtista(artist:Artist){
+    //MEJORAR 
+    top3TracksDeUnArtista(artist:Artist){
       const top3 = new Array()
       const tracksEscuchadosPorUsuarios = this.tracksEscuchadosByUsers()
-      //const tracksEscuchadosDeArtista = tracksEscuchadosPorUsuarios.filter(track=> artist.getTracks().includes(track))    
+      const tracksEscuchadosDeArtista = tracksEscuchadosPorUsuarios.filter(track=> artist.getTracks().includes(track))  
+      const jsonOrdenado = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista)
+      this.ordenarListaDeJson(jsonOrdenado)
+      var n = 0
+      while(n!== 3 && jsonOrdenado.length > 0){
+        top3.push(jsonOrdenado[n])
+        n = n-1
+
+      }
+      return top3
       
     }
+
+     ordenarListaDeJson(lista){
+      lista.sort(function (a, b) {
+        if (a.cant > b.cant) {
+          return -1;
+        }
+        if (a.cant < b.cant) {
+          return 1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      }
+    
+    //Denota una array de json, [{track: track , cant: 0}]
+    cantDeVecesQueSeRepite(listaRepetidas){
+      var newList = []
+      this.sinRepetidos(listaRepetidas).forEach((elem) => {
+         newList.push({numero:elem,cant: this.count(elem,listaRepetidas)})
+       })
+       return newList
+    }
+
+    sinRepetidos(list){
+       var newList = []
+       list.forEach((elem)=>{
+          if(!newList.includes(elem)){
+              newList.push(elem)
+       }
+          })
+           return newList
+}
 
     private tracksEscuchadosByUsers():Array<Track>{
       return this.users.reduce((accumulator, user) => {return accumulator.concat(user.tracks)}, [])
