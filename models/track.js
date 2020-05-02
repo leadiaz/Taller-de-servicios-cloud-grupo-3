@@ -1,7 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var Track = /** @class */ (function () {
-    function Track(id, name, duration, genres) {
+    function Track(idAlbum, id, name, duration, genres) {
+        this.idAlbum = idAlbum;
         this.id = id;
         this.name = name;
         this.duration = duration;
@@ -9,7 +10,7 @@ var Track = /** @class */ (function () {
         this.genres = new Array();
     }
     Track.prototype.toJSON = function () {
-        return { id: this.id, name: this.name, duration: this.duration, genres: this.genres };
+        return { idAlbum: this.idAlbum, id: this.id, name: this.name, duration: this.duration, genres: this.genres };
     };
     Track.prototype.anyGenre = function (genres) {
         var _this = this;
