@@ -31,7 +31,9 @@ var SearchResult = /** @class */ (function () {
         this.tracks.push(track);
     };
     SearchResult.prototype.existeAlbum = function (name) {
-        return this.albums.some(function (album) { return album.name === name; });
+        return this.albums.some(function (album) {
+            return album.name === name;
+        });
     };
     return SearchResult;
 }());

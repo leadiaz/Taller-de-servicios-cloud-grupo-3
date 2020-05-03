@@ -11,7 +11,7 @@ var User = /** @class */ (function () {
     User.prototype.listenTrack = function (aTrack) {
         this.tracks.push(aTrack);
     };
-    User.prototype.sinRepetidos = function (list) {
+    User.sinRepetidos = function (list) {
         var xs = new Array();
         list.forEach(function (elem) { if (!xs.includes(elem)) {
             xs.push(elem);
@@ -20,7 +20,7 @@ var User = /** @class */ (function () {
     };
     //Denota: Los temas escuchado por un usuario
     User.prototype.songsHeard = function () {
-        return this.sinRepetidos(this.tracks);
+        return User.sinRepetidos(this.tracks);
     };
     //Denota: las veces que un usuario escucho un tema 
     User.prototype.howManyTimesListenTrack = function (aTrack) {
