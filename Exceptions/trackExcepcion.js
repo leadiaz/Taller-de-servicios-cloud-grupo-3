@@ -24,3 +24,13 @@ var TrackExistsInAlbumError = /** @class */ (function (_super) {
     return TrackExistsInAlbumError;
 }(Error));
 exports.TrackExistsInAlbumError = TrackExistsInAlbumError;
+var TrackExcepcion = /** @class */ (function (_super) {
+    __extends(TrackExcepcion, _super);
+    function TrackExcepcion(trackName) {
+        var _this = _super.call(this, "No existe el track con este id: " + trackName) || this;
+        _this.name = "TrackError";
+        return _this;
+    }
+    return TrackExcepcion;
+}(Error));
+exports.TrackExcepcion = TrackExcepcion;

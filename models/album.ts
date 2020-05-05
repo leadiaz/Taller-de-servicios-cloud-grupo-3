@@ -20,7 +20,8 @@ export class Album{
     }
     else {
       const track = new Track()
-      track.id = this.id
+      track.idAlbum = this.id
+      track.id = idTrack
       track.name = trackData.name
       track.duration = trackData.duration
       track.genres = !trackData.genres ? new Array<String>() : trackData.genres
