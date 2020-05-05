@@ -341,7 +341,6 @@ export class UNQfy {
   */
     const playlist = new Playlist()
     const tracks = this.getTracksMatchingGenres(genresToInclude)
-
     playlist.id = this.idPlaylist
     playlist.name = name
 
@@ -416,10 +415,10 @@ export class UNQfy {
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
         break;
       case  'addAlbum':
-        console.log(this.addAlbum(argumentos[0], {name: argumentos[1], year: argumentos[2]}));
+        console.log(this.addAlbum(argumentos[0], {name: argumentos[1], year: eval(argumentos[2])}));
         break;
       case 'addTrack':
-        console.log(this.addTrack(argumentos[0],{name: argumentos[1], duration: argumentos[2], genres: argumentos[3]}));
+        console.log(this.addTrack(argumentos[0],{name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3])}));
         break;
       case 'removeArtist':
         this.removeArtist(argumentos[0]);
@@ -462,16 +461,19 @@ export class UNQfy {
         console.log(this.getTracksMatchingArtist(argumentos[0]));
         break;
       case 'getTracksMatchingGenres':
-        console.log(this.getTracksMatchingGenres(argumentos[0]));
+        console.log(this.getTracksMatchingGenres(eval(argumentos[0])));
         break;
       case 'createPlaylist':
-        this.createPlaylist(argumentos[0], argumentos[1], argumentos[2]);
+        this.createPlaylist(argumentos[0], eval(argumentos[1]), eval(argumentos[2]));
         break;
       case 'searchByName':
         console.log(this.searchByName(argumentos[0]));
         break;
       case 'getArtists':
         console.log(this.artists)
+        break
+      case 'getPlaylists':
+        console.log(this.playlists)
         break
       default :
         console.log("no existe el metodo: ", metodo)
