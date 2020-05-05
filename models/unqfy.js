@@ -230,10 +230,10 @@ var UNQfy = /** @class */ (function () {
         this.idTrack += 1;
         return track;
     };
-    UNQfy.prototype.removeTrack = function (aTrack) {
+    UNQfy.prototype.removeTrack = function (idTrack) {
         var track;
         try {
-            track = this.getTrackById(aTrack.id);
+            track = this.getTrackById(idTrack);
             this.getAlbumById(track.idAlbum).removeTrack(track);
             this.removeTrackFromPlayList(track);
         }

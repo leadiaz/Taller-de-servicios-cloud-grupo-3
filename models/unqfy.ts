@@ -249,10 +249,10 @@ export class UNQfy {
   }
 
 
-  removeTrack(aTrack){
+  removeTrack(idTrack){
     let track
     try{
-      track = this.getTrackById(aTrack.id)
+      track = this.getTrackById(idTrack)
       this.getAlbumById(track.idAlbum).removeTrack(track)
       this.removeTrackFromPlayList(track)
     }catch (error) {
