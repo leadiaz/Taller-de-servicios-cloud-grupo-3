@@ -1,18 +1,21 @@
-var fs = require('fs'); // necesitado para guardar/cargar unqfy
-var unqmod = require('./models/unqfy'); // importamos el modulo unqfy
+
+
+const fs = require('fs'); // necesitado para guardar/cargar unqfy
+const unqmod = require('./models/unqfy'); // importamos el modulo unqfy
+
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
-function getUNQfy(filename) {
-    if (filename === void 0) { filename = 'data.json'; }
-    var unqfy = new unqmod.UNQfy();
-    if (fs.existsSync(filename)) {
-        unqfy = unqmod.UNQfy.load(filename);
-    }
-    return unqfy;
+function getUNQfy(filename = 'data.json') {
+  let unqfy = new unqmod.UNQfy();
+  if (fs.existsSync(filename)) {
+    unqfy = unqmod.UNQfy.load(filename);
+  }
+  return unqfy;
 }
-function saveUNQfy(unqfy, filename) {
-    if (filename === void 0) { filename = 'data.json'; }
-    unqfy.save(filename);
+
+function saveUNQfy(unqfy, filename = 'data.json') {
+  unqfy.save(filename);
 }
+
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
  e implementar los diferentes comandos.
@@ -42,15 +45,17 @@ function saveUNQfy(unqfy, filename) {
    4. Guardar el estado de UNQfy (saveUNQfy)
 
 */
+
 function main() {
-    // console.log('arguments: ');
-    var unqfy = getUNQfy();
-    var method = process.argv.length > 2 ? process.argv[2] : '';
-    var argumetos = new Array();
-    for (var i = 3; i < process.argv.length; i++) {
-        argumetos.push(process.argv[i]);
-    }
-    unqfy.evalMethod(method, argumetos);
-    saveUNQfy(unqfy);
+  // console.log('arguments: ');
+  const unqfy = getUNQfy()
+  const method = process.argv.length > 2 ? process.argv[2] : ''
+  const argumetos = new Array()
+  for(let i=3; i < process.argv.length; i++){
+    argumetos.push(process.argv[i])
+  }
+  unqfy.evalMethod(method, argumetos)
+  saveUNQfy(unqfy)
 }
+
 main();

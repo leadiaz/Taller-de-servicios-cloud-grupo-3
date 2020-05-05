@@ -4,14 +4,22 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "chai": "^4.1.2",
-    "picklify": "github:lwoites/picklify"
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.13.4",
+    "bcrypt": "^4.0.1",
+    "chai": "^4.2.0",
+    "clean": "^4.0.2",
+    "core-util-is": "^1.0.2",
+    "mocha": "^7.1.2",
+    "picklify": "github:lwoites/picklify",
+    "puppeteer": "^3.0.1",
+    "socket.io": "^2.3.0",
+    "test": "^0.6.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.10.0",
-    "mocha": "^5.0.5"
+    "eslint-plugin-import": "^2.10.0"
   },
   "scripts": {
     "test": "mocha",
