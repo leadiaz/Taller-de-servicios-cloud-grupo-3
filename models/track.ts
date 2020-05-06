@@ -1,3 +1,5 @@
+import { IdGenerator } from "./idGenerator"
+
 export class Track{
     constructor(
         public idAlbum?: Number,
@@ -6,6 +8,7 @@ export class Track{
         public duration?:Number,
         public genres?: Array<String>
     ){
+        this.id = IdGenerator.getNextId()
         this.genres = new Array()
     }
     toJSON(){

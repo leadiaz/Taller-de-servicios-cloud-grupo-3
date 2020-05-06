@@ -8,18 +8,18 @@ export class Artist{
         public country?:String,
         public albums?: Array<Album>
     ){
+        this.id = IdGenerator.getNextId()
         this.albums = new Array()
     }
     toJSON(){
         return {id: this.id, name: this.name, country:this.country, albums: this.albums }
     }
-    addAlbum(id, albumData){
+    addAlbum(albumData){
         if(this.existeAlbum(albumData.name)){
             throw new AlbumExistsInArtistError(albumData.name)
         }else{
             const album = new Album()
             album.idArtist = this.id
-            album.id = id
             album.name = albumData.name
             album.year = albumData.year
             album.tracks = !albumData.tracks ? new Array<Track>(): albumData.tracks
@@ -54,4 +54,6 @@ export class Artist{
 
 
 import { Album } from "./album";
-import { Track } from "./track"
+import { Track } from "./track";
+import { IdGenerator } from "./idGenerator";
+

@@ -1,10 +1,12 @@
 "use strict";
 exports.__esModule = true;
+var idGenerator_1 = require("./idGenerator");
 var Playlist = /** @class */ (function () {
     function Playlist(id, name, tracks) {
         this.id = id;
         this.name = name;
         this.tracks = tracks;
+        this.id = idGenerator_1.IdGenerator.getNextId();
         this.tracks = new Array();
     }
     Playlist.prototype.toJSON = function () {

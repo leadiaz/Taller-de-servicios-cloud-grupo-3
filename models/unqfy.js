@@ -9,18 +9,14 @@ var trackExcepcion_1 = require("../Exceptions/trackExcepcion");
 var searchResult_1 = require("./searchResult");
 var user_1 = require("./user");
 var albumException_1 = require("../Exceptions/albumException");
+var playListExcepcion_1 = require("../Exceptions/playListExcepcion");
 var picklify = require('picklify'); // para cargar/guarfar unqfy
 var fs = require('fs'); // para cargar/guarfar unqfy
 var UNQfy = /** @class */ (function () {
     function UNQfy() {
-        this.idArtist = 0;
-        this.idAlbum = 0;
-        this.idTrack = 0;
-        this.idPlaylist = 0;
-        this.idUser = 0;
         this.artists = new Array();
         this.playlists = new Array();
-        // this.users = new Array()
+        this.users = new Array();
     }
     UNQfy.prototype.getPorId = function (listaARecorrer, id, excepcion) {
         var elementEncontrado = listaARecorrer.find(function (element) { return element.id == id; });
@@ -31,6 +27,7 @@ var UNQfy = /** @class */ (function () {
             return elementEncontrado;
         }
     };
+    //Elimina el elemento dado de la array dada, si el elemento no se encuentra en la array, lanza una excepcion
     UNQfy.prototype.removeElem = function (listaARecorrer, elemAEliminar, excepcion) {
         if (listaARecorrer.indexOf(elemAEliminar) >= 0) {
             listaARecorrer.splice(elemAEliminar, 1);
@@ -67,10 +64,8 @@ var UNQfy = /** @class */ (function () {
         }
         else {
             var artista = new artist_1.Artist();
-            artista.id = this.idArtist;
             artista.name = artistData.name;
             artista.country = artistData.country;
-            this.idArtist += 1;
             this.artists.push(artista);
             return artista;
         }
@@ -96,27 +91,22 @@ var UNQfy = /** @class */ (function () {
         }
         return artista;
     };
-    //Usuario
+    //Agrego un usuario a UNQFy
     UNQfy.prototype.addUser = function (name) {
-        var user = new user_1.User();
-        user.name = name;
-        user.id = this.idUser;
-        this.idUser += 1;
+        var newUser = new user_1.User();
+        newUser.name = name;
+        this.users.push(newUser);
+        return newUser;
     };
-    //Denota top3 de los tracks mas escuchados por un artista  
+    //Retorna una array de Track que contiene solamente 3 tracks 
     UNQfy.prototype.top3TracksDeUnArtista = function (artist) {
-        var top3 = new Array();
         var tracksEscuchadosDeArtista = this.tracksEscuchadosByUsers().filter(function (track) { return artist.getTracks().includes(track); });
-        var jsonOrdenado = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista);
-        this.ordenarListaDeJson(jsonOrdenado);
-        var n = 0;
-        while (n !== 3 && jsonOrdenado.length > n) {
-            top3.push(jsonOrdenado[n].track);
-            n = n + 1;
-        }
-        return top3;
+        var arrayDeObjOrdenada = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista);
+        this.ordernarArrayDeObj(arrayDeObjOrdenada);
+        return arrayDeObjOrdenada.slice(0, 4);
     };
-    UNQfy.prototype.ordenarListaDeJson = function (lista) {
+    //Ordena el array de objetos por el atributo "cant", ose a ordena de mayor a menor
+    UNQfy.prototype.ordernarArrayDeObj = function (lista) {
         lista.sort(function (a, b) {
             if (a.cant > b.cant) {
                 return -1;
@@ -128,31 +118,30 @@ var UNQfy = /** @class */ (function () {
             return 0;
         });
     };
-    //Denota una array de json, [{track: track , cant: 0}]
-    UNQfy.prototype.cantDeVecesQueSeRepite = function (listaRepetidas) {
+    //Retorna una array de objetos, [{track: track , cant: 0}]
+    UNQfy.prototype.cantDeVecesQueSeRepite = function (listaDeRepetidos) {
         var _this = this;
-        var newList = [];
-        user_1.User.sinRepetidos(listaRepetidas).forEach(function (elem) {
-            newList.push({ numero: elem, cant: _this.count(elem, listaRepetidas) });
-        });
+        var newList = new Array();
+        new Set(listaDeRepetidos).forEach(function (elem) { newList.push({ track: elem, cant: _this.count(elem, listaDeRepetidos) }); });
         return newList;
     };
+    //Retorna los tracks escuchados por los usarios
     UNQfy.prototype.tracksEscuchadosByUsers = function () {
         return this.users.reduce(function (accumulator, user) { return accumulator.concat(user.tracks); }, []);
     };
+    //Retorna la cantidad de veces que un elemento se repite en la Array dada
     UNQfy.prototype.count = function (elem, list) {
         var count = 0;
-        for (var i = 0; i < list.length; ++i) {
-            if (list[i] === elem)
-                count++;
-        }
+        list.array.forEach(function (e) { if (e === elem) {
+            count++;
+        } });
         return count;
     };
-    //remove artist
-    UNQfy.prototype.removeArtist = function (aArtist) {
+    //Elimino el artista con el idArtist dado,Elimino los tracks del artista de las playlist y albumes 
+    UNQfy.prototype.removeArtist = function (idArtist) {
         var artist;
         try {
-            artist = this.getArtistById(aArtist);
+            artist = this.getArtistById(idArtist);
             var tracks = artist.getTracks();
             artist.removeAlbums();
             this.removeTracksFromPlayLists(tracks);
@@ -161,14 +150,6 @@ var UNQfy = /** @class */ (function () {
         catch (error) {
             console.log(error.message);
         }
-    };
-    //Denoto todos los tracks de los albumes
-    UNQfy.prototype.tracksFromAlbumes = function (albumes) {
-        var tracks = new Array();
-        albumes.forEach(function (album) {
-            tracks = tracks.concat(album.tracks);
-        });
-        return tracks;
     };
     // albumData: objeto JS con los datos necesarios para crear un album
     //   albumData.name (string)
@@ -183,18 +164,17 @@ var UNQfy = /** @class */ (function () {
         var album;
         try {
             var artist = this.getArtistById(artistId);
-            album = artist.addAlbum(this.idAlbum, albumData);
+            album = artist.addAlbum(albumData);
         }
         catch (error) {
             console.log(error.message);
         }
-        this.idAlbum += 1;
         return album;
     };
-    UNQfy.prototype.removeAlbum = function (aAlbum) {
+    UNQfy.prototype.removeAlbum = function (idAlbum) {
         var album;
         try {
-            album = this.getAlbumById(aAlbum);
+            album = this.getAlbumById(idAlbum);
             var artist = this.getArtistById(album.idArtist);
             this.removeTracksFromPlayLists(album.tracks);
             artist.removeAlbum(album);
@@ -217,7 +197,7 @@ var UNQfy = /** @class */ (function () {
         */
         var track;
         try {
-            track = this.getAlbumById(albumId).addTrack(this.idTrack, trackData);
+            track = this.getAlbumById(albumId).addTrack(trackData);
         }
         catch (error) {
             console.log(error.message);
@@ -227,9 +207,9 @@ var UNQfy = /** @class */ (function () {
                 console.log(error.trackName);
             }
         }
-        this.idTrack += 1;
         return track;
     };
+    //Elimino el track con la id dado
     UNQfy.prototype.removeTrack = function (idTrack) {
         var track;
         try {
@@ -242,20 +222,22 @@ var UNQfy = /** @class */ (function () {
         }
         // si no se capturó ningún error se debería por eliminar de la playlist
     };
-    //Elimina un track de todas las playList
+    //Dado un Track lo elimino de las playlist en que aparezca 
     UNQfy.prototype.removeTrackFromPlayList = function (aTrack) {
         this.playlists.forEach(function (playlist) {
             playlist.removeAtrack(aTrack);
         });
     };
-    //Elimina los tracks de las playlists
+    //Dado un array de tracks elimino los tracks de las playlists que aparezca
     UNQfy.prototype.removeTracksFromPlayLists = function (tracksList) {
-        this.playlists.forEach(function (playlist) {
-            tracksList.forEach(function (track) {
-                playlist.removeAtrack(track);
-            });
-        });
+        var _this = this;
+        tracksList.forEach(function (track) { _this.removeTrackFromPlayList(track); });
     };
+    // this.playlists.forEach((playlist) =>{
+    //   tracksList.forEach(track => {
+    //     playlist.removeAtrack(track)
+    //   });
+    // })
     UNQfy.prototype.getArtistById = function (id) {
         return this.getPorId(this.artists, id, new Error('No existe el artista'));
     };
@@ -306,45 +288,41 @@ var UNQfy = /** @class */ (function () {
         */
         var playlist = new playlist_1.Playlist();
         var tracks = this.getTracksMatchingGenres(genresToInclude);
-        playlist.id = this.idPlaylist;
         playlist.name = name;
         playlist.addTracks(tracks, maxDuration);
         this.playlists.push(playlist);
         return playlist;
     };
-    UNQfy.prototype.removePlayList = function (aPlayList) {
-        var playlist = this.getPlayList(aPlayList);
+    //Dado un idPlaylist elimina la Playlist con ese id
+    UNQfy.prototype.removePlayListById = function (idPlaylist) {
+        var playlist = this.getPlaylistById(idPlaylist);
         this.playlists.splice(this.playlists.indexOf(playlist), 1);
     };
-    UNQfy.prototype.removePlayListById = function (id) {
-        var playlist = this.getPlaylistById(id);
-        this.playlists.splice(this.playlists.indexOf(playlist), 1);
-    };
+    //Retorna el artista con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getArtist = function (anArtist) {
-        var artist = this.artists.find(function (artist) { return artist.name == anArtist; });
-        if (!artist) {
-            throw new artistExcepcion_1.ArtistExcepcion(anArtist);
-        }
-        else {
-            return artist;
-        }
+        return this.getElem(anArtist, this.artists, new artistExcepcion_1.ArtistExcepcion(anArtist));
     };
+    //Retorna el album con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getAlbum = function (anAlbum) {
-        var album = this.getAlbums().find(function (album) { return album.name == anAlbum; });
-        if (!album) {
-            throw new albumException_1.NotExistAlbumError(anAlbum);
-        }
-        else {
-            return album;
-        }
+        return this.getElem(anAlbum, this.getAlbums(), new albumException_1.NotExistAlbumError(anAlbum));
     };
+    //Retorna el track con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getTrack = function (aTrack) {
-        var track = this.getTracks().find(function (track) { return track.name == aTrack; });
-        if (!track) {
-            throw new trackExcepcion_1.TrackExcepcion(aTrack);
+        return this.getElem(aTrack, this.getTracks(), new trackExcepcion_1.TrackExcepcion(aTrack));
+    };
+    //Retorna el playlist con el name dado, sino lo encuentra lanza una excepcion
+    UNQfy.prototype.getPlayList = function (aPlaylist) {
+        return this.getElem(aPlaylist, this.playlists, new playListExcepcion_1.NotExistPlayListError(aPlaylist));
+    };
+    //Retorna el elemento si es que se encuentra en la array, sino lanza una excepcion
+    //Este metodo tendria que ser privado pero lo estoy probando en el test
+    UNQfy.prototype.getElem = function (nameElem, list, excepcion) {
+        var elem = list.find(function (elemento) { return elemento.name == nameElem; });
+        if (!elem) {
+            excepcion;
         }
         else {
-            return track;
+            return elem;
         }
     };
     UNQfy.prototype.getAlbumsFromArtist = function (idArtist) {
@@ -366,9 +344,6 @@ var UNQfy = /** @class */ (function () {
             return e.message;
         }
         return album.tracks;
-    };
-    UNQfy.prototype.getPlayList = function (aPlaylist) {
-        return this.playlists.find(function (playlist) { return playlist.name == aPlaylist; });
     };
     UNQfy.prototype.evalMethod = function (metodo, argumentos) {
         switch (metodo) {
@@ -452,7 +427,7 @@ var UNQfy = /** @class */ (function () {
     UNQfy.load = function (filename) {
         var serializedData = fs.readFileSync(filename, { encoding: 'utf-8' });
         //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-        var classes = [UNQfy, artist_1.Artist, album_1.Album, track_1.Track, playlist_1.Playlist];
+        var classes = [UNQfy, artist_1.Artist, album_1.Album, track_1.Track, playlist_1.Playlist, user_1.User];
         return picklify.unpicklify(JSON.parse(serializedData), classes);
     };
     return UNQfy;

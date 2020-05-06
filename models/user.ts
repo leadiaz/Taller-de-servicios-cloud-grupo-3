@@ -1,4 +1,5 @@
 import { Track } from "./track";
+import { IdGenerator } from "./idGenerator";
 
 export class User {
     constructor(
@@ -7,6 +8,7 @@ export class User {
         public tracks?:Array<Track>
     )
     {
+        this.id = IdGenerator.getNextId()
         this.tracks = new Array()
         
         
@@ -18,21 +20,14 @@ listenTrack(aTrack){
     this.tracks.push(aTrack)
 }
 
-public static sinRepetidos(list:Array<Track>):Array<Track>{
-    const xs = new Array()
-    list.forEach((elem) => {if (!xs.includes(elem))  {xs.push(elem)}})
-    return xs
-  }
-
-
-//Denota: Los temas escuchado por un usuario
-songsHeard():Track[]{
- return User.sinRepetidos(this.tracks)
+//Retorna: Los Tracks escuchado por un usuario
+songsHeard():Set<Track>{
+ return new Set(this.tracks)
 }
 
-//Denota: las veces que un usuario escucho un tema 
+//Retorna: las veces que un usuario escucho un tema 
 howManyTimesListenTrack(aTrack){
-   var n = 0 
+  var n = 0 
   this.tracks.forEach((track) => {if(track === aTrack){n = n +1}}           )
   return n;
 }

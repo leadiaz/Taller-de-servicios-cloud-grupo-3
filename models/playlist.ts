@@ -1,4 +1,5 @@
 import{Track} from "./track"
+import { IdGenerator } from "./idGenerator";
 
 export class Playlist{
     
@@ -8,6 +9,7 @@ export class Playlist{
         public tracks?: Array<Track>,
         
     ){
+        this.id = IdGenerator.getNextId()
         this.tracks = new Array();
     }
     toJSON(){

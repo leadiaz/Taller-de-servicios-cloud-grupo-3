@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var idGenerator_1 = require("./idGenerator");
 var Track = /** @class */ (function () {
     function Track(idAlbum, id, name, duration, genres) {
         this.idAlbum = idAlbum;
@@ -7,6 +8,7 @@ var Track = /** @class */ (function () {
         this.name = name;
         this.duration = duration;
         this.genres = genres;
+        this.id = idGenerator_1.IdGenerator.getNextId();
         this.genres = new Array();
     }
     Track.prototype.toJSON = function () {
