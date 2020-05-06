@@ -19,6 +19,7 @@ var UNQfy = /** @class */ (function () {
         this.playlists = new Array();
         this.users = new Array();
     }
+    //Dado una listaARecorrer, un id y una excepcion, reporta el elemento que tenga esa id, si el elemento no se encuentra, lanza una excepcion
     UNQfy.prototype.getPorId = function (listaARecorrer, id, excepcion) {
         var elementEncontrado = listaARecorrer.find(function (element) { return element.id == id; });
         if (!elementEncontrado) {
@@ -37,6 +38,7 @@ var UNQfy = /** @class */ (function () {
             throw excepcion;
         }
     };
+    //Retorna un de objeto, el cual esa formado de la siguiente manera {artists: arrayArtist, albums: arrayAlbumes, tracks: arrayTracks, playlists: arratPlayList}
     UNQfy.prototype.searchByName = function (nombre) {
         var result = new searchResult_1.SearchResult();
         this.artists.forEach(function (artist) {
@@ -368,6 +370,7 @@ var UNQfy = /** @class */ (function () {
             return elem;
         }
     };
+    //Retorna los Albumes de una artistica especifico, sino encuentra al artista lanza un excepcion
     UNQfy.prototype.getAlbumsFromArtist = function (idArtist) {
         var artist;
         try {
@@ -378,6 +381,7 @@ var UNQfy = /** @class */ (function () {
         }
         return artist.albums;
     };
+    //Dado un idAlbum retorna los tracks del album, si el album no existe lanza una excepcion
     UNQfy.prototype.getTracksFromAlbum = function (idAlbum) {
         var album;
         try {

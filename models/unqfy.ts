@@ -29,7 +29,8 @@ export class UNQfy {
     this.playlists = new Array()
     this.users = new Array()
   }
-
+  
+  //Dado una listaARecorrer, un id y una excepcion, reporta el elemento que tenga esa id, si el elemento no se encuentra, lanza una excepcion
   private getPorId(listaARecorrer, id, excepcion){
     const elementEncontrado = listaARecorrer.find(element => element.id == id);
     if(!elementEncontrado){
@@ -48,6 +49,7 @@ export class UNQfy {
     }
   }
 
+ //Retorna un de objeto, el cual esa formado de la siguiente manera {artists: arrayArtist, albums: arrayAlbumes, tracks: arrayTracks, playlists: arratPlayList}
   searchByName(nombre:string) {
     const result:SearchResult = new SearchResult()
     this.artists.forEach((artist) =>{
@@ -101,7 +103,7 @@ export class UNQfy {
       }
     }
     return artista
-    
+
   }
 
   //Agrego un usuario a UNQFy, si user ya existe lanza una excepcion
@@ -416,7 +418,8 @@ export class UNQfy {
       return elem
     }
   }
-
+  
+  //Retorna los Albumes de una artistica especifico, sino encuentra al artista lanza un excepcion
   getAlbumsFromArtist(idArtist){
     let artist
     try{
@@ -427,6 +430,7 @@ export class UNQfy {
     return artist.albums
   }
 
+  //Dado un idAlbum retorna los tracks del album, si el album no existe lanza una excepcion
   getTracksFromAlbum(idAlbum){
     let album
     try{
