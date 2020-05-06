@@ -14,6 +14,7 @@ var Track = /** @class */ (function () {
     Track.prototype.toJSON = function () {
         return { idAlbum: this.idAlbum, id: this.id, name: this.name, duration: this.duration, genres: this.genres };
     };
+    //Dado un array de Genres retorna true si el track contiene algun genre 
     Track.prototype.anyGenre = function (genres) {
         var _this = this;
         return genres.some(function (genre) { return _this.genres.includes(genre); });

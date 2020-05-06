@@ -8,6 +8,7 @@ import { SearchResult } from "./searchResult";
 import { User } from "./user";
 import {NotExistAlbumError} from "../Exceptions/albumException";
 import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
+import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
 
 
 
@@ -64,6 +65,7 @@ export class UNQfy {
         }
       })
     })
+
     this.playlists.forEach((playList) =>{ if(playList.name.includes(nombre)){result.addPlaylist(playList)}})
     return result.toJSON()
   }
@@ -99,14 +101,61 @@ export class UNQfy {
       }
     }
     return artista
+    
   }
 
-  //Agrego un usuario a UNQFy
+  //Agrego un usuario a UNQFy, si user ya existe lanza una excepcion
   addUser(name){
+    if(this.users.some(user => {return user.name == name})){
+       throw new ExistsUserError(name)
+    }else{
     const newUser = new User()
     newUser.name = name
     this.users.push(newUser)
     return newUser
+    }
+  }
+
+  //El usuario con id_user escucha un track
+  userListenTrack(name_user,name_track){
+    const user = this.getUser(name_user)
+    const aTrack = this.getTrack(name_user)
+    try{
+      user.listenTrack(aTrack)
+    }catch(e){
+      if(e instanceof NoExistUserError){
+        console.log(e.message)
+      }else{
+        if(e instanceof TrackExcepcion){
+          console.log(e.message)
+        }
+        else{
+          throw e 
+        }
+      }
+      
+    }
+  }
+  
+  //Retorna los tracks escuchados por un usuario 
+  songsHeardByAnUser(name_user):Set<Track>{
+    return this.getUser(name_user).songsHeard()
+  }
+
+  //Dado un id_User y id_Track retorna cuantas veces el usuario con id_user escucho el track con id_Track
+  howManyTimesListenTrackByAnUser(name_user,name_Track){
+    return this.getUser(name_user).howManyTimesListenTrack(this.getTrack(name_Track))
+  }
+
+
+  //Retorna el User con esa id
+  getUserById(id_user){
+    return this.getPorId(this.users,id_user,  new Error('No existe el usuario con id ' + id_user))
+  }
+
+  //Elimina el user con ese id, sino se encuentra el user lanza un excepcion
+  removeUser(id_User){
+    this.removeElem(this.users,this.getUserById(id_User),new Error('No existe el artista'))
   }
 
     //Retorna una array de Track que contiene solamente 3 tracks 
@@ -253,12 +302,6 @@ export class UNQfy {
   private removeTracksFromPlayLists(tracksList){
     tracksList.forEach((track)=>{ this.removeTrackFromPlayList(track) })
   }
-    // this.playlists.forEach((playlist) =>{
-    //   tracksList.forEach(track => {
-    //     playlist.removeAtrack(track)
-    //   });
-    // })
-
   
 
 
@@ -273,7 +316,8 @@ export class UNQfy {
     const albums = this.getAlbums()
     return this.getPorId(albums, id,new Error('No existes el album'));
   }
-
+  
+  //Retorna todos los tracks de unqfy
   getTracks(){
     return this.getAlbums().reduce((accumulator, album) => { return accumulator.concat(album.tracks)}, [])
   }
@@ -355,10 +399,15 @@ export class UNQfy {
   getPlayList(aPlaylist){
     return this.getElem(aPlaylist,this.playlists,new NotExistPlayListError(aPlaylist))
   }
+
+  //Retorna el user con el name dado, sino lo encuentra lanza una excepcion
+  getUser(aUser){
+    return this.getElem(aUser,this.users,new NoExistUserError(aUser))
+  }
   
   //Retorna el elemento si es que se encuentra en la array, sino lanza una excepcion
   //Este metodo tendria que ser privado pero lo estoy probando en el test
-   getElem(nameElem,list,excepcion){
+  private getElem(nameElem,list,excepcion){
     let elem = list.find(elemento => elemento.name == nameElem)
     if(!elem){
       excepcion
@@ -377,6 +426,7 @@ export class UNQfy {
     }
     return artist.albums
   }
+
   getTracksFromAlbum(idAlbum){
     let album
     try{
@@ -386,6 +436,10 @@ export class UNQfy {
     }
     return album.tracks
   }
+
+
+
+  
 
   evalMethod(metodo:string, argumentos:Array<any>){
     switch (metodo) {
@@ -398,6 +452,9 @@ export class UNQfy {
       case 'addTrack':
         console.log(this.addTrack(argumentos[0],{name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3])}));
         break;
+      case 'addUser':
+        console.log(this.addUser(argumentos[0]))
+        break;  
       case 'removeArtist':
         this.removeArtist(argumentos[0]);
         break;

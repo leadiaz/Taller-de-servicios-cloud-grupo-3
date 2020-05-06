@@ -162,12 +162,8 @@ describe ('User Creation', () => {
   it('create a user as requested', () =>{
     const user1 = createAndAddUser(unqfy,'Pepito')
     const user2 = createAndAddUser(unqfy,'Gonzalo')
-    const user3 = createAndAddUser(unqfy,'PEDRO')
-    const user4 = createAndAddUser(unqfy,"Jorge")
-    const pepito = unqfy.getElem('Pepito',unqfy.users, new Error('No se encontro elemento'))
     assert.equal(user1.name,'Pepito')
     assert.equal(user2.name,'Gonzalo')
-    assert.equal(pepito.name,'Pepito')
    
     
     //assert.equal(unqfy.getElem('jorge',unqfy.users,new Error('No se encontro elemento')),new Error('No se encontro elemento'))

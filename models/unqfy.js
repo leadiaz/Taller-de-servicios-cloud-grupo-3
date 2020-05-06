@@ -10,6 +10,7 @@ var searchResult_1 = require("./searchResult");
 var user_1 = require("./user");
 var albumException_1 = require("../Exceptions/albumException");
 var playListExcepcion_1 = require("../Exceptions/playListExcepcion");
+var userExcepcion_1 = require("../Exceptions/userExcepcion");
 var picklify = require('picklify'); // para cargar/guarfar unqfy
 var fs = require('fs'); // para cargar/guarfar unqfy
 var UNQfy = /** @class */ (function () {
@@ -91,12 +92,54 @@ var UNQfy = /** @class */ (function () {
         }
         return artista;
     };
-    //Agrego un usuario a UNQFy
+    //Agrego un usuario a UNQFy, si user ya existe lanza una excepcion
     UNQfy.prototype.addUser = function (name) {
-        var newUser = new user_1.User();
-        newUser.name = name;
-        this.users.push(newUser);
-        return newUser;
+        if (this.users.some(function (user) { return user.name == name; })) {
+            throw new userExcepcion_1.ExistsUserError(name);
+        }
+        else {
+            var newUser = new user_1.User();
+            newUser.name = name;
+            this.users.push(newUser);
+            return newUser;
+        }
+    };
+    //El usuario con id_user escucha un track
+    UNQfy.prototype.userListenTrack = function (name_user, name_track) {
+        var user = this.getUser(name_user);
+        var aTrack = this.getTrack(name_user);
+        try {
+            user.listenTrack(aTrack);
+        }
+        catch (e) {
+            if (e instanceof userExcepcion_1.NoExistUserError) {
+                console.log(e.message);
+            }
+            else {
+                if (e instanceof trackExcepcion_1.TrackExcepcion) {
+                    console.log(e.message);
+                }
+                else {
+                    throw e;
+                }
+            }
+        }
+    };
+    //Retorna los tracks escuchados por un usuario 
+    UNQfy.prototype.songsHeardByAnUser = function (name_user) {
+        return this.getUser(name_user).songsHeard();
+    };
+    //Dado un id_User y id_Track retorna cuantas veces el usuario con id_user escucho el track con id_Track
+    UNQfy.prototype.howManyTimesListenTrackByAnUser = function (name_user, name_Track) {
+        return this.getUser(name_user).howManyTimesListenTrack(this.getTrack(name_Track));
+    };
+    //Retorna el User con esa id
+    UNQfy.prototype.getUserById = function (id_user) {
+        return this.getPorId(this.users, id_user, new Error('No existe el usuario con id ' + id_user));
+    };
+    //Elimina el user con ese id, sino se encuentra el user lanza un excepcion
+    UNQfy.prototype.removeUser = function (id_User) {
+        this.removeElem(this.users, this.getUserById(id_User), new Error('No existe el artista'));
     };
     //Retorna una array de Track que contiene solamente 3 tracks 
     UNQfy.prototype.top3TracksDeUnArtista = function (artist) {
@@ -233,11 +276,6 @@ var UNQfy = /** @class */ (function () {
         var _this = this;
         tracksList.forEach(function (track) { _this.removeTrackFromPlayList(track); });
     };
-    // this.playlists.forEach((playlist) =>{
-    //   tracksList.forEach(track => {
-    //     playlist.removeAtrack(track)
-    //   });
-    // })
     UNQfy.prototype.getArtistById = function (id) {
         return this.getPorId(this.artists, id, new Error('No existe el artista'));
     };
@@ -248,6 +286,7 @@ var UNQfy = /** @class */ (function () {
         var albums = this.getAlbums();
         return this.getPorId(albums, id, new Error('No existes el album'));
     };
+    //Retorna todos los tracks de unqfy
     UNQfy.prototype.getTracks = function () {
         return this.getAlbums().reduce(function (accumulator, album) { return accumulator.concat(album.tracks); }, []);
     };
@@ -314,6 +353,10 @@ var UNQfy = /** @class */ (function () {
     UNQfy.prototype.getPlayList = function (aPlaylist) {
         return this.getElem(aPlaylist, this.playlists, new playListExcepcion_1.NotExistPlayListError(aPlaylist));
     };
+    //Retorna el user con el name dado, sino lo encuentra lanza una excepcion
+    UNQfy.prototype.getUser = function (aUser) {
+        return this.getElem(aUser, this.users, new userExcepcion_1.NoExistUserError(aUser));
+    };
     //Retorna el elemento si es que se encuentra en la array, sino lanza una excepcion
     //Este metodo tendria que ser privado pero lo estoy probando en el test
     UNQfy.prototype.getElem = function (nameElem, list, excepcion) {
@@ -355,6 +398,9 @@ var UNQfy = /** @class */ (function () {
                 break;
             case 'addTrack':
                 console.log(this.addTrack(argumentos[0], { name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3]) }));
+                break;
+            case 'addUser':
+                console.log(this.addUser(argumentos[0]));
                 break;
             case 'removeArtist':
                 this.removeArtist(argumentos[0]);
