@@ -11,6 +11,7 @@ export class SearchResult {
         public playlists?: Array<Playlist>,
         public tracks?: Array<Track>
     ) {
+        
         this.albums = new Array()
         this.artists = new Array()
         this.playlists = new Array()

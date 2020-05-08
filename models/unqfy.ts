@@ -7,6 +7,9 @@ import {TrackExcepcion, TrackExistsInAlbumError} from "../Exceptions/trackExcepc
 import { SearchResult } from "./searchResult";
 import { User } from "./user";
 import {NotExistAlbumError} from "../Exceptions/albumException";
+import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
+import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
+
 
 
 
@@ -18,19 +21,13 @@ export class UNQfy {
   playlists: Array<Playlist>
   users:Array<User>
 
-  private idArtist = 0
-  private idAlbum = 0
-  private idTrack = 0
-  private idPlaylist = 0
-  private idUser = 0
-
   private listeners: any[]
 
 
   constructor(){
     this.artists = new Array()
     this.playlists = new Array()
-    // this.users = new Array()
+    this.users = new Array()
   }
 
   private getPorId(listaARecorrer, id, excepcion){
@@ -41,7 +38,7 @@ export class UNQfy {
       return elementEncontrado;
     }
   }
-
+  //Elimina el elemento dado de la array dada, si el elemento no se encuentra en la array, lanza una excepcion
   private removeElem(listaARecorrer,elemAEliminar,excepcion){
     if(listaARecorrer.indexOf(elemAEliminar) >= 0){
       listaARecorrer.splice(elemAEliminar,1)
@@ -68,6 +65,7 @@ export class UNQfy {
         }
       })
     })
+
     this.playlists.forEach((playList) =>{ if(playList.name.includes(nombre)){result.addPlaylist(playList)}})
     return result.toJSON()
   }
@@ -77,10 +75,8 @@ export class UNQfy {
       throw new ArtistExistsWithThatName(artistData.name)
     }else{
       const artista = new Artist();
-      artista.id = this.idArtist;
       artista.name = artistData.name;
       artista.country = artistData.country;
-      this.idArtist += 1
       this.artists.push(artista)
       return artista
     }
@@ -105,33 +101,74 @@ export class UNQfy {
       }
     }
     return artista
+    
   }
 
-  //Usuario
+  //Agrego un usuario a UNQFy, si user ya existe lanza una excepcion
   addUser(name){
-    const user = new User()
-    user.name = name
-    user.id = this.idUser
-    this.idUser += 1
+    if(this.users.some(user => {return user.name == name})){
+       throw new ExistsUserError(name)
+    }else{
+    const newUser = new User()
+    newUser.name = name
+    this.users.push(newUser)
+    return newUser
+    }
   }
 
-    //Denota top3 de los tracks mas escuchados por un artista  
-    top3TracksDeUnArtista(artist:Artist) {
-      const top3 = new Array()
-      const tracksEscuchadosDeArtista = this.tracksEscuchadosByUsers().filter(track => artist.getTracks().includes(track))
-      const jsonOrdenado = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista)
-      this.ordenarListaDeJson(jsonOrdenado)
-      var n = 0
-      while (n !== 3 && jsonOrdenado.length > n) {
-        top3.push(jsonOrdenado[n].track)
-        n = n + 1
+  //El usuario con id_user escucha un track
+  userListenTrack(name_user,name_track){
+    const user = this.getUser(name_user)
+    const aTrack = this.getTrack(name_user)
+    try{
+      user.listenTrack(aTrack)
+    }catch(e){
+      if(e instanceof NoExistUserError){
+        console.log(e.message)
+      }else{
+        if(e instanceof TrackExcepcion){
+          console.log(e.message)
+        }
+        else{
+          throw e 
+        }
       }
-      return top3
+      
+    }
+  }
+  
+  //Retorna los tracks escuchados por un usuario 
+  songsHeardByAnUser(name_user):Set<Track>{
+    return this.getUser(name_user).songsHeard()
+  }
+
+  //Dado un id_User y id_Track retorna cuantas veces el usuario con id_user escucho el track con id_Track
+  howManyTimesListenTrackByAnUser(name_user,name_Track){
+    return this.getUser(name_user).howManyTimesListenTrack(this.getTrack(name_Track))
+  }
+
+
+  //Retorna el User con esa id
+  getUserById(id_user){
+    return this.getPorId(this.users,id_user,  new Error('No existe el usuario con id ' + id_user))
+  }
+
+  //Elimina el user con ese id, sino se encuentra el user lanza un excepcion
+  removeUser(id_User){
+    this.removeElem(this.users,this.getUserById(id_User),new Error('No existe el artista'))
+  }
+
+    //Retorna una array de Track que contiene solamente 3 tracks 
+    top3TracksDeUnArtista(artist:Artist) {
+      const tracksEscuchadosDeArtista = this.tracksEscuchadosByUsers().filter(track => artist.getTracks().includes(track))
+      const arrayDeObjOrdenada = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista)
+      this.ordernarArrayDeObj(arrayDeObjOrdenada)
+      return arrayDeObjOrdenada.slice(0,4)
 
     }
 
-
-     private ordenarListaDeJson(lista){
+     //Ordena el array de objetos por el atributo "cant", ose a ordena de mayor a menor
+     private ordernarArrayDeObj(lista){
       lista.sort(function (a, b) {
         if (a.cant > b.cant) {
           return -1;
@@ -144,32 +181,32 @@ export class UNQfy {
       });
       }
     
-    //Denota una array de json, [{track: track , cant: 0}]
-   private cantDeVecesQueSeRepite(listaRepetidas){
-      var newList = []
-      User.sinRepetidos(listaRepetidas).forEach((elem) => {
-         newList.push({numero:elem,cant: this.count(elem,listaRepetidas)})
-       })
+
+    //Retorna una array de objetos, [{track: track , cant: 0}]
+   private cantDeVecesQueSeRepite(listaDeRepetidos){
+       var newList = new Array()
+       new Set(listaDeRepetidos).forEach((elem) => { newList.push({track:elem,cant: this.count(elem,listaDeRepetidos)}) })
        return newList
     }
+
+    //Retorna los tracks escuchados por los usarios
     private tracksEscuchadosByUsers():Array<Track>{
       return this.users.reduce((accumulator, user) => {return accumulator.concat(user.tracks)}, [])
     }
 
+
+  //Retorna la cantidad de veces que un elemento se repite en la Array dada
   private count(elem,list){
     var count = 0;
-    for(var i = 0; i < list.length; ++i){
-      if(list[i] === elem)
-      count++;
-    }
+    list.array.forEach(e => { if(e === elem) {count++;} });
     return count
   }
 
-    //remove artist
-  removeArtist(aArtist){
+  //Elimino el artista con el idArtist dado,Elimino los tracks del artista de las playlist y albumes 
+  removeArtist(idArtist){
     let artist
     try{
-      artist = this.getArtistById(aArtist)
+      artist = this.getArtistById(idArtist)
       const tracks = artist.getTracks()
       artist.removeAlbums()
       this.removeTracksFromPlayLists(tracks)
@@ -179,14 +216,7 @@ export class UNQfy {
     }
   }
 
-  //Denoto todos los tracks de los albumes
-  private tracksFromAlbumes(albumes:Array<Album>){
-    var tracks:Array<Track> = new Array()
-      albumes.forEach((album)=>{
-      tracks = tracks.concat(album.tracks)
-    })
-    return tracks
-  }
+
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)
   //   albumData.year (number)
@@ -200,18 +230,17 @@ export class UNQfy {
     let album
     try{
       const artist = this.getArtistById(artistId)
-      album = artist.addAlbum(this.idAlbum, albumData)
+      album = artist.addAlbum(albumData)
     }catch(error){
       console.log(error.message);
     }
-    this.idAlbum += 1
     return album;
   }
 
-  removeAlbum(aAlbum){
+  removeAlbum(idAlbum){
     let album
     try{
-      album = this.getAlbumById(aAlbum)
+      album = this.getAlbumById(idAlbum)
       const artist = this.getArtistById(album.idArtist)
       this.removeTracksFromPlayLists(album.tracks)
       artist.removeAlbum(album)
@@ -234,7 +263,7 @@ export class UNQfy {
   */
     let track
     try{
-      track = this.getAlbumById(albumId).addTrack(this.idTrack,trackData);
+      track = this.getAlbumById(albumId).addTrack(trackData);
     }catch(error){
       console.log(error.message);
       if(error instanceof TrackExistsInAlbumError) {
@@ -244,11 +273,10 @@ export class UNQfy {
       }
 
     }
-    this.idTrack += 1
     return track;
   }
 
-
+  //Elimino el track con la id dado
   removeTrack(idTrack){
     let track
     try{
@@ -262,7 +290,7 @@ export class UNQfy {
 
   }
 
-  //Elimina un track de todas las playList
+  //Dado un Track lo elimino de las playlist en que aparezca 
   private removeTrackFromPlayList(aTrack){
     this.playlists.forEach((playlist)=>{
       playlist.removeAtrack(aTrack)
@@ -270,15 +298,11 @@ export class UNQfy {
   }
 
 
- //Elimina los tracks de las playlists
+ //Dado un array de tracks elimino los tracks de las playlists que aparezca
   private removeTracksFromPlayLists(tracksList){
-    this.playlists.forEach((playlist) =>{
-      tracksList.forEach(track => {
-        playlist.removeAtrack(track)
-      });
-    })
-
+    tracksList.forEach((track)=>{ this.removeTrackFromPlayList(track) })
   }
+  
 
 
   getArtistById(id) {
@@ -292,7 +316,8 @@ export class UNQfy {
     const albums = this.getAlbums()
     return this.getPorId(albums, id,new Error('No existes el album'));
   }
-
+  
+  //Retorna todos los tracks de unqfy
   getTracks(){
     return this.getAlbums().reduce((accumulator, album) => { return accumulator.concat(album.tracks)}, [])
   }
@@ -341,7 +366,6 @@ export class UNQfy {
   */
     const playlist = new Playlist()
     const tracks = this.getTracksMatchingGenres(genresToInclude)
-    playlist.id = this.idPlaylist
     playlist.name = name
 
 
@@ -352,39 +376,44 @@ export class UNQfy {
   }
 
 
-  removePlayList(aPlayList){
-    let playlist = this.getPlayList(aPlayList)
-    this.playlists.splice(this.playlists.indexOf(playlist),1)
-
-  }
-
-  removePlayListById(id){
-    const playlist = this.getPlaylistById(id)
+ 
+  //Dado un idPlaylist elimina la Playlist con ese id
+  removePlayListById(idPlaylist){
+    const playlist = this.getPlaylistById(idPlaylist)
     this.playlists.splice(this.playlists.indexOf(playlist),1)
   }
-
+  
+  //Retorna el artista con el name dado, sino lo encuentra lanza una excepcion
   getArtist(anArtist){
-    let artist = this.artists.find(artist => artist.name == anArtist)
-    if(!artist){
-      throw new ArtistExcepcion(anArtist)
-    }else {
-      return artist
-    }
+    return this.getElem(anArtist,this.artists,new ArtistExcepcion(anArtist))
   }
+  //Retorna el album con el name dado, sino lo encuentra lanza una excepcion
   getAlbum(anAlbum){
-    let album = this.getAlbums().find(album => album.name == anAlbum)
-    if(!album){
-      throw new NotExistAlbumError(anAlbum)
-    }else {
-      return album
-    }
+    return this.getElem(anAlbum,this.getAlbums(), new NotExistAlbumError(anAlbum))
   }
+  //Retorna el track con el name dado, sino lo encuentra lanza una excepcion
   getTrack(aTrack){
-    let track =  this.getTracks().find(track => track.name == aTrack)
-    if(!track){
-      throw new TrackExcepcion(aTrack)
-    }else {
-      return track
+    return this.getElem(aTrack,this.getTracks(),new TrackExcepcion(aTrack))
+  }
+  //Retorna el playlist con el name dado, sino lo encuentra lanza una excepcion
+  getPlayList(aPlaylist){
+    return this.getElem(aPlaylist,this.playlists,new NotExistPlayListError(aPlaylist))
+  }
+
+  //Retorna el user con el name dado, sino lo encuentra lanza una excepcion
+  getUser(aUser){
+    return this.getElem(aUser,this.users,new NoExistUserError(aUser))
+  }
+  
+  //Retorna el elemento si es que se encuentra en la array, sino lanza una excepcion
+  //Este metodo tendria que ser privado pero lo estoy probando en el test
+  private getElem(nameElem,list,excepcion){
+    let elem = list.find(elemento => elemento.name == nameElem)
+    if(!elem){
+      excepcion
+    }
+    else{
+      return elem
     }
   }
 
@@ -397,6 +426,7 @@ export class UNQfy {
     }
     return artist.albums
   }
+
   getTracksFromAlbum(idAlbum){
     let album
     try{
@@ -406,9 +436,11 @@ export class UNQfy {
     }
     return album.tracks
   }
-  getPlayList(aPlaylist){
-    return this.playlists.find(playlist => playlist.name == aPlaylist)
-  }
+
+
+
+  
+
   evalMethod(metodo:string, argumentos:Array<any>){
     switch (metodo) {
       case 'addArtist':
@@ -420,6 +452,9 @@ export class UNQfy {
       case 'addTrack':
         console.log(this.addTrack(argumentos[0],{name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3])}));
         break;
+      case 'addUser':
+        console.log(this.addUser(argumentos[0]))
+        break;  
       case 'removeArtist':
         this.removeArtist(argumentos[0]);
         break;
@@ -492,7 +527,7 @@ export class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, Playlist];
+    const classes = [UNQfy, Artist, Album, Track, Playlist,User];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }

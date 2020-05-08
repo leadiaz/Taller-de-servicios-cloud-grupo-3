@@ -1,5 +1,6 @@
 import { Track } from "./track";
 import {TrackExistsInAlbumError} from "../Exceptions/trackExcepcion";
+import { IdGenerator } from "./idGenerator";
 
 export class Album{
   constructor(
@@ -9,19 +10,19 @@ export class Album{
     public year?: Number,
     public tracks?: Array<Track>
     ){
+      this.id = IdGenerator.getNextId()
       this.tracks = new Array()
   }
   toJSON(){
     return {idArtist: this.idArtist, id: this.id, name:this.name, year: this.year, tracks: this.tracks}
   }
-  addTrack(idTrack, trackData){
+  addTrack(trackData){
     if(this.existeTrack(trackData.name)){
       throw new TrackExistsInAlbumError(trackData.name)
     }
     else {
       const track = new Track()
       track.idAlbum = this.id
-      track.id = idTrack
       track.name = trackData.name
       track.duration = trackData.duration
       track.genres = !trackData.genres ? new Array<String>() : trackData.genres

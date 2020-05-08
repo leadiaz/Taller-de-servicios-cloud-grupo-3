@@ -7,19 +7,19 @@ var Artist = /** @class */ (function () {
         this.name = name;
         this.country = country;
         this.albums = albums;
+        this.id = idGenerator_1.IdGenerator.getNextId();
         this.albums = new Array();
     }
     Artist.prototype.toJSON = function () {
         return { id: this.id, name: this.name, country: this.country, albums: this.albums };
     };
-    Artist.prototype.addAlbum = function (id, albumData) {
+    Artist.prototype.addAlbum = function (albumData) {
         if (this.existeAlbum(albumData.name)) {
             throw new albumException_1.AlbumExistsInArtistError(albumData.name);
         }
         else {
             var album = new album_1.Album();
             album.idArtist = this.id;
-            album.id = id;
             album.name = albumData.name;
             album.year = albumData.year;
             album.tracks = !albumData.tracks ? new Array() : albumData.tracks;
@@ -53,3 +53,4 @@ var Artist = /** @class */ (function () {
 }());
 exports.Artist = Artist;
 var album_1 = require("./album");
+var idGenerator_1 = require("./idGenerator");

@@ -4,8 +4,9 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "@types/jest": "^25.2.1",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.13.4",
+    "@types/node": "^13.13.5",
     "bcrypt": "^4.0.1",
     "chai": "^4.2.0",
     "clean": "^4.0.2",

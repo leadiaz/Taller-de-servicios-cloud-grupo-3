@@ -19,6 +19,11 @@ function createAndAddTrack(unqfy, albumName, trackName, trackDuraction, trackGen
   return unqfy.addTrack(albumName, { name: trackName, duration: trackDuraction, genres: trackGenres });
 }
 
+function createAndAddUser(unqfy,name){
+  return unqfy.addUser(name)
+}
+
+
 
 describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -146,5 +151,21 @@ describe('Playlist Creation and properties', () => {
     assert.isTrue(playlist.hasTrack(t3));
     assert.isTrue(playlist.hasTrack(t4));
     assert.lengthOf(playlist.tracks, 4);
+  });
+});
+describe ('User Creation', () => {
+  let unqfy = null;
+
+  beforeEach(() => {
+    unqfy = new libunqfy.UNQfy();
+  });
+  it('create a user as requested', () =>{
+    const user1 = createAndAddUser(unqfy,'Pepito')
+    const user2 = createAndAddUser(unqfy,'Gonzalo')
+    assert.equal(user1.name,'Pepito')
+    assert.equal(user2.name,'Gonzalo')
+   
+    
+    //assert.equal(unqfy.getElem('jorge',unqfy.users,new Error('No se encontro elemento')),new Error('No se encontro elemento'))
   });
 });
