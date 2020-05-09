@@ -6,7 +6,7 @@ import {ArtistExcepcion, ArtistExistsWithThatName} from "../Exceptions/artistExc
 import {TrackExcepcion, TrackExistsInAlbumError} from "../Exceptions/trackExcepcion"
 import { SearchResult } from "./searchResult";
 import { User } from "./user";
-import {NotExistAlbumError} from "../Exceptions/albumException";
+import {NotExistAlbumError, AlbumExistsInArtistError} from "../Exceptions/albumException";
 import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
 import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
 
@@ -103,6 +103,9 @@ export class UNQfy {
       if(error instanceof ArtistExistsWithThatName){
           console.log(error.message)
       }
+      else{
+        throw error
+      }
     }
     return artista
     
@@ -120,7 +123,7 @@ export class UNQfy {
     }
   }
 
-  //El usuario con id_user escucha un track
+  //El usuario con name_user escucha un name_track
   userListenTrack(name_user,name_track){
     const user = this.getUser(name_user)
     const aTrack = this.getTrack(name_user)
@@ -140,7 +143,8 @@ export class UNQfy {
       
     }
   }
-  
+
+
   //Retorna los tracks escuchados por un usuario 
   songsHeardByAnUser(name_user):Set<Track>{
     return this.getUser(name_user).songsHeard()
@@ -160,6 +164,16 @@ export class UNQfy {
   //Elimina el user con ese id, sino se encuentra el user lanza un excepcion
   removeUser(id_User){
     this.removeElem(this.users,this.getUserById(id_User),new Error('No existe el artista'))
+  }
+
+ //DUDAS EN LA IMPLEMENTACION, SIN TERMINAR EL TOP 3 DE TRACKS
+  top3(list){
+    var n = 0 
+    const top3 = new Array()
+    while(list.length > n){
+      top3.push(list[0].track)
+    }
+    return top3
   }
 
     //Retorna una array de Track que contiene solamente 3 tracks 
@@ -205,6 +219,7 @@ export class UNQfy {
     list.array.forEach(e => { if(e === elem) {count++;} });
     return count
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //Elimino el artista con el idArtist dado,Elimino los tracks del artista de las playlist y albumes 
   removeArtist(idArtist){
@@ -214,7 +229,7 @@ export class UNQfy {
       const tracks = artist.getTracks()
       artist.removeAlbums()
       this.removeTracksFromPlayLists(tracks)
-      this.removeElem(this.artists,artist,new Error('No existe el artista'))
+      this.removeElem(this.artists,artist,new ArtistExcepcion('No existe el artista'))
     }catch(error){
       console.log(error.message)
     }
@@ -236,14 +251,12 @@ export class UNQfy {
     album.name = albumData.name
     album.year = albumData.year
     album.idArtist = artistId
-    // try{
-    //   const artist = this.getArtistById(artistId)
-    //   album = artist.addAlbum(albumData)
-    // }catch(error){
-    //   console.log(error.message);
-    // }
-    const artist:Artist = this.getArtistById(artistId)
-    artist.addAlbum(album)
+    try{
+      const artist:Artist = this.getArtistById(artistId)
+      artist.addAlbum(album)
+    }catch(error){
+      console.log(error.message);
+    }
     return album;
   }
 
@@ -276,19 +289,17 @@ export class UNQfy {
     track.name = trackData.name
     track.duration = trackData.duration
     track.genres = trackData.genres
-   // try{
-  //this.getAlbumById(albumId).addTrack(trackData);
+     try{
    const album:Album = this.getAlbumById(albumId) 
    album.addTrack(track)  
-    // }catch(error){
-    //   console.log(error.message);
-    //   if(error instanceof TrackExistsInAlbumError) {
-    //     console.log(error.name)
-    //     console.log(error.message)
-    //     console.log(error.trackName)
-    //   }
-
-    //}
+    }catch(error){
+      console.log(error.message);
+      if(error instanceof TrackExistsInAlbumError) {
+        console.log(error.name)
+        console.log(error.message)
+        console.log(error.trackName)
+      }
+     }
     return track;
   }
 
@@ -297,7 +308,7 @@ export class UNQfy {
     let track
     try{
       track = this.getTrackById(idTrack)
-      this.getAlbumById(track.idAlbum).removeTrack(track)
+      this.getAlbumById(track.idAlbum).removeTrack(track) // ?
       this.removeTrackFromPlayList(track)
     }catch (error) {
       console.log(error.message)
@@ -322,7 +333,7 @@ export class UNQfy {
 
 
   getArtistById(id) {
-    return this.getPorId(this.artists, id, new Error('No existe el artista'));
+    return this.getPorId(this.artists, id, new ArtistExcepcion('No existe el artista'));
   }
 
   getAlbums(){
@@ -330,7 +341,7 @@ export class UNQfy {
   }
   getAlbumById(id) {
     const albums = this.getAlbums()
-    return this.getPorId(albums, id,new Error('No existes el album'));
+    return this.getPorId(albums, id,new NotExistAlbumError('id'));
   }
   
   //Retorna todos los tracks de unqfy
@@ -338,11 +349,11 @@ export class UNQfy {
     return this.getAlbums().reduce((accumulator, album) => { return accumulator.concat(album.tracks)}, [])
   }
   getTrackById(id) {
-    return this.getPorId(this.getTracks(), id, new Error('No existe el track'));
+    return this.getPorId(this.getTracks(), id, new TrackExcepcion('No existe el track'));
   }
 
   getPlaylistById(id) {
-    return this.getPorId(this.playlists, id, new Error('No existe la playlist'));
+    return this.getPorId(this.playlists, id, new NotExistPlayListError('No existe la playlist'));
   }
 
   // genres: array de generos(strings)
@@ -383,8 +394,6 @@ export class UNQfy {
     const playlist = new Playlist()
     const tracks = this.getTracksMatchingGenres(genresToInclude)
     playlist.name = name
-
-
     playlist.addTracks(tracks, maxDuration)
     this.playlists.push(playlist)
     return playlist;
@@ -434,6 +443,7 @@ export class UNQfy {
   }
 
   getAlbumsFromArtist(idArtist){
+   // return this.getPorId(this.artists,idArtist,new ArtistExcepcion('No existe el artista')).albums
     let artist
     try{
       artist = this.getArtistById(idArtist)
@@ -444,6 +454,7 @@ export class UNQfy {
   }
 
   getTracksFromAlbum(idAlbum){
+   // return this.getElems(this.getAlbums(),idAlbum,new AlbumExistsInArtistError('Nothing')).tracks
     let album
     try{
       album= this.getAlbumById(idAlbum)
@@ -453,8 +464,21 @@ export class UNQfy {
     return album.tracks
   }
 
-
-
+//Posible funcion para no tener codigo repetido 
+getElems(list,id,excepcion){
+  let any
+  try{
+      any = this.getPorId(list,id,excepcion)
+  }catch(e){
+      if(e instanceof excepcion){
+         e 
+      }
+      else{
+        throw e
+      }
+  }
+  return any
+}
   
 
   evalMethod(metodo:string, argumentos:Array<any>){

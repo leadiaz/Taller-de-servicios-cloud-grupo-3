@@ -2,16 +2,12 @@ import { Track } from "./track";
 import { IdGenerator } from "./idGenerator";
 
 export class User {
-    constructor(
-        public name?:String,
-        public id?:Number,
-        public tracks?:Array<Track>
-    )
-    {
+      name: string
+      id: Number
+      tracks:Track[]
+    constructor(){
         this.id = IdGenerator.getNextId()
-        this.tracks = new Array()
-        
-        
+        this.tracks = []
     }
 
 

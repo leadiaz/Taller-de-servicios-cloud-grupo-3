@@ -15,17 +15,19 @@ export class Artist{
         return {id: this.id, name: this.name, country:this.country, albums: this.albums }
     }
     addAlbum(album){
-        // if(this.existeAlbum(albumData.name)){
-        //     throw new AlbumExistsInArtistError(albumData.name)
+        if(this.existeAlbum(album.name)){
+             throw new AlbumExistsInArtistError(album.name)
 
-        // }else{
-          
+        }else{
             this.albums.push(album)
+          }
     }
     
     getTracks():Track[]{
         return this.albums.reduce((accumulator, album) => {return accumulator.concat(album.tracks)}, [])  
     }
+
+
     removeAlbum(anAlbum){
         const album = this.albums.find(album => album.id === anAlbum.id)
         if(!album){
@@ -40,6 +42,7 @@ export class Artist{
         this.albums.forEach(album => {
             album.removeTracks()
         })
+        this.albums = []
     }
 
     private existeAlbum(name: any) {

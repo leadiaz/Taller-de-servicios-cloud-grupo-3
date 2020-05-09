@@ -4,6 +4,7 @@ import { IdGenerator } from "./idGenerator";
 
 export class Album{
   tracks:Track[]
+
   constructor(
     public idArtist?: Number,
     public id?:Number,
@@ -18,14 +19,18 @@ export class Album{
     return {idArtist: this.idArtist, id: this.id, name:this.name, year: this.year, tracks: this.tracks}
   }
   addTrack(track){
-    // if(this.existeTrack(track.name)){
-    //   throw new TrackExistsInAlbumError(track.name)
-    // }
+     if(this.existeTrack(track.name)){
+        throw new TrackExistsInAlbumError(track.name)
+      }else{
       this.tracks.push(track)
+      }
   }
+
+
   removeTracks() {
-      this.tracks = null
+      this.tracks = []
   }
+  
   removeTrack(anTrack){
     let index = this.tracks.indexOf(anTrack)
     this.tracks.splice(index, 1)

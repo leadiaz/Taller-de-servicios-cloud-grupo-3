@@ -13,10 +13,12 @@ var Artist = /** @class */ (function () {
         return { id: this.id, name: this.name, country: this.country, albums: this.albums };
     };
     Artist.prototype.addAlbum = function (album) {
-        // if(this.existeAlbum(albumData.name)){
-        //     throw new AlbumExistsInArtistError(albumData.name)
-        // }else{
-        this.albums.push(album);
+        if (this.existeAlbum(album.name)) {
+            throw new albumException_1.AlbumExistsInArtistError(album.name);
+        }
+        else {
+            this.albums.push(album);
+        }
     };
     Artist.prototype.getTracks = function () {
         return this.albums.reduce(function (accumulator, album) { return accumulator.concat(album.tracks); }, []);
@@ -36,6 +38,7 @@ var Artist = /** @class */ (function () {
         this.albums.forEach(function (album) {
             album.removeTracks();
         });
+        this.albums = [];
     };
     Artist.prototype.existeAlbum = function (name) {
         return this.albums.some(function (album) { return album.name === name; });
