@@ -11,15 +11,14 @@ var user_1 = require("./user");
 var albumException_1 = require("../Exceptions/albumException");
 var playListExcepcion_1 = require("../Exceptions/playListExcepcion");
 var userExcepcion_1 = require("../Exceptions/userExcepcion");
-var picklify = require('picklify'); // para cargar/guarfar unqfy
-var fs = require('fs'); // para cargar/guarfar unqfy
+var picklify = require("picklify"); // para cargar/guarfar unqfy
+var fs = require("fs"); // para cargar/guarfar unqfy
 var UNQfy = /** @class */ (function () {
     function UNQfy() {
         this.artists = new Array();
         this.playlists = new Array();
         this.users = new Array();
     }
-    //Dado una listaARecorrer, un id y una excepcion, reporta el elemento que tenga esa id, si el elemento no se encuentra, lanza una excepcion
     UNQfy.prototype.getPorId = function (listaARecorrer, id, excepcion) {
         var elementEncontrado = listaARecorrer.find(function (element) { return element.id == id; });
         if (!elementEncontrado) {
@@ -38,7 +37,6 @@ var UNQfy = /** @class */ (function () {
             throw excepcion;
         }
     };
-    //Retorna un de objeto, el cual esa formado de la siguiente manera {artists: arrayArtist, albums: arrayAlbumes, tracks: arrayTracks, playlists: arratPlayList}
     UNQfy.prototype.searchByName = function (nombre) {
         var result = new searchResult_1.SearchResult();
         this.artists.forEach(function (artist) {
@@ -206,14 +204,18 @@ var UNQfy = /** @class */ (function () {
             - una propiedad name (string)
             - una propiedad year (number)
         */
-        var album;
-        try {
-            var artist = this.getArtistById(artistId);
-            album = artist.addAlbum(albumData);
-        }
-        catch (error) {
-            console.log(error.message);
-        }
+        var album = new album_1.Album();
+        album.name = albumData.name;
+        album.year = albumData.year;
+        album.idArtist = artistId;
+        // try{
+        //   const artist = this.getArtistById(artistId)
+        //   album = artist.addAlbum(albumData)
+        // }catch(error){
+        //   console.log(error.message);
+        // }
+        var artist = this.getArtistById(artistId);
+        artist.addAlbum(album);
         return album;
     };
     UNQfy.prototype.removeAlbum = function (idAlbum) {
@@ -240,18 +242,23 @@ var UNQfy = /** @class */ (function () {
             - una propiedad duration (number),
             - una propiedad genres (lista de strings)
         */
-        var track;
-        try {
-            track = this.getAlbumById(albumId).addTrack(trackData);
-        }
-        catch (error) {
-            console.log(error.message);
-            if (error instanceof trackExcepcion_1.TrackExistsInAlbumError) {
-                console.log(error.name);
-                console.log(error.message);
-                console.log(error.trackName);
-            }
-        }
+        var track = new track_1.Track();
+        track.idAlbum = albumId;
+        track.name = trackData.name;
+        track.duration = trackData.duration;
+        track.genres = trackData.genres;
+        // try{
+        //this.getAlbumById(albumId).addTrack(trackData);
+        var album = this.getAlbumById(albumId);
+        album.addTrack(track);
+        // }catch(error){
+        //   console.log(error.message);
+        //   if(error instanceof TrackExistsInAlbumError) {
+        //     console.log(error.name)
+        //     console.log(error.message)
+        //     console.log(error.trackName)
+        //   }
+        //}
         return track;
     };
     //Elimino el track con la id dado
@@ -370,7 +377,6 @@ var UNQfy = /** @class */ (function () {
             return elem;
         }
     };
-    //Retorna los Albumes de una artistica especifico, sino encuentra al artista lanza un excepcion
     UNQfy.prototype.getAlbumsFromArtist = function (idArtist) {
         var artist;
         try {
@@ -381,7 +387,6 @@ var UNQfy = /** @class */ (function () {
         }
         return artist.albums;
     };
-    //Dado un idAlbum retorna los tracks del album, si el album no existe lanza una excepcion
     UNQfy.prototype.getTracksFromAlbum = function (idAlbum) {
         var album;
         try {
