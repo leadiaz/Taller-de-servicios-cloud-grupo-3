@@ -13,8 +13,10 @@ import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
 
 
 
-const picklify = require('picklify'); // para cargar/guarfar unqfy
-const fs = require('fs'); // para cargar/guarfar unqfy
+import picklify = require('picklify'); // para cargar/guarfar unqfy
+import fs = require('fs'); // para cargar/guarfar unqfy
+
+
 
 export class UNQfy {
   artists: Array<Artist>
@@ -23,12 +25,14 @@ export class UNQfy {
 
   private listeners: any[]
 
+  
 
   constructor(){
     this.artists = new Array()
     this.playlists = new Array()
     this.users = new Array()
   }
+
 
   private getPorId(listaARecorrer, id, excepcion){
     const elementEncontrado = listaARecorrer.find(element => element.id == id);
@@ -227,13 +231,19 @@ export class UNQfy {
       - una propiedad name (string)
       - una propiedad year (number)
   */
-    let album
-    try{
-      const artist = this.getArtistById(artistId)
-      album = artist.addAlbum(albumData)
-    }catch(error){
-      console.log(error.message);
-    }
+    
+    const album = new Album()
+    album.name = albumData.name
+    album.year = albumData.year
+    album.idArtist = artistId
+    // try{
+    //   const artist = this.getArtistById(artistId)
+    //   album = artist.addAlbum(albumData)
+    // }catch(error){
+    //   console.log(error.message);
+    // }
+    const artist:Artist = this.getArtistById(artistId)
+    artist.addAlbum(album)
     return album;
   }
 
@@ -261,18 +271,24 @@ export class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-    let track
-    try{
-      track = this.getAlbumById(albumId).addTrack(trackData);
-    }catch(error){
-      console.log(error.message);
-      if(error instanceof TrackExistsInAlbumError) {
-        console.log(error.name)
-        console.log(error.message)
-        console.log(error.trackName)
-      }
+    const track = new Track()
+    track.idAlbum = albumId
+    track.name = trackData.name
+    track.duration = trackData.duration
+    track.genres = trackData.genres
+   // try{
+  //this.getAlbumById(albumId).addTrack(trackData);
+   const album:Album = this.getAlbumById(albumId) 
+   album.addTrack(track)  
+    // }catch(error){
+    //   console.log(error.message);
+    //   if(error instanceof TrackExistsInAlbumError) {
+    //     console.log(error.name)
+    //     console.log(error.message)
+    //     console.log(error.trackName)
+    //   }
 
-    }
+    //}
     return track;
   }
 

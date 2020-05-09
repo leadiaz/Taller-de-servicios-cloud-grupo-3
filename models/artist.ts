@@ -1,31 +1,26 @@
 import {AlbumExistsInArtistError, NotExistAlbumError} from "../Exceptions/albumException";
 
 export class Artist{
+    albums:Album[]
 
     constructor(
         public id?:Number,
         public name?:String,
         public country?:String,
-        public albums?: Array<Album>
     ){
         this.id = IdGenerator.getNextId()
-        this.albums = new Array()
+        this.albums = []
     }
     toJSON(){
         return {id: this.id, name: this.name, country:this.country, albums: this.albums }
     }
-    addAlbum(albumData){
-        if(this.existeAlbum(albumData.name)){
-            throw new AlbumExistsInArtistError(albumData.name)
-        }else{
-            const album = new Album()
-            album.idArtist = this.id
-            album.name = albumData.name
-            album.year = albumData.year
-            album.tracks = !albumData.tracks ? new Array<Track>(): albumData.tracks
+    addAlbum(album){
+        // if(this.existeAlbum(albumData.name)){
+        //     throw new AlbumExistsInArtistError(albumData.name)
+
+        // }else{
+          
             this.albums.push(album)
-            return album
-        }
     }
     
     getTracks():Track[]{

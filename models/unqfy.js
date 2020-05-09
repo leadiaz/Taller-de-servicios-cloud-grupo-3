@@ -11,8 +11,8 @@ var user_1 = require("./user");
 var albumException_1 = require("../Exceptions/albumException");
 var playListExcepcion_1 = require("../Exceptions/playListExcepcion");
 var userExcepcion_1 = require("../Exceptions/userExcepcion");
-var picklify = require('picklify'); // para cargar/guarfar unqfy
-var fs = require('fs'); // para cargar/guarfar unqfy
+var picklify = require("picklify"); // para cargar/guarfar unqfy
+var fs = require("fs"); // para cargar/guarfar unqfy
 var UNQfy = /** @class */ (function () {
     function UNQfy() {
         this.artists = new Array();
@@ -204,14 +204,18 @@ var UNQfy = /** @class */ (function () {
             - una propiedad name (string)
             - una propiedad year (number)
         */
-        var album;
-        try {
-            var artist = this.getArtistById(artistId);
-            album = artist.addAlbum(albumData);
-        }
-        catch (error) {
-            console.log(error.message);
-        }
+        var album = new album_1.Album();
+        album.name = albumData.name;
+        album.year = albumData.year;
+        album.idArtist = artistId;
+        // try{
+        //   const artist = this.getArtistById(artistId)
+        //   album = artist.addAlbum(albumData)
+        // }catch(error){
+        //   console.log(error.message);
+        // }
+        var artist = this.getArtistById(artistId);
+        artist.addAlbum(album);
         return album;
     };
     UNQfy.prototype.removeAlbum = function (idAlbum) {
@@ -238,18 +242,23 @@ var UNQfy = /** @class */ (function () {
             - una propiedad duration (number),
             - una propiedad genres (lista de strings)
         */
-        var track;
-        try {
-            track = this.getAlbumById(albumId).addTrack(trackData);
-        }
-        catch (error) {
-            console.log(error.message);
-            if (error instanceof trackExcepcion_1.TrackExistsInAlbumError) {
-                console.log(error.name);
-                console.log(error.message);
-                console.log(error.trackName);
-            }
-        }
+        var track = new track_1.Track();
+        track.idAlbum = albumId;
+        track.name = trackData.name;
+        track.duration = trackData.duration;
+        track.genres = trackData.genres;
+        // try{
+        //this.getAlbumById(albumId).addTrack(trackData);
+        var album = this.getAlbumById(albumId);
+        album.addTrack(track);
+        // }catch(error){
+        //   console.log(error.message);
+        //   if(error instanceof TrackExistsInAlbumError) {
+        //     console.log(error.name)
+        //     console.log(error.message)
+        //     console.log(error.trackName)
+        //   }
+        //}
         return track;
     };
     //Elimino el track con la id dado
