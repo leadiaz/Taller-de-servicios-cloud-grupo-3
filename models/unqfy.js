@@ -110,7 +110,7 @@ var UNQfy = /** @class */ (function () {
     //El usuario con name_user escucha un name_track
     UNQfy.prototype.userListenTrack = function (name_user, name_track) {
         var user = this.getUser(name_user);
-        var aTrack = this.getTrack(name_user);
+        var aTrack = this.getTrack(name_track);
         try {
             user.listenTrack(aTrack);
         }

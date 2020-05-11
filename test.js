@@ -129,6 +129,18 @@ describe('User Creation', function () {
         var user2 = createAndAddUser(unqfy, 'Gonzalo');
         assert.equal(user1.name, 'Pepito');
         assert.equal(user2.name, 'Gonzalo');
-        //assert.equal(unqfy.getElem('jorge',unqfy.users,new Error('No se encontro elemento')),new Error('No se encontro elemento'))
+    });
+    it('canciones que escucho user', function () {
+        var user1 = createAndAddUser(unqfy, "Marcelo");
+        var artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        var album1 = createAndAddAlbum(unqfy, artist1.id, 'Leyendas', 1920);
+        var track1 = createAndAddTrack(unqfy, album1.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+        unqfy.userListenTrack('Marcelo', 'Welcome to the jungle');
+        assert.equal(unqfy.songsHeardByAnUser('Marcelo').size, 1);
+        assert.isTrue(unqfy.songsHeardByAnUser('Marcelo').has(track1));
+        assert.equal(unqfy.getUser('Marcelo').songsHeard().size, 1);
+        unqfy.userListenTrack('Marcelo', 'Welcome to the jungle');
+        unqfy.userListenTrack('Marcelo', 'Welcome to the jungle');
+        assert.equal(unqfy.howManyTimesListenTrackByAnUser('Marcelo', 'Welcome to the jungle'), 3);
     });
 });

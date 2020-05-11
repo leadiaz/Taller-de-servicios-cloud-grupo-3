@@ -126,7 +126,7 @@ export class UNQfy {
   //El usuario con name_user escucha un name_track
   userListenTrack(name_user,name_track){
     const user = this.getUser(name_user)
-    const aTrack = this.getTrack(name_user)
+    const aTrack = this.getTrack(name_track)
     try{
       user.listenTrack(aTrack)
     }catch(e){
@@ -426,7 +426,7 @@ export class UNQfy {
   }
 
   //Retorna el user con el name dado, sino lo encuentra lanza una excepcion
-  getUser(aUser){
+  private getUser(aUser){
     return this.getElem(aUser,this.users,new NoExistUserError(aUser))
   }
   
