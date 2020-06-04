@@ -4,12 +4,13 @@ import { IdGenerator } from "./idGenerator";
 
 export class Album{
   tracks:Track[]
+
   constructor(
     public idArtist?: Number,
     public id?:Number,
     public name?: String,
     public year?: Number,
-    
+
     ){
       this.id = IdGenerator.getNextId()
       this.tracks = []
@@ -23,9 +24,11 @@ export class Album{
     // }
       this.tracks.push(track)
   }
+
   removeTracks() {
-      this.tracks = null
+      this.tracks = []
   }
+
   removeTrack(anTrack){
     let index = this.tracks.indexOf(anTrack)
     this.tracks.splice(index, 1)

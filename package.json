@@ -11,9 +11,11 @@
     "chai": "^4.2.0",
     "clean": "^4.0.2",
     "core-util-is": "^1.0.2",
+    "express": "^4.17.1",
     "mocha": "^7.1.2",
     "picklify": "github:lwoites/picklify",
     "puppeteer": "^3.0.1",
+    "request": "^2.88.2",
     "socket.io": "^2.3.0",
     "test": "^0.6.0"
   },
