@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var token = 'BQAIuvEn1HtvF-7PH5vuqZWfWu9J-BCvW4qt6J6vQrkH2CgN5-e4fV_TmYa8j9PIe47BEFtZyzggzszok8bPfHZFB7n2TsSYqW4dw-f-Ew-AsYLugJ1hoNym5TwJNnPDxYJaeLwDvVRXjp1GEps3mZHOYsGk0Qg_';
+var token = 'BQAg8nUJ240g7zAfH7CArd0AvVpFJ6_Z0v7n0a2USDi07fNHbV_dK7uVFbhQcOpjG6RrBIcQ3nIix1uMvWKqEn4QhmW4p5IzSZgYBx21dXtssKPHxfjebzvK8ksCru0h6wPhtrGVYEDc-e5Gpr41O1OOufGdZOic9GJ3aJ_55lvHjngXTA';
 var rp = require('request-promise');
 var options = {
     url: 'https://api.spotify.com/v1/search?q=AC%2FDC&type=artist',
@@ -23,18 +23,22 @@ function albumesDeArtista(id) {
 }
 function agregar(unqfy, artistName) {
     var idArtista;
-    var albumes = [];
+    var namesAlbums = [];
     var albums = getIdArtistDeSpotify(artistName).then(function (artist) {
         unqfy.addArtist({ name: artist.name, country: "USA" });
         idArtista = artist.id;
         return albumesDeArtista(idArtista);
     });
     albums.then(function (albums) {
-        albums.forEach(function (album) {
-            unqfy.addAlbum(idArtista, { name: album.name, year: album.release_date });
+        albums.items.forEach(function (album) {
+            if (!namesAlbums.includes(album.name)) {
+                namesAlbums.push(album.name);
+                unqfy.addAlbum(1, { name: album.name, year: album.release_date });
+                console.log(unqfy.artists);
+            }
         });
     });
 }
-getIdArtistDeSpotify("AC/DC").then(function (id) { return albumesDeArtista(id); });
+//getIdArtistDeSpotify("AC/DC").then((id) => albumesDeArtista(id))
 //rp.get(options).then((response)=> console.log(response.artists.items))
 module.exports = { agregar: agregar };
