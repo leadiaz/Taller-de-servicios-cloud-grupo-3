@@ -11,6 +11,7 @@ var user_1 = require("./user");
 var albumException_1 = require("../Exceptions/albumException");
 var playListExcepcion_1 = require("../Exceptions/playListExcepcion");
 var userExcepcion_1 = require("../Exceptions/userExcepcion");
+var app = require('./controller');
 var picklify = require("picklify"); // para cargar/guarfar unqfy
 var fs = require("fs"); // para cargar/guarfar unqfy
 var UNQfy = /** @class */ (function () {
@@ -427,8 +428,13 @@ var UNQfy = /** @class */ (function () {
         }
         return any;
     };
+    UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
+        app.agrega(this, artistName);
+    };
     UNQfy.prototype.evalMethod = function (metodo, argumentos) {
         switch (metodo) {
+            case 'populateAlbumsForArtist':
+                console.log(this.populateAlbumsForArtist(argumentos[0]));
             case 'addArtist':
                 console.log(this.addArtist({ name: argumentos[0], country: argumentos[1] }));
                 break;
