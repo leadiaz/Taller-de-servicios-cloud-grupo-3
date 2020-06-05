@@ -3,11 +3,11 @@ import {TrackExistsInAlbumError} from "../Exceptions/trackExcepcion";
 import { IdGenerator } from "./idGenerator";
 
 export class Album{
-  tracks:Track[]
+  tracks:Track[];
+  id
 
   constructor(
     public idArtist?: Number,
-    public id?:Number,
     public name?: String,
     public year?: Number,
 
