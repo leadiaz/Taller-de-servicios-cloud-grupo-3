@@ -429,12 +429,13 @@ var UNQfy = /** @class */ (function () {
         return any;
     };
     UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
-        app.agrega(this, artistName);
+        app.agregar(this, artistName);
     };
     UNQfy.prototype.evalMethod = function (metodo, argumentos) {
         switch (metodo) {
             case 'populateAlbumsForArtist':
                 console.log(this.populateAlbumsForArtist(argumentos[0]));
+                break;
             case 'addArtist':
                 console.log(this.addArtist({ name: argumentos[0], country: argumentos[1] }));
                 break;

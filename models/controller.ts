@@ -1,11 +1,11 @@
 import { Album } from "./album";
 
-
+let token = 'BQAIuvEn1HtvF-7PH5vuqZWfWu9J-BCvW4qt6J6vQrkH2CgN5-e4fV_TmYa8j9PIe47BEFtZyzggzszok8bPfHZFB7n2TsSYqW4dw-f-Ew-AsYLugJ1hoNym5TwJNnPDxYJaeLwDvVRXjp1GEps3mZHOYsGk0Qg_'
 
 const rp = require('request-promise');
 const options = {
      url: 'https://api.spotify.com/v1/search?q=AC%2FDC&type=artist',
-     headers: { Authorization: 'Bearer ' + 'BQA4m89akQ3bi_V0osbueCb7SFVMyC4OGjSgDPciJbSDrmMgiNCSKMsXCp6et6niVDfQDqu_oGjTHsiC24T_1qaxelMT1BYp9EnBXH3tbkF1sND4gMCtQYmuwbdWX0k1JodF_KJerKw5Bx1tzJ9H35jnEwUJegmJ4K1QdAKun-okgSrrHA' },
+     headers: { Authorization: 'Bearer ' + token },
      json: true,
 };
 
@@ -13,14 +13,14 @@ const options = {
 function getIdArtistDeSpotify(artistName) {
     return rp.get({
       url: 'https://api.spotify.com/v1/search?q='+ artistName+ '&type=artist',
-      headers: { Authorization: 'Bearer ' + 'BQA4m89akQ3bi_V0osbueCb7SFVMyC4OGjSgDPciJbSDrmMgiNCSKMsXCp6et6niVDfQDqu_oGjTHsiC24T_1qaxelMT1BYp9EnBXH3tbkF1sND4gMCtQYmuwbdWX0k1JodF_KJerKw5Bx1tzJ9H35jnEwUJegmJ4K1QdAKun-okgSrrHA' },
+      headers: { Authorization: 'Bearer ' + token},
       json: true,
-    }).then((response) => {return response.artists.items[0].id})
+    }).then((response) => {return response.artists.items[0]})
  }
  function albumesDeArtista(id) {
     return  rp.get({
           url: 'https://api.spotify.com/v1/artists/' +id + '/albums',
-          headers: { Authorization: 'Bearer ' + 'BQA4m89akQ3bi_V0osbueCb7SFVMyC4OGjSgDPciJbSDrmMgiNCSKMsXCp6et6niVDfQDqu_oGjTHsiC24T_1qaxelMT1BYp9EnBXH3tbkF1sND4gMCtQYmuwbdWX0k1JodF_KJerKw5Bx1tzJ9H35jnEwUJegmJ4K1QdAKun-okgSrrHA' },
+          headers: { Authorization: 'Bearer ' + token },
           json: true,
       }).then((albums) => {return albums})
 
@@ -29,7 +29,11 @@ function getIdArtistDeSpotify(artistName) {
  function agregar(unqfy,artistName){
      let idArtista 
      const albumes = []
-     const albums =  getIdArtistDeSpotify(artistName).then((id) => {idArtista = id;albumesDeArtista(id)})
+     const albums =  getIdArtistDeSpotify(artistName).then((artist) => {
+          unqfy.addArtist({name: artist.name, country: "USA"});
+          idArtista = artist.id
+          return albumesDeArtista(idArtista)
+     })
      albums.then((albums) => {
           albums.forEach(album => {
              unqfy.addAlbum(idArtista,{name:album.name,year:album.release_date})

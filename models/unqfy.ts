@@ -481,14 +481,15 @@ getElems(list,id,excepcion){
   return any
 }
 populateAlbumsForArtist( artistName) {
-  app.agrega(this,artistName)
+  app.agregar(this,artistName)
 }
   
 
   evalMethod(metodo:string, argumentos:Array<any>){
     switch (metodo) {
       case 'populateAlbumsForArtist': 
-         console.log(this.populateAlbumsForArtist(argumentos[0]))
+         console.log(this.populateAlbumsForArtist(argumentos[0]));
+         break;
       case 'addArtist':
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
         break;
