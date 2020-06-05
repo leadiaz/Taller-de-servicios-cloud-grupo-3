@@ -9,6 +9,7 @@ import { User } from "./user";
 import {NotExistAlbumError, AlbumExistsInArtistError} from "../Exceptions/albumException";
 import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
 import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
+const app = require('./controller')
 
 
 
@@ -479,10 +480,15 @@ getElems(list,id,excepcion){
   }
   return any
 }
+populateAlbumsForArtist( artistName) {
+  app.agrega(this,artistName)
+}
   
 
   evalMethod(metodo:string, argumentos:Array<any>){
     switch (metodo) {
+      case 'populateAlbumsForArtist': 
+         console.log(this.populateAlbumsForArtist(argumentos[0]))
       case 'addArtist':
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
         break;
