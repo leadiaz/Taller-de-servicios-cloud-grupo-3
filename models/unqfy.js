@@ -224,7 +224,9 @@ var UNQfy = /** @class */ (function () {
         album.idArtist = artistId;
         try {
             var artist = this.getArtistById(artistId);
+            // console.log( artist)
             artist.addAlbum(album);
+            // console.log(artist.albums)
         }
         catch (error) {
             console.log(error.message);
@@ -430,6 +432,7 @@ var UNQfy = /** @class */ (function () {
     };
     UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
         app.agregar(this, artistName);
+        console.log(this);
     };
     UNQfy.prototype.evalMethod = function (metodo, argumentos) {
         switch (metodo) {

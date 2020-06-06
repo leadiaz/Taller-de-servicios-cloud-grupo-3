@@ -254,7 +254,9 @@ export class UNQfy {
     album.idArtist = artistId
     try{
       const artist:Artist = this.getArtistById(artistId)
+     // console.log( artist)
       artist.addAlbum(album)
+     // console.log(artist.albums)
     }catch(error){
       console.log(error.message);
     }
@@ -482,6 +484,7 @@ getElems(list,id,excepcion){
 }
 populateAlbumsForArtist(artistName) {
   app.agregar(this,artistName)
+  console.log(this)
 }
   
 
@@ -490,7 +493,6 @@ populateAlbumsForArtist(artistName) {
       case 'populateAlbumsForArtist': 
          console.log(this.populateAlbumsForArtist(argumentos[0]));
          break;
-
       case 'addArtist':
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
         break;

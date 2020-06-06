@@ -1,9 +1,7 @@
-"use strict";
-exports.__esModule = true;
-var token = 'BQAg8nUJ240g7zAfH7CArd0AvVpFJ6_Z0v7n0a2USDi07fNHbV_dK7uVFbhQcOpjG6RrBIcQ3nIix1uMvWKqEn4QhmW4p5IzSZgYBx21dXtssKPHxfjebzvK8ksCru0h6wPhtrGVYEDc-e5Gpr41O1OOufGdZOic9GJ3aJ_55lvHjngXTA';
+var token = 'BQA1IAOUiImjeUisc3FS9_HOrQAbM-AlVsiaGp83z3ptNswrioJfC6rOektlXpPekiBm9gs5jrTtIjVE_yBNY-My0NzFNHa6sXt__0sr9gfAUCByQrn0o3XP9gf_M_i_ShvX37t5UosYM8YTyzFgDtgCO5jCHKb9GAqBAZi_yJsYUH7Emg';
 var rp = require('request-promise');
 var options = {
-    url: 'https://api.spotify.com/v1/search?q=AC%2FDC&type=artist',
+    url: "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks?offset=0&limit=50",
     headers: { Authorization: 'Bearer ' + token },
     json: true
 };
@@ -22,23 +20,25 @@ function albumesDeArtista(id) {
     }).then(function (albums) { return albums; });
 }
 function agregar(unqfy, artistName) {
-    var idArtista;
+    var idArtistaSpotify;
     var namesAlbums = [];
     var albums = getIdArtistDeSpotify(artistName).then(function (artist) {
-        unqfy.addArtist({ name: artist.name, country: "USA" });
-        idArtista = artist.id;
-        return albumesDeArtista(idArtista);
+        idArtistaSpotify = artist.id;
+        return albumesDeArtista(idArtistaSpotify);
     });
     albums.then(function (albums) {
         albums.items.forEach(function (album) {
             if (!namesAlbums.includes(album.name)) {
                 namesAlbums.push(album.name);
-                unqfy.addAlbum(1, { name: album.name, year: album.release_date });
-                console.log(unqfy.artists);
+                var idArtistUnqFy = unqfy.getArtist(artistName).id;
+                unqfy.addAlbum(idArtistUnqFy, { name: album.name, year: album.release_date });
+                //console.log(unqfy.getArtist(artistName).albums)
+                // console.log(unqfy)
             }
         });
     });
 }
+//rp.get(options).then((response)=> console.log(response.items[0].artists))
 //getIdArtistDeSpotify("AC/DC").then((id) => albumesDeArtista(id))
 //rp.get(options).then((response)=> console.log(response.artists.items))
 module.exports = { agregar: agregar };

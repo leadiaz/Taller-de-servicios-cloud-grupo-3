@@ -1,5 +1,5 @@
 
-let token = 'BQAYem5k_A1gX9nbC-qGm4oCXQp-5D9v4i-kMkRjMlq7uU0wtuRHk24alMrKku6zNFqEPQc7lGCVpUjcyVRuqq2dx9usJ5jBuB6KVKnkH4ucvfL9BM0q_pkThdtycKoC354sPzs_DD2vUmHoq516snEO7MrCV560QdIeOtS9y3XNlxOT1Q'
+let token = 'BQA1IAOUiImjeUisc3FS9_HOrQAbM-AlVsiaGp83z3ptNswrioJfC6rOektlXpPekiBm9gs5jrTtIjVE_yBNY-My0NzFNHa6sXt__0sr9gfAUCByQrn0o3XP9gf_M_i_ShvX37t5UosYM8YTyzFgDtgCO5jCHKb9GAqBAZi_yJsYUH7Emg'
 
 const rp = require('request-promise');
 const options = {
@@ -26,25 +26,26 @@ function getIdArtistDeSpotify(artistName) {
  }
 
  function agregar(unqfy,artistName){
-     let idArtista 
+     let idArtistaSpotify
      const namesAlbums = []
      const albums =  getIdArtistDeSpotify(artistName).then((artist) => {
-          //unqfy.addArtist({name: artist.name, country: "USA"});
-          idArtista = artist.id
-          return albumesDeArtista(idArtista)
+          idArtistaSpotify = artist.id
+          return albumesDeArtista(idArtistaSpotify)
      })
      albums.then((albums) => {
           albums.items.forEach(album => {
              if(!namesAlbums.includes(album.name)) { 
-             namesAlbums.push(album.name)     
-             unqfy.addAlbum(1,{name:album.name,year:album.release_date})
-             console.log(unqfy.artists)
+             namesAlbums.push(album.name)
+             const idArtistUnqFy = unqfy.getArtist(artistName).id  
+             unqfy.addAlbum(idArtistUnqFy,{name:album.name,year:album.release_date})
+             //console.log(unqfy.getArtist(artistName).albums)
+            // console.log(unqfy)
              }
         });
      }
  )
  }
-rp.get(options).then((response)=> console.log(response.items[0].artists))
+//rp.get(options).then((response)=> console.log(response.items[0].artists))
 //getIdArtistDeSpotify("AC/DC").then((id) => albumesDeArtista(id))
 //rp.get(options).then((response)=> console.log(response.artists.items))
 
