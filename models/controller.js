@@ -1,4 +1,4 @@
-var token = 'BQA1IAOUiImjeUisc3FS9_HOrQAbM-AlVsiaGp83z3ptNswrioJfC6rOektlXpPekiBm9gs5jrTtIjVE_yBNY-My0NzFNHa6sXt__0sr9gfAUCByQrn0o3XP9gf_M_i_ShvX37t5UosYM8YTyzFgDtgCO5jCHKb9GAqBAZi_yJsYUH7Emg';
+var token = 'BQD1htPBGeJiEwv_SP1SMgwsLo0Nr1xfK7SkXjDYulWKtrgxgoiaR2nNbveMXjjc_t9g27MFWewtw27rYLh7nXpEpcceAtagT2JP-By7YZQDcnxLKfXfGulR1MNEjDvDBgVRJlzVg_Djd_WiA7vdMjW4-qMohGpLgX_uCKVTEyIfT5RpzA';
 var rp = require('request-promise');
 var options = {
     url: "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks?offset=0&limit=50",
@@ -20,23 +20,19 @@ function albumesDeArtista(id) {
     }).then(function (albums) { return albums; });
 }
 function agregar(unqfy, artistName) {
-    var idArtistaSpotify;
-    var namesAlbums = [];
-    var albums = getIdArtistDeSpotify(artistName).then(function (artist) {
-        idArtistaSpotify = artist.id;
-        return albumesDeArtista(idArtistaSpotify);
-    });
-    albums.then(function (albums) {
-        albums.items.forEach(function (album) {
-            if (!namesAlbums.includes(album.name)) {
-                namesAlbums.push(album.name);
-                var idArtistUnqFy = unqfy.getArtist(artistName).id;
-                unqfy.addAlbum(idArtistUnqFy, { name: album.name, year: album.release_date });
-                //console.log(unqfy.getArtist(artistName).albums)
-                // console.log(unqfy)
-            }
-        });
-    });
+    // const namesAlbums = []
+    // const idArtistUnqFy = unqfy.getArtist(artistName).id 
+    return getIdArtistDeSpotify(artistName)
+        .then(function (artist) { return albumesDeArtista(artist.id); })
+        .then(function (albums) { return albums.items; }
+    //    albums.items.forEach(album => {
+    //    namesAlbums.push(album.name)
+    //    unqfy.addAlbum(idArtistUnqFy,{name:album.name,year:album.release_date})
+    //    console.log(unqfy)
+    // }),
+    // console.log(unqfy)  
+    );
+    // unqfy.addAlbum(1,{name:"pepepep",year:22222})
 }
 //rp.get(options).then((response)=> console.log(response.items[0].artists))
 //getIdArtistDeSpotify("AC/DC").then((id) => albumesDeArtista(id))

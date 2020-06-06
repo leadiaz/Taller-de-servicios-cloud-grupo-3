@@ -1,5 +1,5 @@
 
-let token = 'BQA1IAOUiImjeUisc3FS9_HOrQAbM-AlVsiaGp83z3ptNswrioJfC6rOektlXpPekiBm9gs5jrTtIjVE_yBNY-My0NzFNHa6sXt__0sr9gfAUCByQrn0o3XP9gf_M_i_ShvX37t5UosYM8YTyzFgDtgCO5jCHKb9GAqBAZi_yJsYUH7Emg'
+let token = 'BQD1htPBGeJiEwv_SP1SMgwsLo0Nr1xfK7SkXjDYulWKtrgxgoiaR2nNbveMXjjc_t9g27MFWewtw27rYLh7nXpEpcceAtagT2JP-By7YZQDcnxLKfXfGulR1MNEjDvDBgVRJlzVg_Djd_WiA7vdMjW4-qMohGpLgX_uCKVTEyIfT5RpzA'
 
 const rp = require('request-promise');
 const options = {
@@ -26,24 +26,26 @@ function getIdArtistDeSpotify(artistName) {
  }
 
  function agregar(unqfy,artistName){
-     let idArtistaSpotify
-     const namesAlbums = []
-     const albums =  getIdArtistDeSpotify(artistName).then((artist) => {
-          idArtistaSpotify = artist.id
-          return albumesDeArtista(idArtistaSpotify)
-     })
-     albums.then((albums) => {
-          albums.items.forEach(album => {
-             if(!namesAlbums.includes(album.name)) { 
-             namesAlbums.push(album.name)
-             const idArtistUnqFy = unqfy.getArtist(artistName).id  
-             unqfy.addAlbum(idArtistUnqFy,{name:album.name,year:album.release_date})
-             //console.log(unqfy.getArtist(artistName).albums)
-            // console.log(unqfy)
-             }
-        });
-     }
+     // const namesAlbums = []
+     // const idArtistUnqFy = unqfy.getArtist(artistName).id 
+   return  getIdArtistDeSpotify(artistName)
+     .then((artist) => albumesDeArtista(artist.id))
+     .then((albums) =>  {return albums.items}
+          //    albums.items.forEach(album => {
+           
+          //    namesAlbums.push(album.name)
+          //    unqfy.addAlbum(idArtistUnqFy,{name:album.name,year:album.release_date})
+          //    console.log(unqfy)
+           
+             
+       // }),
+     // console.log(unqfy)  
+
+     
  )
+
+
+// unqfy.addAlbum(1,{name:"pepepep",year:22222})
  }
 //rp.get(options).then((response)=> console.log(response.items[0].artists))
 //getIdArtistDeSpotify("AC/DC").then((id) => albumesDeArtista(id))

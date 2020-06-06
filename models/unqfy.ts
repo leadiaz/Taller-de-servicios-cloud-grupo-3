@@ -482,13 +482,19 @@ getElems(list,id,excepcion){
   }
   return any
 }
-populateAlbumsForArtist(artistName) {
-  app.agregar(this,artistName)
-  console.log(this)
+ populateAlbumsForArtist(artistName) {
+ const  promiseAlbums =   app.agregar(this,artistName)
+ const idArtist = this.getArtist(artistName).id
+  promiseAlbums.then((albums) => { 
+   albums.forEach(album => {
+    this.addAlbum(idArtist,{name:album.name,year:album.release_date}) 
+   });
+ })
 }
   
 
   evalMethod(metodo:string, argumentos:Array<any>){
+    //return this.populateAlbumsForArtist(argumentos[0])
     switch (metodo) {
       case 'populateAlbumsForArtist': 
          console.log(this.populateAlbumsForArtist(argumentos[0]));
@@ -563,6 +569,7 @@ populateAlbumsForArtist(artistName) {
       default :
         console.log("no existe el metodo: ", metodo)
     }
+    
   }
   save(filename) {
     const listenersBkp = this.listeners;

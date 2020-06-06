@@ -431,10 +431,17 @@ var UNQfy = /** @class */ (function () {
         return any;
     };
     UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
-        app.agregar(this, artistName);
-        console.log(this);
+        var _this = this;
+        var promiseAlbums = app.agregar(this, artistName);
+        var idArtist = this.getArtist(artistName).id;
+        promiseAlbums.then(function (albums) {
+            albums.forEach(function (album) {
+                _this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+            });
+        });
     };
     UNQfy.prototype.evalMethod = function (metodo, argumentos) {
+        //return this.populateAlbumsForArtist(argumentos[0])
         switch (metodo) {
             case 'populateAlbumsForArtist':
                 console.log(this.populateAlbumsForArtist(argumentos[0]));
