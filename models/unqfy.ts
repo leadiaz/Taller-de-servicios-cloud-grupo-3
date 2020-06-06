@@ -480,7 +480,7 @@ getElems(list,id,excepcion){
   }
   return any
 }
-populateAlbumsForArtist( artistName) {
+populateAlbumsForArtist(artistName) {
   app.agregar(this,artistName)
 }
   
