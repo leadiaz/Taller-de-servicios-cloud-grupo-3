@@ -18,8 +18,6 @@ function getUNQfy(filename = 'data.json') {
 const unqfyApi = getUNQfy()   
 
 
- 
-  
 
 
 
@@ -43,8 +41,76 @@ app.post('/',(req,res) =>{
     }
 })
 
+//Albums 
+//Agregar el album a l artista
+app.post('/api',(req,res) =>{
+    const body = req.body  
+    if(body.artistId && body.name && body.year) {
+        unqfyApi.addAlbum(body.artistId,{name:body.name,year:body.year})
+        saveUNQfy(unqfyApi)
+        res.status(201)
+        res.json(unqfyApi.getAlbum(body.name))
+
+    }else{
+        res.send("Json mal formado")
+    }
+})
+
+//Retorna el album con ese id
+app.get('/api/albums/:id',(req,res) => {
+    const id = req.params.id
+   
+    res.status(200)
+    res.json(unqfyApi.getAlbumById(id))
+})
+
+//Actualiza el año del album
+app.patch('/api/albums/:id',(req,res)=> {
+    const id = req.params.id;
+    const year = req.body.year
+    unqfyApi.getAlbumById(id).year = year
+    saveUNQfy(unqfyApi)
+    res.status(200)
+    res.json(unqfyApi.getAlbumById(id))
+    
+
+})
+
+//Borra el album con ese id
+app.delete('/api/albums/:id',(req,res)=> {
+    const  id = req.params.id
+    unqfyApi.removeAlbum(id)
+    saveUNQfy(unqfyApi)
+    res.status(204)
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Starting the server
 app.listen(app.get('port'),()=>{
     console.log('Server on port ${7000} ');
 })
+
