@@ -440,11 +440,18 @@ var UNQfy = /** @class */ (function () {
             });
         });
     };
+    UNQfy.prototype.getLyricsForTrack = function (trackName) {
+        var track = this.getTrack(trackName);
+        return track.getLyrics();
+    };
     UNQfy.prototype.evalMethod = function (metodo, argumentos) {
         //return this.populateAlbumsForArtist(argumentos[0])
         switch (metodo) {
             case 'populateAlbumsForArtist':
                 console.log(this.populateAlbumsForArtist(argumentos[0]));
+                break;
+            case 'getLyricsForTrack':
+                console.log(this.getLyricsForTrack(argumentos[0]));
                 break;
             case 'addArtist':
                 console.log(this.addArtist({ name: argumentos[0], country: argumentos[1] }));

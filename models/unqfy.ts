@@ -491,6 +491,13 @@ getElems(list,id,excepcion){
    });
  })
 }
+
+getLyricsForTrack(trackName) {
+  const track = this.getTrack(trackName)
+  return track.getLyrics()
+}
+
+
   
 
   evalMethod(metodo:string, argumentos:Array<any>){
@@ -499,6 +506,9 @@ getElems(list,id,excepcion){
       case 'populateAlbumsForArtist': 
          console.log(this.populateAlbumsForArtist(argumentos[0]));
          break;
+      case 'getLyricsForTrack':
+         console.log(this.getLyricsForTrack(argumentos[0]));
+         break;   
       case 'addArtist':
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
         break;

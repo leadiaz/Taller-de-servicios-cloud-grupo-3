@@ -1,9 +1,6 @@
-const AlbumExistsInArtistError = require('../Exceptions/albumException').AlbumExistsInArtistError
-const ArtistExistsWithThatName = require('../Exceptions/artistExcepcion').ArtistExistsWithThatName
 const unqfy = require('../models/unqfy')
 const express = require('express')
 const app = express()
-const rp = require('request-promise');
 const fs = require('fs')
 const errorApi = require('../erroresApi/errors')
 
@@ -88,7 +85,7 @@ app.patch('/api/albums/:id',(req,res)=> {
 
 })
 
-//Borra el album con ese id 
+//Elimina el album con ese id 
 //Error : Se debe manejar el error si el album no existe 
 app.delete('/api/albums/:id',(req,res)=> {
     const  id = req.params.id
@@ -98,30 +95,7 @@ app.delete('/api/albums/:id',(req,res)=> {
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.use(errorApi)
-
 
 //Starting the server
 app.listen(app.get('port'),()=>{

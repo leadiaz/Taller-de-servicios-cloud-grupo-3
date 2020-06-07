@@ -8,16 +8,7 @@ var op = {
     },
     json: true
 };
-// rp.get(op).then((response) =>{
-//   var header = response.message.header;
-//   var body = response.message.body
-//   if (header.status_code !== 200){
-//             throw new Error('status code != 200');
-//         }
-//     console.log(body.track_list)
-// }
-// )  
-function getTrackId(trackname) {
+function letraDeUnTema(trackname) {
     rp.get({
         uri: "http://api.musixmatch.com/ws/1.1/track.search?q_track=" + trackname,
         qs: {
@@ -44,4 +35,5 @@ function letraDeTrack(id) {
         console.log(response.message.body);
     });
 }
-getTrackId("Stuck With U (with Justin Bieber)");
+// letraDeUnTema("Stuck With U (with Justin Bieber)")
+module.exports = { letraDeUnTema: letraDeUnTema };

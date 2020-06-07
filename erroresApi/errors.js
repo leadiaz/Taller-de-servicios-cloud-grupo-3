@@ -3,8 +3,13 @@ const albumExcepcion_1  = require('../Exceptions/albumException')
  
 
 function errorHalder(error,req,res,next){
-    if(error instanceof artistExcepcion_1.ArtistExistsWithThatName || error instanceof albumExcepcion_1.AlbumExistsInArtistError ) {
-        console.log('erroo!!!!')
+    //condicion que iria error instanceof artistExcepcion_1.ArtistExistsWithThatName || error instanceof albumExcepcion_1.AlbumExistsInArtistError
+    if(error.name == artistExcepcion_1.ArtistExistsWithThatName.name || error == albumExcepcion_1.AlbumExistsInArtistError.name ) {
+        
+        res.status(409).json({
+            status : 409,
+            errorCode: "RESOURCE_ALREADY_EXISTS"
+        })
     }
     else{
         if(error instanceof artistExcepcion_1.ArtistExcepcion || error instanceof albumExcepcion_1.NotExistAlbumError) {
@@ -14,10 +19,6 @@ function errorHalder(error,req,res,next){
             })
         }
     }
-    res.status(409).json({
-        status : 409,
-        errorCode: "RESOURCE_ALREADY_EXISTS"
-    })
 
 }
 

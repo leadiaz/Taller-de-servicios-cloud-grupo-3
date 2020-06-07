@@ -2,12 +2,13 @@
 exports.__esModule = true;
 var idGenerator_1 = require("./idGenerator");
 var Track = /** @class */ (function () {
-    function Track(idAlbum, id, name, duration, genres) {
+    function Track(idAlbum, id, name, duration, genres, lyrics) {
         this.idAlbum = idAlbum;
         this.id = id;
         this.name = name;
         this.duration = duration;
         this.genres = genres;
+        this.lyrics = lyrics;
         this.id = idGenerator_1.IdGenerator.getNextId();
         this.genres = new Array();
     }
@@ -18,6 +19,15 @@ var Track = /** @class */ (function () {
     Track.prototype.anyGenre = function (genres) {
         var _this = this;
         return genres.some(function (genre) { return _this.genres.includes(genre); });
+    };
+    Track.prototype.getLyrics = function () {
+        if (this.lyrics == null) {
+            letraDeTrack(this.name);
+            return this.lyrics;
+        }
+        else {
+            return this.lyrics;
+        }
     };
     return Track;
 }());
