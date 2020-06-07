@@ -1,3 +1,5 @@
+const AlbumExistsInArtistError = require('../Exceptions/albumException')
+const ArtistExcepcion = require('../Exceptions/artistExcepcion')
 const unqfy = require('../models/unqfy')
 const express = require('express')
 const app = express()
@@ -28,13 +30,31 @@ app.set('json spaces',2)
 app.use(express.json());
 app.use(express.urlencoded({extended:false}))
 
+
+//Agrega el artista 
 app.post('/',(req,res) =>{
     const body = req.body  
     if(body.name && body.country) {
+        try {
         unqfyApi.addArtist({name:body.name,country:body.country})
         saveUNQfy(unqfyApi)
         res.status(201)
-        res.json(unqfyApi.getArtist(body.name))
+        res.json(unqfyApi.getArtist(body.name))   
+        } catch (error) {
+            if(error instanceof ArtistExistsWithThatName){
+               res.status(409)
+               res.json({
+                status: 409,
+                errorCode: "RESOURCE_ALREADY_EXISTS"
+                }
+                )
+            }
+            else{
+                throw error
+            }
+            
+        }
+        
 
     }else{
         res.send("Json mal formado")
@@ -42,36 +62,91 @@ app.post('/',(req,res) =>{
 })
 
 //Albums 
-//Agregar el album a l artista
+//Agregar el album al artista
 app.post('/api',(req,res) =>{
     const body = req.body  
     if(body.artistId && body.name && body.year) {
-        unqfyApi.addAlbum(body.artistId,{name:body.name,year:body.year})
+        try {
+            unqfyApi.addAlbum(body.artistId,{name:body.name,year:body.year})
+        } catch (error) {
+            if(error instanceof AlbumExistsInArtistError){
+                res.status(409)
+                res.json({status:409,errorCode:"RESOURCE_ALREADY_EXISTS"})
+            }else{
+                if(error instanceof ArtistExcepcion){
+                    res.status(404)
+                    res.json({
+                        status: 404,
+                        errorCode: "RELATED_RESOURCE_NOT_FOUND"
+                        }
+                        )
+                }
+                else{
+                    throw error
+                }
+                
+            }
+            
+        }
         saveUNQfy(unqfyApi)
         res.status(201)
         res.json(unqfyApi.getAlbum(body.name))
-
     }else{
         res.send("Json mal formado")
     }
 })
 
-//Retorna el album con ese id
+//Denota el album con ese id
 app.get('/api/albums/:id',(req,res) => {
     const id = req.params.id
-   
-    res.status(200)
-    res.json(unqfyApi.getAlbumById(id))
+    try {
+        const album = unqfyApi.getAlbumById(id)
+        res.status(200)
+        res.json(album)
+    } catch (error) {
+        if(error instanceof NotExistAlbumError){
+            res.status(404)
+            res.json({
+                status: 404,
+                errorCode: "RESOURCE_NOT_FOUND"
+                }
+                )
+        }else{
+            throw error
+        }
+        
+    }
 })
 
 //Actualiza el año del album
 app.patch('/api/albums/:id',(req,res)=> {
     const id = req.params.id;
     const year = req.body.year
-    unqfyApi.getAlbumById(id).year = year
-    saveUNQfy(unqfyApi)
-    res.status(200)
-    res.json(unqfyApi.getAlbumById(id))
+    if(year){
+        try {
+            unqfyApi.getAlbumById(id).year = year
+            saveUNQfy(unqfyApi)
+            res.status(200)
+            res.json(unqfyApi.getAlbumById(id))
+        } catch (error) {
+            if(error instanceof NotExistAlbumError){
+                res.status(404)
+                res.json({
+                    status: 404,
+                    errorCode: "RESOURCE_NOT_FOUND"
+                }
+                )
+
+            }else{
+                throw error
+            }
+            
+        }
+
+    }else{
+        res.send("Json mal formado")
+    }
+
     
 
 })
@@ -79,9 +154,24 @@ app.patch('/api/albums/:id',(req,res)=> {
 //Borra el album con ese id
 app.delete('/api/albums/:id',(req,res)=> {
     const  id = req.params.id
-    unqfyApi.removeAlbum(id)
-    saveUNQfy(unqfyApi)
-    res.status(204)
+    try {
+        unqfyApi.removeAlbum(id)
+        saveUNQfy(unqfyApi)
+        res.status(204)
+    } catch (error) {
+        if(error instanceof NotExistAlbumError){
+            res.status(404)
+            res.json({
+                status: 404,
+                errorCode: "RESOURCE_NOT_FOUND"
+            }
+            )
+
+        }else{
+            throw error
+        }
+    }
+    
 
 })
 
