@@ -20,7 +20,7 @@ export class SearchResult {
     }
 
     toJSON() {
-        return {artists: this.artists, albums: this.albums, tracks: this.tracks, playlists: this.playlists}
+        return {"artists": this.artists, "albums": this.albums, "tracks": this.tracks, "playlists": this.playlists}
     }
 
     addAbum(album) {

@@ -3,14 +3,14 @@ import {TrackExistsInAlbumError} from "../Exceptions/trackExcepcion";
 import { IdGenerator } from "./idGenerator";
 
 export class Album{
-  tracks:Track[]
+  tracks:Track[];
+  id
 
   constructor(
     public idArtist?: Number,
-    public id?:Number,
     public name?: String,
     public year?: Number,
-    
+
     ){
       this.id = IdGenerator.getNextId()
       this.tracks = []
@@ -19,18 +19,16 @@ export class Album{
     return {idArtist: this.idArtist, id: this.id, name:this.name, year: this.year, tracks: this.tracks}
   }
   addTrack(track){
-     if(this.existeTrack(track.name)){
-        throw new TrackExistsInAlbumError(track.name)
-      }else{
+    // if(this.existeTrack(track.name)){
+    //   throw new TrackExistsInAlbumError(track.name)
+    // }
       this.tracks.push(track)
-      }
   }
-
 
   removeTracks() {
       this.tracks = []
   }
-  
+
   removeTrack(anTrack){
     let index = this.tracks.indexOf(anTrack)
     this.tracks.splice(index, 1)
@@ -40,3 +38,5 @@ export class Album{
     return this.tracks.some(track => {return track.name === name})
   }
 }
+
+

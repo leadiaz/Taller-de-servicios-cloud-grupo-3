@@ -26,8 +26,6 @@ export class Artist{
     getTracks():Track[]{
         return this.albums.reduce((accumulator, album) => {return accumulator.concat(album.tracks)}, [])  
     }
-
-
     removeAlbum(anAlbum){
         const album = this.albums.find(album => album.id === anAlbum.id)
         if(!album){
@@ -54,3 +52,4 @@ export class Artist{
 import { Album } from "./album";
 import { Track } from "./track";
 import { IdGenerator } from "./idGenerator";
+
