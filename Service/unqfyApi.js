@@ -94,6 +94,16 @@ app.delete('/api/albums/:id',(req,res)=> {
     res.status(204)
 })
 
+//Tracks
+app.get('/api/tracks/:id/lyrics',(req,res)=>{
+    console.log('aaaaaaaaaaaaaaaaaaa')
+    const id = req.params.id 
+    console.log('este id',id)
+    const track = unqfyApi.getTrackById(id) 
+    res.status(200)
+    res.json({name:track.name,lyrics:track.getLyrics()})
+})
+
 
 app.use(errorApi)
 

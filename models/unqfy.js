@@ -75,7 +75,7 @@ var UNQfy = /** @class */ (function () {
     // artistData: objeto JS con los datos necesarios para crear un artista
     //   artistData.name (string)
     //   artistData.country (string)
-    // retorna: el nuevo artista creado
+    // Denota: el nuevo artista creado
     UNQfy.prototype.addArtist = function (artistData) {
         /* Crea un artista y lo agrega a unqfy.
         El objeto artista creado debe soportar (al menos):
@@ -129,15 +129,15 @@ var UNQfy = /** @class */ (function () {
             }
         }
     };
-    //Retorna los tracks escuchados por un usuario 
+    //Denota los tracks escuchados por un usuario 
     UNQfy.prototype.songsHeardByAnUser = function (name_user) {
         return this.getUser(name_user).songsHeard();
     };
-    //Dado un id_User y id_Track retorna cuantas veces el usuario con id_user escucho el track con id_Track
+    //Dado un id_User y id_Track denota cuantas veces el usuario con id_user escucho el track con id_Track
     UNQfy.prototype.howManyTimesListenTrackByAnUser = function (name_user, name_Track) {
         return this.getUser(name_user).howManyTimesListenTrack(this.getTrack(name_Track));
     };
-    //Retorna el User con esa id
+    //Denota el User con ese id
     UNQfy.prototype.getUserById = function (id_user) {
         return this.getPorId(this.users, id_user, new Error('No existe el usuario con id ' + id_user));
     };
@@ -154,7 +154,7 @@ var UNQfy = /** @class */ (function () {
         }
         return top3;
     };
-    //Retorna una array de Track que contiene solamente 3 tracks 
+    //Denota una array de Track que contiene solamente 3 tracks 
     UNQfy.prototype.top3TracksDeUnArtista = function (artist) {
         var tracksEscuchadosDeArtista = this.tracksEscuchadosByUsers().filter(function (track) { return artist.getTracks().includes(track); });
         var arrayDeObjOrdenada = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista);
@@ -174,18 +174,18 @@ var UNQfy = /** @class */ (function () {
             return 0;
         });
     };
-    //Retorna una array de objetos, [{track: track , cant: 0}]
+    //Denota una array de objetos, [{track: track , cant: 0}]
     UNQfy.prototype.cantDeVecesQueSeRepite = function (listaDeRepetidos) {
         var _this = this;
         var newList = new Array();
         new Set(listaDeRepetidos).forEach(function (elem) { newList.push({ track: elem, cant: _this.count(elem, listaDeRepetidos) }); });
         return newList;
     };
-    //Retorna los tracks escuchados por los usarios
+    //Denota los tracks escuchados por los usarios
     UNQfy.prototype.tracksEscuchadosByUsers = function () {
         return this.users.reduce(function (accumulator, user) { return accumulator.concat(user.tracks); }, []);
     };
-    //Retorna la cantidad de veces que un elemento se repite en la Array dada
+    //Denota la cantidad de veces que un elemento se repite en la Array dada
     UNQfy.prototype.count = function (elem, list) {
         var count = 0;
         list.array.forEach(function (e) { if (e === elem) {
@@ -211,7 +211,7 @@ var UNQfy = /** @class */ (function () {
     // albumData: objeto JS con los datos necesarios para crear un album
     //   albumData.name (string)
     //   albumData.year (number)
-    // retorna: el nuevo album creado
+    // Denota: el nuevo album creado
     UNQfy.prototype.addAlbum = function (artistId, albumData) {
         /* Crea un album y lo agrega al artista con id artistId.
             El objeto album creado debe tener (al menos):
@@ -249,7 +249,7 @@ var UNQfy = /** @class */ (function () {
     //   trackData.name (string)
     //   trackData.duration (number)
     //   trackData.genres (lista de strings)
-    // retorna: el nuevo track creado
+    // Denota: el nuevo track creado
     UNQfy.prototype.addTrack = function (albumId, trackData) {
         /* Crea un track y lo agrega al album con id albumId.
         El objeto track creado debe tener (al menos):
@@ -310,7 +310,7 @@ var UNQfy = /** @class */ (function () {
         var albums = this.getAlbums();
         return this.getPorId(albums, id, new albumException_1.NotExistAlbumError('id'));
     };
-    //Retorna todos los tracks de unqfy
+    //Denota todos los tracks de unqfy
     UNQfy.prototype.getTracks = function () {
         return this.getAlbums().reduce(function (accumulator, album) { return accumulator.concat(album.tracks); }, []);
     };
@@ -321,16 +321,16 @@ var UNQfy = /** @class */ (function () {
         return this.getPorId(this.playlists, id, new playListExcepcion_1.NotExistPlayListError('No existe la playlist'));
     };
     // genres: array de generos(strings)
-    // retorna: los tracks que contenga alguno de los generos en el parametro genres
+    // Denota: los tracks que contenga alguno de los generos en el parametro genres
     UNQfy.prototype.getTracksMatchingGenres = function (genres) {
         return this.getTracks().filter(function (track) { return track.anyGenre(genres); });
     };
-    //retorna: los tracks de un genero en particular
+    //Denota: los tracks de un genero en particular
     UNQfy.prototype.getTracksMatchingGenre = function (genre) {
         return this.getTracks().filter(function (track) { return track.genres.includes(genre); });
     };
     // artistName: nombre de artista(string)
-    // retorna: los tracks interpredatos por el artista con nombre artistName
+    // Denota: los tracks interpredatos por el artista con nombre artistName
     UNQfy.prototype.getTracksMatchingArtist = function (artistName) {
         var artist = this.artists.find(function (artist) { return artist.name === artistName; });
         if (!artist) {
@@ -341,13 +341,13 @@ var UNQfy = /** @class */ (function () {
     // name: nombre de la playlist
     // genresToInclude: array de generos
     // maxDuration: duración en segundos
-    // retorna: la nueva playlist creada
+    // Denota: la nueva playlist creada
     UNQfy.prototype.createPlaylist = function (name, genresToInclude, maxDuration) {
         /*** Crea una playlist y la agrega a unqfy. ***
           El objeto playlist creado debe soportar (al menos):
             * una propiedad name (string)
             * un metodo duration() que retorne la duración de la playlist.
-            * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
+            * un metodo hasTrack(aTrack) que Denota true si aTrack se encuentra en la playlist.
         */
         var playlist = new playlist_1.Playlist();
         var tracks = this.getTracksMatchingGenres(genresToInclude);
@@ -361,27 +361,27 @@ var UNQfy = /** @class */ (function () {
         var playlist = this.getPlaylistById(idPlaylist);
         this.playlists.splice(this.playlists.indexOf(playlist), 1);
     };
-    //Retorna el artista con el name dado, sino lo encuentra lanza una excepcion
+    //Denota el artista con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getArtist = function (anArtist) {
         return this.getElem(anArtist, this.artists, new artistExcepcion_1.ArtistExcepcion(anArtist));
     };
-    //Retorna el album con el name dado, sino lo encuentra lanza una excepcion
+    //Denota el album con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getAlbum = function (anAlbum) {
         return this.getElem(anAlbum, this.getAlbums(), new albumException_1.NotExistAlbumError(anAlbum));
     };
-    //Retorna el track con el name dado, sino lo encuentra lanza una excepcion
+    //Denota el track con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getTrack = function (aTrack) {
         return this.getElem(aTrack, this.getTracks(), new trackExcepcion_1.TrackExcepcion(aTrack));
     };
-    //Retorna el playlist con el name dado, sino lo encuentra lanza una excepcion
+    //Denota el playlist con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getPlayList = function (aPlaylist) {
         return this.getElem(aPlaylist, this.playlists, new playListExcepcion_1.NotExistPlayListError(aPlaylist));
     };
-    //Retorna el user con el name dado, sino lo encuentra lanza una excepcion
+    //Denota el user con el name dado, sino lo encuentra lanza una excepcion
     UNQfy.prototype.getUser = function (aUser) {
         return this.getElem(aUser, this.users, new userExcepcion_1.NoExistUserError(aUser));
     };
-    //Retorna el elemento si es que se encuentra en la array, sino lanza una excepcion
+    //Denota el elemento si es que se encuentra en la array, sino lanza una excepcion
     //Este metodo tendria que ser privado pero lo estoy probando en el test
     UNQfy.prototype.getElem = function (nameElem, list, excepcion) {
         var elem = list.find(function (elemento) { return elemento.name == nameElem; });

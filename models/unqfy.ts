@@ -89,7 +89,7 @@ export class UNQfy {
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
-  // retorna: el nuevo artista creado
+  // Denota: el nuevo artista creado
   addArtist(artistData) {
     /* Crea un artista y lo agrega a unqfy.
     El objeto artista creado debe soportar (al menos):
@@ -146,18 +146,18 @@ export class UNQfy {
   }
 
 
-  //Retorna los tracks escuchados por un usuario 
+  //Denota los tracks escuchados por un usuario 
   songsHeardByAnUser(name_user):Set<Track>{
     return this.getUser(name_user).songsHeard()
   }
 
-  //Dado un id_User y id_Track retorna cuantas veces el usuario con id_user escucho el track con id_Track
+  //Dado un id_User y id_Track denota cuantas veces el usuario con id_user escucho el track con id_Track
   howManyTimesListenTrackByAnUser(name_user,name_Track){
     return this.getUser(name_user).howManyTimesListenTrack(this.getTrack(name_Track))
   }
 
 
-  //Retorna el User con esa id
+  //Denota el User con ese id
   getUserById(id_user){
     return this.getPorId(this.users,id_user,  new Error('No existe el usuario con id ' + id_user))
   }
@@ -177,7 +177,7 @@ export class UNQfy {
     return top3
   }
 
-    //Retorna una array de Track que contiene solamente 3 tracks 
+    //Denota una array de Track que contiene solamente 3 tracks 
     top3TracksDeUnArtista(artist:Artist) {
       const tracksEscuchadosDeArtista = this.tracksEscuchadosByUsers().filter(track => artist.getTracks().includes(track))
       const arrayDeObjOrdenada = this.cantDeVecesQueSeRepite(tracksEscuchadosDeArtista)
@@ -201,20 +201,20 @@ export class UNQfy {
       }
     
 
-    //Retorna una array de objetos, [{track: track , cant: 0}]
+    //Denota una array de objetos, [{track: track , cant: 0}]
    private cantDeVecesQueSeRepite(listaDeRepetidos){
        var newList = new Array()
        new Set(listaDeRepetidos).forEach((elem) => { newList.push({track:elem,cant: this.count(elem,listaDeRepetidos)}) })
        return newList
     }
 
-    //Retorna los tracks escuchados por los usarios
+    //Denota los tracks escuchados por los usarios
     private tracksEscuchadosByUsers():Array<Track>{
       return this.users.reduce((accumulator, user) => {return accumulator.concat(user.tracks)}, [])
     }
 
 
-  //Retorna la cantidad de veces que un elemento se repite en la Array dada
+  //Denota la cantidad de veces que un elemento se repite en la Array dada
   private count(elem,list){
     var count = 0;
     list.array.forEach(e => { if(e === elem) {count++;} });
@@ -240,7 +240,7 @@ export class UNQfy {
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)
   //   albumData.year (number)
-  // retorna: el nuevo album creado
+  // Denota: el nuevo album creado
   addAlbum(artistId, albumData) {
   /* Crea un album y lo agrega al artista con id artistId.
       El objeto album creado debe tener (al menos):
@@ -279,7 +279,7 @@ export class UNQfy {
   //   trackData.name (string)
   //   trackData.duration (number)
   //   trackData.genres (lista de strings)
-  // retorna: el nuevo track creado
+  // Denota: el nuevo track creado
   addTrack(albumId, trackData) {
   /* Crea un track y lo agrega al album con id albumId.
   El objeto track creado debe tener (al menos):
@@ -347,7 +347,7 @@ export class UNQfy {
     return this.getPorId(albums, id,new NotExistAlbumError('id'));
   }
   
-  //Retorna todos los tracks de unqfy
+  //Denota todos los tracks de unqfy
   getTracks(){
     return this.getAlbums().reduce((accumulator, album) => { return accumulator.concat(album.tracks)}, [])
   }
@@ -360,18 +360,18 @@ export class UNQfy {
   }
 
   // genres: array de generos(strings)
-  // retorna: los tracks que contenga alguno de los generos en el parametro genres
+  // Denota: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres:Array<String>) {
     return this.getTracks().filter(track => track.anyGenre(genres))
   }
 
-  //retorna: los tracks de un genero en particular
+  //Denota: los tracks de un genero en particular
   getTracksMatchingGenre(genre:String){
     return this.getTracks().filter(track => track.genres.includes(genre))
   }
 
   // artistName: nombre de artista(string)
-  // retorna: los tracks interpredatos por el artista con nombre artistName
+  // Denota: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
     let artist = this.artists.find(artist => artist.name === artistName)
     if(!artist){
@@ -386,13 +386,13 @@ export class UNQfy {
   // name: nombre de la playlist
   // genresToInclude: array de generos
   // maxDuration: duración en segundos
-  // retorna: la nueva playlist creada
+  // Denota: la nueva playlist creada
   createPlaylist(name, genresToInclude, maxDuration) {
   /*** Crea una playlist y la agrega a unqfy. ***
     El objeto playlist creado debe soportar (al menos):
       * una propiedad name (string)
       * un metodo duration() que retorne la duración de la playlist.
-      * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
+      * un metodo hasTrack(aTrack) que Denota true si aTrack se encuentra en la playlist.
   */
     const playlist = new Playlist()
     const tracks = this.getTracksMatchingGenres(genresToInclude)
@@ -411,29 +411,29 @@ export class UNQfy {
     this.playlists.splice(this.playlists.indexOf(playlist),1)
   }
   
-  //Retorna el artista con el name dado, sino lo encuentra lanza una excepcion
+  //Denota el artista con el name dado, sino lo encuentra lanza una excepcion
   getArtist(anArtist){
     return this.getElem(anArtist,this.artists,new ArtistExcepcion(anArtist))
   }
-  //Retorna el album con el name dado, sino lo encuentra lanza una excepcion
+  //Denota el album con el name dado, sino lo encuentra lanza una excepcion
   getAlbum(anAlbum){
     return this.getElem(anAlbum,this.getAlbums(), new NotExistAlbumError(anAlbum))
   }
-  //Retorna el track con el name dado, sino lo encuentra lanza una excepcion
+  //Denota el track con el name dado, sino lo encuentra lanza una excepcion
   getTrack(aTrack){
     return this.getElem(aTrack,this.getTracks(),new TrackExcepcion(aTrack))
   }
-  //Retorna el playlist con el name dado, sino lo encuentra lanza una excepcion
+  //Denota el playlist con el name dado, sino lo encuentra lanza una excepcion
   getPlayList(aPlaylist){
     return this.getElem(aPlaylist,this.playlists,new NotExistPlayListError(aPlaylist))
   }
 
-  //Retorna el user con el name dado, sino lo encuentra lanza una excepcion
+  //Denota el user con el name dado, sino lo encuentra lanza una excepcion
   private getUser(aUser){
     return this.getElem(aUser,this.users,new NoExistUserError(aUser))
   }
   
-  //Retorna el elemento si es que se encuentra en la array, sino lanza una excepcion
+  //Denota el elemento si es que se encuentra en la array, sino lanza una excepcion
   //Este metodo tendria que ser privado pero lo estoy probando en el test
   private getElem(nameElem,list,excepcion){
     let elem = list.find(elemento => elemento.name == nameElem)

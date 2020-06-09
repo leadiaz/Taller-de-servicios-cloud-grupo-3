@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var idGenerator_1 = require("./idGenerator");
+var musixMatch_1 = require("./musixMatch");
 var Track = /** @class */ (function () {
     function Track(idAlbum, id, name, duration, genres, lyrics) {
         this.idAlbum = idAlbum;
@@ -21,13 +22,19 @@ var Track = /** @class */ (function () {
         return genres.some(function (genre) { return _this.genres.includes(genre); });
     };
     Track.prototype.getLyrics = function () {
+        var _this = this;
         if (this.lyrics == null) {
-            letraDeTrack(this.name);
+            musixMatch_1.letraDeUnTema(this.name).then(function (lyrics) { return _this.setLyrics(lyrics); });
+            //console.log(this.lyrics) como trabaja con promesas y eso lo hace de forma asincrona, primero hace el return y luego la letraDeUnTema, o sea siempre me denota undefined 
             return this.lyrics;
         }
         else {
             return this.lyrics;
         }
+    };
+    Track.prototype.setLyrics = function (lyrics) {
+        this.lyrics = lyrics;
+        //console.log(this.lyrics)
     };
     return Track;
 }());

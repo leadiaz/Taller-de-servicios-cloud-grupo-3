@@ -1,4 +1,5 @@
 import { IdGenerator } from "./idGenerator"
+import{letraDeUnTema} from "./musixMatch"
 
 
 export class Track{
@@ -25,12 +26,18 @@ export class Track{
 
     getLyrics(){
         if(this.lyrics == null){
-            letraDeTrack(this.name)
+           letraDeUnTema(this.name).then((lyrics)=>  this.setLyrics(lyrics))
+           //console.log(this.lyrics) como trabaja con promesas y eso lo hace de forma asincrona, primero hace el return y luego la letraDeUnTema, o sea siempre me denota undefined 
            return this.lyrics
         }else{
            return this.lyrics
         }
     
+    }
+
+    setLyrics(lyrics) {
+        this.lyrics = lyrics
+       //console.log(this.lyrics)
     }
     
 }
