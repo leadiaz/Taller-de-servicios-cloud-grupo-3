@@ -1,10 +1,10 @@
 import {AlbumExistsInArtistError, NotExistAlbumError} from "../Exceptions/albumException";
 
 export class Artist{
-    albums:Album[]
+    albums:Album[];
+    id;
 
     constructor(
-        public id?:Number,
         public name?:String,
         public country?:String,
     ){
@@ -45,6 +45,10 @@ export class Artist{
 
     private existeAlbum(name: any) {
         return this.albums.some(album => {return album.name === name})
+    }
+    update(body){
+        this.name = body.name;
+        this.country = body.country;
     }
 }
 

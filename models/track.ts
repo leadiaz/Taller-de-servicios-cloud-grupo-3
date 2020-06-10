@@ -2,16 +2,15 @@ import { IdGenerator } from "./idGenerator"
 
 
 export class Track{
+    id;
     constructor(
         public idAlbum?: Number,
-        public id?: Number,
         public name?: String,
         public duration?:Number,
         public genres?: Array<String>,
         public lyrics?: String,
     ){
-        this.id = IdGenerator.getNextId()
-        this.genres = new Array()
+        this.id = IdGenerator.getNextId();
     }
     toJSON(){
         return {idAlbum: this.idAlbum,id: this.id, name: this.name, duration: this.duration, genres: this.genres}
@@ -25,7 +24,7 @@ export class Track{
 
     getLyrics(){
         if(this.lyrics == null){
-            letraDeTrack(this.name)
+            // letraDeTrack(this.name)
            return this.lyrics
         }else{
            return this.lyrics
