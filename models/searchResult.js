@@ -13,7 +13,7 @@ var SearchResult = /** @class */ (function () {
         this.tracks = new Array();
     }
     SearchResult.prototype.toJSON = function () {
-        return { artists: this.artists, albums: this.albums, tracks: this.tracks, playlists: this.playlists };
+        return { "artists": this.artists, "albums": this.albums, "tracks": this.tracks, "playlists": this.playlists };
     };
     SearchResult.prototype.addAbum = function (album) {
         if (this.existeAlbum(album.name)) {

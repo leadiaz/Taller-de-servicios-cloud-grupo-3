@@ -2,8 +2,7 @@
 exports.__esModule = true;
 var albumException_1 = require("../Exceptions/albumException");
 var Artist = /** @class */ (function () {
-    function Artist(id, name, country) {
-        this.id = id;
+    function Artist(name, country) {
         this.name = name;
         this.country = country;
         this.id = idGenerator_1.IdGenerator.getNextId();
@@ -42,6 +41,10 @@ var Artist = /** @class */ (function () {
     };
     Artist.prototype.existeAlbum = function (name) {
         return this.albums.some(function (album) { return album.name === name; });
+    };
+    Artist.prototype.update = function (body) {
+        this.name = body.name;
+        this.country = body.country;
     };
     return Artist;
 }());

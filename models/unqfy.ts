@@ -103,6 +103,7 @@ export class UNQfy {
                 console.log(error.message)
             }
             return;
+
         }
         return artista;
     }
@@ -155,6 +156,7 @@ export class UNQfy {
         return this.getPorId(this.users, id_user, new Error('No existe el usuario con id ' + id_user))
     }
 
+
     //Elimina el user con ese id, sino se encuentra el user lanza un excepcion
     removeUser(id_User) {
         this.removeElem(this.users, this.getUserById(id_User), new Error('No existe el artista'))
@@ -193,22 +195,20 @@ export class UNQfy {
         });
     }
 
-
-    //Retorna una array de objetos, [{track: track , cant: 0}]
-    private cantDeVecesQueSeRepite(listaDeRepetidos) {
-        var newList = new Array()
-        new Set(listaDeRepetidos).forEach((elem) => {
-            newList.push({track: elem, cant: this.count(elem, listaDeRepetidos)})
-        })
-        return newList
+    //Denota una array de objetos, [{track: track , cant: 0}]
+   private cantDeVecesQueSeRepite(listaDeRepetidos){
+       var newList = new Array()
+       new Set(listaDeRepetidos).forEach((elem) => { newList.push({track:elem,cant: this.count(elem,listaDeRepetidos)}) })
+       return newList
     }
 
-    //Retorna los tracks escuchados por los usarios
-    private tracksEscuchadosByUsers(): Array<Track> {
-        return this.users.reduce((accumulator, user) => {
-            return accumulator.concat(user.tracks)
-        }, [])
+    //Denota los tracks escuchados por los usarios
+    private tracksEscuchadosByUsers():Array<Track>{
+      return this.users.reduce((accumulator, user) => {return accumulator.concat(user.tracks)}, [])
     }
+
+
+
 
     //Retorna la cantidad de veces que un elemento se repite en la Array dada
     private count(elem, list) {
