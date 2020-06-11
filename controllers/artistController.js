@@ -9,7 +9,6 @@ function getUNQfy(filename) {
     if (fs.existsSync(filename)) {
         unqfy = unqmod.UNQfy.load(filename);
     }
-    console.log(unqfy);
     return unqfy;
 }
 
@@ -21,23 +20,16 @@ function saveUNQfy(unq, filename = 'data.json') {
 function getArtist(req, res){
     const id = req.params.id;
     const UNQfy = getUNQfy();
-    const artist = UNQfy.getArtistById(id);
-    if(!artist){
-        res.status(404).send({message: 'No existe el artista'});
-    }else{
-        res.status(200).send(artist);
-    }
+    res.status(200).send({artist: UNQfy.getArtistById(id)});
 }
 function saveArtist(req, res){
     const body = req.body;
-    console.log(body)
+    console.log(body);
     const UNQfy = getUNQfy();
     if(body.name && body.country){
         const artist = UNQfy.addArtist({name: body.name, country: body.country});
         saveUNQfy(UNQfy);
         res.status(200).send({artist: artist});
-    }else{
-        res.status(202).send({message: 'Formato JSON no valido'});
     }
 }
 
@@ -47,28 +39,32 @@ function updateArtist(req, res){
     const UNQfy= getUNQfy();
     if(body.name && body.country){
         const artist = UNQfy.getArtistById(id);
-        if(artist){
-            artist.update(body);
-            saveUNQfy(UNQfy);
-            res.status(200).send({artist: artist});
-        }else{
-            res.status(404).send({message: 'No existe el artista con este id: ' + id});
-        }
-    }else{
-        res.status(202).send({message: 'Formato JSON no valido'});
+        artist.update(body);
+        saveUNQfy(UNQfy);
+        res.status(200).send({artist: artist});   
     }
 }
 
 function deleteArtist(req, res){
     const id = req.params.id;
     const UNQfy = getUNQfy();
-    UNQfy.removeArtist(id)
+    UNQfy.removeArtist(id);
+    saveUNQfy(UNQfy);
+    res.status(204).send({message: 'Se ha borrado el artista con éxito'});
+}
+
+function getArtistQuery(req, res){
+    const name = req.query.name;
+    const UNQfy = getUNQfy();
+    res.status(200).send({artists: UNQfy.searchByName(name).artists});
 
 }
 
 module.exports = {
     getArtist,
     saveArtist,
-    updateArtist
+    updateArtist,
+    deleteArtist,
+    getArtistQuery
 };
 
