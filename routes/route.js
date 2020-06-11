@@ -1,22 +1,27 @@
 
 const express = require('express');
 const app = express();
+const api = express.Router();
 const errorApi = require('../erroresApi/errors');
 const ArtistController = require('../controllers/artistController');
 
+const PORT = process.env.PORT || 9000;
+api.get('/api/artists/:id', ArtistController.getArtist);
+api.post('/api/artists/', ArtistController.saveArtist);
+api.patch('/api/artists/:id', ArtistController.updateArtist);
 
+
+app.use(api);
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+app.use(errorApi);
 
-app.set('port',7000);
+// app.set('port',7000);
 app.set('json spaces',2);
 
 
-app.listen(app.get('port'),()=>{
-    console.log('Server on port ${7000} ');
+app.listen(PORT,()=>{
+    console.log('Server on port ', PORT);
 });
 
-app.get('/api/artists/:id', ArtistController.getArtist);
-app.post('/api/artists/', ArtistController.saveArtist);
-app.patch('/api/artists/:id', ArtistController.updateArtist);
 
