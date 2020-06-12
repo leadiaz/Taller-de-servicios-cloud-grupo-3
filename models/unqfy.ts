@@ -9,7 +9,8 @@ import { User } from "./user";
 import {NotExistAlbumError, AlbumExistsInArtistError} from "../Exceptions/albumException";
 import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
 import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
-const app = require('./controller')
+import {albumsArtistaPorName} from "./controller";
+import {letraDeUnTema} from "./musixMatch"
 
 
 
@@ -497,8 +498,10 @@ searchAlbums(anName){
 
 
  populateAlbumsForArtist(artistName) {
- const  promiseAlbums =   app.albumsArtistaPorName(this,artistName)
+ const  promiseAlbums =   albumsArtistaPorName(artistName)
+ //console.log(promiseAlbums)
  const idArtist = this.getArtist(artistName).id
+ console.log(idArtist)
   promiseAlbums.then((albums) => { 
    albums.forEach(album => {
     this.addAlbum(idArtist,{name:album.name,year:album.release_date}) 
@@ -508,24 +511,21 @@ searchAlbums(anName){
 
 
 
-
-
-
 getLyricsForTrack(trackName) {
   const track = this.getTrack(trackName)
   return track.getLyrics()
-}
+ }
 
 
   
 
-  evalMethod(metodo:string, argumentos:Array<any>){
+  evalMethod(metodo:string, argumentos:Array<any>,saveUnq){
     switch (metodo) {
       case 'populateAlbumsForArtist': 
          console.log(this.populateAlbumsForArtist(argumentos[0]));
          break;
       case 'getLyricsForTrack':
-         console.log(this.getLyricsForTrack(argumentos[0]));
+        this.getLyricsForTrack(argumentos[0]).then((string)=> console.log(string));
          break;   
       case 'addArtist':
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));

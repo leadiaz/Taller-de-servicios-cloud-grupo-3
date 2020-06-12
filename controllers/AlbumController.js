@@ -69,7 +69,7 @@ function getTrack (req,res){
     res.json({name:track.name,lyrics:track.getLyrics()})
 }
 function searchAlbums(req,res) {
-    const nameAlbum = req.params.name 
+    const nameAlbum = req.query.name.toLowerCase()
     const albums = unqfyApi.searchAlbums(nameAlbum)
     res.status(200)
     res.json(albums)

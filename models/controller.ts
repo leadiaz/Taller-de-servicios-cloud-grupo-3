@@ -1,5 +1,5 @@
 
-let token = 'BQD1htPBGeJiEwv_SP1SMgwsLo0Nr1xfK7SkXjDYulWKtrgxgoiaR2nNbveMXjjc_t9g27MFWewtw27rYLh7nXpEpcceAtagT2JP-By7YZQDcnxLKfXfGulR1MNEjDvDBgVRJlzVg_Djd_WiA7vdMjW4-qMohGpLgX_uCKVTEyIfT5RpzA'
+let token = 'BQDlf6yz2HRI6sDS2RKqz1ZUzSjN5eazQneMNfsdG6WGfESYvk9fXCFoMjitTXciMTEiuLvOXeUl6mgCFST7vuoGO8kPwpMy7FCd5FfATH9OQrANiBPpKk8Md6RIicYwOa_MXut3qwXodoSu6RmXbQK_ChrCfQm1fO80fyKJklrIpvtEsw'
 
 const rp = require('request-promise');
 const options = {
@@ -25,13 +25,15 @@ function getIdArtistDeSpotify(artistName) {
 
  }
 
- function albumsArtistaPorName(unqfy,artistName){
+ export function albumsArtistaPorName(artistName){
    return  getIdArtistDeSpotify(artistName)
      .then((artist) => albumesDeArtistaPorId(artist.id))
-     .then((albums) =>  {return albums.items}
+     .then((albums) =>  {
+       console.log(albums.items)
+       return albums.items
+      }
    
  )
  }
 
 
-module.exports = {albumsArtistaPorName}

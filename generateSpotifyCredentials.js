@@ -150,7 +150,6 @@ app.get('/refresh_token', (req, res) => {
   });
 });
 
-
 console.log(`Listening on ${PORT}`);
 server = app.listen(PORT);
 

@@ -37,7 +37,7 @@ function letraDeTrack(id) {
     }).then(function (response) {
         //console.log(response.message.body.lyrics.lyrics_body)
         {
-            return response.message.body.lyrics.lyrics_body;
+            return response.message.body.lyrics;
         }
     });
 }

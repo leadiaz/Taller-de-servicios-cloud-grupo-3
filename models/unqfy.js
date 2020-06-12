@@ -11,7 +11,7 @@ var user_1 = require("./user");
 var albumException_1 = require("../Exceptions/albumException");
 var playListExcepcion_1 = require("../Exceptions/playListExcepcion");
 var userExcepcion_1 = require("../Exceptions/userExcepcion");
-var app = require('./controller');
+var controller_1 = require("./controller");
 var picklify = require("picklify"); // para cargar/guarfar unqfy
 var fs = require("fs"); // para cargar/guarfar unqfy
 var UNQfy = /** @class */ (function () {
@@ -429,10 +429,21 @@ var UNQfy = /** @class */ (function () {
         }
         return any;
     };
+    UNQfy.prototype.searchAlbums = function (anName) {
+        var albums = [];
+        this.getAlbums().forEach(function (album) {
+            if (album.name.includes(anName)) {
+                albums.push(album);
+            }
+        });
+        return albums;
+    };
     UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
         var _this = this;
-        var promiseAlbums = app.albumsArtistaPorName(this, artistName);
+        var promiseAlbums = controller_1.albumsArtistaPorName(artistName);
+        //console.log(promiseAlbums)
         var idArtist = this.getArtist(artistName).id;
+        console.log(idArtist);
         promiseAlbums.then(function (albums) {
             albums.forEach(function (album) {
                 _this.addAlbum(idArtist, { name: album.name, year: album.release_date });
@@ -443,13 +454,13 @@ var UNQfy = /** @class */ (function () {
         var track = this.getTrack(trackName);
         return track.getLyrics();
     };
-    UNQfy.prototype.evalMethod = function (metodo, argumentos) {
+    UNQfy.prototype.evalMethod = function (metodo, argumentos, saveUnq) {
         switch (metodo) {
             case 'populateAlbumsForArtist':
                 console.log(this.populateAlbumsForArtist(argumentos[0]));
                 break;
             case 'getLyricsForTrack':
-                console.log(this.getLyricsForTrack(argumentos[0]));
+                this.getLyricsForTrack(argumentos[0]).then(function (string) { return console.log(string); });
                 break;
             case 'addArtist':
                 console.log(this.addArtist({ name: argumentos[0], country: argumentos[1] }));
