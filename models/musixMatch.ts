@@ -39,7 +39,7 @@ var op = {
       json: true
     }).then((response) =>{
         //console.log(response.message.body.lyrics.lyrics_body)
-        {return response.message.body.lyrics}
+        {return response.message.body.lyrics.lyrics_body}
       
     })
   }

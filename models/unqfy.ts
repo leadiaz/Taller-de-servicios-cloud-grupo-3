@@ -10,7 +10,10 @@ import {NotExistAlbumError, AlbumExistsInArtistError} from "../Exceptions/albumE
 import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
 import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
 import {albumsArtistaPorName} from "./controller";
-import {letraDeUnTema} from "./musixMatch"
+import{saveUNQfy} from "../main"
+
+
+
 
 
 
@@ -414,6 +417,7 @@ export class UNQfy {
   
   //Denota el artista con el name dado, sino lo encuentra lanza una excepcion
   getArtist(anArtist){
+    
     return this.getElem(anArtist,this.artists,new ArtistExcepcion(anArtist))
   }
   //Denota el album con el name dado, sino lo encuentra lanza una excepcion
@@ -501,11 +505,11 @@ searchAlbums(anName){
  const  promiseAlbums =   albumsArtistaPorName(artistName)
  //console.log(promiseAlbums)
  const idArtist = this.getArtist(artistName).id
- console.log(idArtist)
-  promiseAlbums.then((albums) => { 
+ return  promiseAlbums.then((albums) => { 
    albums.forEach(album => {
     this.addAlbum(idArtist,{name:album.name,year:album.release_date}) 
    });
+   return albums
  })
 }
 
@@ -519,13 +523,18 @@ getLyricsForTrack(trackName) {
 
   
 
-  evalMethod(metodo:string, argumentos:Array<any>,saveUnq){
+  evalMethod(metodo:string, argumentos:Array<any>){
     switch (metodo) {
       case 'populateAlbumsForArtist': 
-         console.log(this.populateAlbumsForArtist(argumentos[0]));
+        this.populateAlbumsForArtist(argumentos[0]).then((albums) => 
+        saveUNQfy(this)
+        );
          break;
       case 'getLyricsForTrack':
-        this.getLyricsForTrack(argumentos[0]).then((string)=> console.log(string));
+         this.getLyricsForTrack(argumentos[0]).then((string)=> 
+         console.log(string),
+         saveUNQfy(this)
+         );
          break;   
       case 'addArtist':
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));

@@ -83,7 +83,7 @@ var Track = /** @class */ (function () {
                     case 0: return [4 /*yield*/, musixMatch_1.letraDeUnTema(this.name)];
                     case 1:
                         letra = _a.sent();
-                        this.lyrics = letra.lyrics_body;
+                        this.lyrics = letra;
                         return [2 /*return*/];
                 }
             });

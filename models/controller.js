@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var token = 'BQDlf6yz2HRI6sDS2RKqz1ZUzSjN5eazQneMNfsdG6WGfESYvk9fXCFoMjitTXciMTEiuLvOXeUl6mgCFST7vuoGO8kPwpMy7FCd5FfATH9OQrANiBPpKk8Md6RIicYwOa_MXut3qwXodoSu6RmXbQK_ChrCfQm1fO80fyKJklrIpvtEsw';
+var token = 'BQA1Z2YDDi8OQIRT9gnhw8y9fzRiCVaCy3nplaDwrUDRGOG2fZgvNUyOCRwSSUvLYzI5YnTFwjjjG3p72ZaDNHd7sONrA-Xbko6An6zjTgeR2M1UHtHBQbtTTekjOzmveTX0Rbn6F3fXf04npGRCwB3R47H9SpM7VLLgI-SZIF2H18SKiw';
 var rp = require('request-promise');
 var options = {
     url: "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks?offset=0&limit=50",
@@ -25,7 +25,6 @@ function albumsArtistaPorName(artistName) {
     return getIdArtistDeSpotify(artistName)
         .then(function (artist) { return albumesDeArtistaPorId(artist.id); })
         .then(function (albums) {
-        console.log(albums.items);
         return albums.items;
     });
 }

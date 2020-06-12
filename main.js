@@ -1,3 +1,5 @@
+"use strict";
+exports.__esModule = true;
 var fs = require('fs'); // necesitado para guardar/cargar unqfy
 var unqmod = require('./models/unqfy'); // importamos el modulo unqfy
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
@@ -13,6 +15,7 @@ function saveUNQfy(unqfy, filename) {
     if (filename === void 0) { filename = 'data.json'; }
     unqfy.save(filename);
 }
+exports.saveUNQfy = saveUNQfy;
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
  e implementar los diferentes comandos.
