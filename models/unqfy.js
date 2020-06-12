@@ -441,10 +441,9 @@ var UNQfy = /** @class */ (function () {
     };
     UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
         var _this = this;
-        var promiseAlbums = controller_1.albumsArtistaPorName(artistName);
         //console.log(promiseAlbums)
         var idArtist = this.getArtist(artistName).id;
-        return promiseAlbums.then(function (albums) {
+        return controller_1.albumsArtistaPorName(artistName).then(function (albums) {
             albums.forEach(function (album) {
                 _this.addAlbum(idArtist, { name: album.name, year: album.release_date });
             });

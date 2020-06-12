@@ -502,10 +502,9 @@ searchAlbums(anName){
 
 
  populateAlbumsForArtist(artistName) {
- const  promiseAlbums =   albumsArtistaPorName(artistName)
  //console.log(promiseAlbums)
  const idArtist = this.getArtist(artistName).id
- return  promiseAlbums.then((albums) => { 
+ return   albumsArtistaPorName(artistName).then((albums) => { 
    albums.forEach(album => {
     this.addAlbum(idArtist,{name:album.name,year:album.release_date}) 
    });
