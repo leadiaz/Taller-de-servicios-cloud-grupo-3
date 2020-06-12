@@ -16,7 +16,7 @@ function getIdArtistDeSpotify(artistName) {
       json: true,
     }).then((response) => {return response.artists.items[0]})
  }
- function albumesDeArtista(id) {
+ function albumesDeArtistaPorId(id) {
     return  rp.get({
           url: 'https://api.spotify.com/v1/artists/' +id + '/albums',
           headers: { Authorization: 'Bearer ' + token },
@@ -25,30 +25,13 @@ function getIdArtistDeSpotify(artistName) {
 
  }
 
- function agregar(unqfy,artistName){
-     // const namesAlbums = []
-     // const idArtistUnqFy = unqfy.getArtist(artistName).id 
+ function albumsArtistaPorName(unqfy,artistName){
    return  getIdArtistDeSpotify(artistName)
-     .then((artist) => albumesDeArtista(artist.id))
+     .then((artist) => albumesDeArtistaPorId(artist.id))
      .then((albums) =>  {return albums.items}
-          //    albums.items.forEach(album => {
-           
-          //    namesAlbums.push(album.name)
-          //    unqfy.addAlbum(idArtistUnqFy,{name:album.name,year:album.release_date})
-          //    console.log(unqfy)
-           
-             
-       // }),
-     // console.log(unqfy)  
-
-     
+   
  )
-
-
-// unqfy.addAlbum(1,{name:"pepepep",year:22222})
  }
-//rp.get(options).then((response)=> console.log(response.items[0].artists))
-//getIdArtistDeSpotify("AC/DC").then((id) => albumesDeArtista(id))
-//rp.get(options).then((response)=> console.log(response.artists.items))
 
-module.exports = {agregar}
+
+module.exports = {albumsArtistaPorName}

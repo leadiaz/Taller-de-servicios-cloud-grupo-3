@@ -457,7 +457,6 @@ export class UNQfy {
   }
 
   getTracksFromAlbum(idAlbum){
-   // return this.getElems(this.getAlbums(),idAlbum,new AlbumExistsInArtistError('Nothing')).tracks
     let album
     try{
       album= this.getAlbumById(idAlbum)
@@ -483,7 +482,7 @@ getElems(list,id,excepcion){
   return any
 }
  populateAlbumsForArtist(artistName) {
- const  promiseAlbums =   app.agregar(this,artistName)
+ const  promiseAlbums =   app.albumsArtistaPorName(this,artistName)
  const idArtist = this.getArtist(artistName).id
   promiseAlbums.then((albums) => { 
    albums.forEach(album => {
@@ -492,23 +491,27 @@ getElems(list,id,excepcion){
  })
 }
 
-getLyricsForTrack(trackName) {
-  const track = this.getTrack(trackName)
-  return track.getLyrics()
-}
+
+
+
+
+
+// getLyricsForTrack(trackName) {
+//   const track = this.getTrack(trackName)
+//   return track.getLyrics()
+// }
 
 
   
 
   evalMethod(metodo:string, argumentos:Array<any>){
-    //return this.populateAlbumsForArtist(argumentos[0])
     switch (metodo) {
       case 'populateAlbumsForArtist': 
          console.log(this.populateAlbumsForArtist(argumentos[0]));
          break;
-      case 'getLyricsForTrack':
-         console.log(this.getLyricsForTrack(argumentos[0]));
-         break;   
+      // case 'getLyricsForTrack':
+      //    console.log(this.getLyricsForTrack(argumentos[0]));
+      //    break;   
       case 'addArtist':
         console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
         break;
