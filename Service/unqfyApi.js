@@ -11,8 +11,9 @@ api.get('/api/albums/:id',ControllerAlbum.getAlbum)
 api.patch('/api/albums/:id',ControllerAlbum.updateAlbum)
 api.delete('/api/albums/:id',ControllerAlbum.deleteAlbum)
 api.get('/api/tracks/:id/lyrics',ControllerAlbum.getTrack)
+api.get('/api/albums',ControllerAlbum.searchAlbums)
 
-
+app.use(api)
 app.use(errorApi);
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));

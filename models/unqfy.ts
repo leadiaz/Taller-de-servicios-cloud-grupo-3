@@ -481,6 +481,21 @@ getElems(list,id,excepcion){
   }
   return any
 }
+searchAlbums(anName){
+  const albums =[] 
+  this.getAlbums().forEach((album) => {
+   if(album.name.includes(anName)){
+     albums.push(album)
+   }
+  }
+  )
+  return albums
+}
+
+
+
+
+
  populateAlbumsForArtist(artistName) {
  const  promiseAlbums =   app.albumsArtistaPorName(this,artistName)
  const idArtist = this.getArtist(artistName).id

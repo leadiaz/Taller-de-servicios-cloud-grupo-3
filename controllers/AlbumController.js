@@ -68,6 +68,13 @@ function getTrack (req,res){
     res.status(200)
     res.json({name:track.name,lyrics:track.getLyrics()})
 }
+function searchAlbums(req,res) {
+    const nameAlbum = req.params.name 
+    const albums = unqfyApi.searchAlbums(nameAlbum)
+    res.status(200)
+    res.json(albums)
+
+}
 
 
 module.exports = {
@@ -75,5 +82,6 @@ module.exports = {
     getAlbum,
     updateAlbum,
     deleteAlbum,
-    getTrack
+    getTrack,
+    searchAlbums,
 };
