@@ -25,19 +25,17 @@ export class Track{
 
 
     getLyrics(){
-        if(this.lyrics == null){
-           letraDeUnTema(this.name).then((lyrics)=>  this.setLyrics(lyrics))
-           //console.log(this.lyrics) como trabaja con promesas y eso lo hace de forma asincrona, primero hace el return y luego la letraDeUnTema, o sea siempre me denota undefined 
-           return this.lyrics
-        }else{
-           return this.lyrics
+        if( this.lyrics == null){
+          this.buscarLyrics()   
+          return this.lyrics   
         }
-    
+        else{
+            return this.lyrics
+        }  
     }
 
-    setLyrics(lyrics) {
-        this.lyrics = lyrics
-       //console.log(this.lyrics)
+    buscarLyrics(){
+        letraDeUnTema(this.name).then((lyrics)=> this.lyrics = lyrics)
     }
     
 }

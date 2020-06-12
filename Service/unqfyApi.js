@@ -5,10 +5,6 @@ const errorApi = require('../erroresApi/errors')
 const ControllerAlbum = require('../controllers/AlbumController')
 
 
-
-
-
-
 const PORT = process.env.PORT || 7000
 api.post('/api/albums',ControllerAlbum.addAlbum)
 api.get('/api/albums/:id',ControllerAlbum.getAlbum)

@@ -404,7 +404,6 @@ var UNQfy = /** @class */ (function () {
         return artist.albums;
     };
     UNQfy.prototype.getTracksFromAlbum = function (idAlbum) {
-        // return this.getElems(this.getAlbums(),idAlbum,new AlbumExistsInArtistError('Nothing')).tracks
         var album;
         try {
             album = this.getAlbumById(idAlbum);
@@ -432,7 +431,7 @@ var UNQfy = /** @class */ (function () {
     };
     UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
         var _this = this;
-        var promiseAlbums = app.agregar(this, artistName);
+        var promiseAlbums = app.albumsArtistaPorName(this, artistName);
         var idArtist = this.getArtist(artistName).id;
         promiseAlbums.then(function (albums) {
             albums.forEach(function (album) {
@@ -445,7 +444,6 @@ var UNQfy = /** @class */ (function () {
         return track.getLyrics();
     };
     UNQfy.prototype.evalMethod = function (metodo, argumentos) {
-        //return this.populateAlbumsForArtist(argumentos[0])
         switch (metodo) {
             case 'populateAlbumsForArtist':
                 console.log(this.populateAlbumsForArtist(argumentos[0]));

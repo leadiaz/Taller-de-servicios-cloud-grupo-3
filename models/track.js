@@ -22,19 +22,17 @@ var Track = /** @class */ (function () {
         return genres.some(function (genre) { return _this.genres.includes(genre); });
     };
     Track.prototype.getLyrics = function () {
-        var _this = this;
         if (this.lyrics == null) {
-            musixMatch_1.letraDeUnTema(this.name).then(function (lyrics) { return _this.setLyrics(lyrics); });
-            //console.log(this.lyrics) como trabaja con promesas y eso lo hace de forma asincrona, primero hace el return y luego la letraDeUnTema, o sea siempre me denota undefined 
+            this.buscarLyrics();
             return this.lyrics;
         }
         else {
             return this.lyrics;
         }
     };
-    Track.prototype.setLyrics = function (lyrics) {
-        this.lyrics = lyrics;
-        //console.log(this.lyrics)
+    Track.prototype.buscarLyrics = function () {
+        var _this = this;
+        musixMatch_1.letraDeUnTema(this.name).then(function (lyrics) { return _this.lyrics = lyrics; });
     };
     return Track;
 }());
