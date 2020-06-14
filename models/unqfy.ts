@@ -3,12 +3,18 @@ import {Album} from './album';
 import {Track} from './track';
 import {Playlist} from './playlist';
 import {ArtistExcepcion, ArtistExistsWithThatName} from "../Exceptions/artistExcepcion";
-import {TrackExcepcion} from "../Exceptions/trackExcepcion"
-import {SearchResult} from "./searchResult";
-import {User} from "./user";
-import {NotExistAlbumError} from "../Exceptions/albumException";
-import {NotExistPlayListError} from "../Exceptions/playListExcepcion";
-import {NoExistUserError, ExistsUserError} from "../Exceptions/userExcepcion";
+import {TrackExcepcion, TrackExistsInAlbumError} from "../Exceptions/trackExcepcion"
+import { SearchResult } from "./searchResult";
+import { User } from "./user";
+import {NotExistAlbumError, AlbumExistsInArtistError} from "../Exceptions/albumException";
+import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
+import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
+import {albumsArtistaPorName} from "./controller";
+import{saveUNQfy} from "../main"
+
+
+
+
 
 const app = require('./controller');
 
@@ -396,7 +402,7 @@ export class UNQfy {
     //Retorna el artista con el name dado, sino lo encuentra lanza una excepcion
     getArtist(anArtist) {
         try {
-            return this.getElem(anArtist, this.artists, new ArtistExcepcion(anArtist))    
+            return this.getElem(anArtist, this.artists, new ArtistExcepcion(anArtist))
         } catch (error) {
             console.log(error.message)
         }
@@ -415,21 +421,21 @@ export class UNQfy {
     getTrack(aTrack) {
         let track;
         try {
-            return this.getElem(aTrack, this.getTracks(), new TrackExcepcion(aTrack)) 
+            return this.getElem(aTrack, this.getTracks(), new TrackExcepcion(aTrack))
         } catch (error) {
             console.log(error.message);
         }
-        
+
     }
 
     //Retorna el playlist con el name dado, sino lo encuentra lanza una excepcion
     getPlayList(aPlaylist) {
         try {
-            return this.getElem(aPlaylist, this.playlists, new NotExistPlayListError(aPlaylist))    
+            return this.getElem(aPlaylist, this.playlists, new NotExistPlayListError(aPlaylist))
         } catch (error) {
             console.log(error.message)
         }
-        
+
     }
 
     //Retorna el user con el name dado, sino lo encuentra lanza una excepcion
@@ -459,7 +465,7 @@ export class UNQfy {
         } catch (error) {
             console.log(error.message);
         }
-        
+
     }
 
     getTracksFromAlbum(idAlbum) {
@@ -522,75 +528,94 @@ export class UNQfy {
         return this.playlists;
     }
 
-    evalMethod(metodo, argumentos: Array<any>) {
-        switch (metodo) {
-            case 'addArtist':
-                console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}))
-                break;
-            case 'addAlbum':
-                console.log(this.addAlbum(eval(argumentos[0]), {name: argumentos[1], year: argumentos[2]}));
-                break;
-            case 'addTrack':
-                console.log(this.addTrack(eval(argumentos[0]), {
-                    name: argumentos[1],
-                    duration: argumentos[2],
-                    genres: eval(argumentos[3])
-                }));
-                break;
-            case 'addUser':
-                console.log(this.addUser(argumentos[0]));
-                break;
-            case 'removeArtist':
-                this.removeArtist(argumentos[0]);
-                break;
-            case 'removeAlbum':
-                this.removeAlbum(argumentos[0]);
-                break;
-            case 'removeTrack':
-                this.removeTrack(argumentos[0]);
-                break;
-            case 'getAlbumsFromArtist':
-                console.log(this.getAlbumsFromArtist(argumentos[0]))
-                break;
-            case 'getTracksFromAlbum':
-                console.log(this.getTracksFromAlbum(argumentos[0]));
-                break;
-            case 'printArtist':
-                this.printArtist(argumentos[0]);
-                break;
-            case 'printAlbum':
-                this.printAlbum(argumentos[0]);
-                break;
-            case 'printTrack':
-                this.printTrack(argumentos[0]);
-                break;
-            case 'getTracksMatchingArtist':
-                console.log(this.getTracksMatchingArtist(argumentos[0]));
-                break;
-            case 'getTracksMatchingGenres':
-                console.log(this.getTracksMatchingGenres(argumentos[0]));
-                break;
-            case 'createPlaylist':
-                console.log(this.createPlaylist(argumentos[0], eval(argumentos[1]), eval(argumentos[2])));
-                break;
-            case 'searchByName':
-                console.log(this.searchByName(argumentos[0]));
-                break;
-            case 'getArtists':
-                console.log(this.getArtists());
-                break;
-            case 'getPlayLists':
-                console.log(this.getPlaylists());
-                break;
-            default :
-                console.log('No existe el metodo: ', metodo)
+  evalMethod(metodo:string, argumentos:Array<any>){
+    switch (metodo) {
+      case 'populateAlbumsForArtist':
+        this.populateAlbumsForArtist(argumentos[0]).then((albums) =>
+        saveUNQfy(this)
+        );
+         break;
+      case 'getLyricsForTrack':
+         this.getLyricsForTrack(argumentos[0]).then((string)=>
+         console.log(string),
+         saveUNQfy(this)
+         );
+         break;
+      case 'addArtist':
+        console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
+        break;
+      case  'addAlbum':
+        console.log(this.addAlbum(argumentos[0], {name: argumentos[1], year: eval(argumentos[2])}));
+        break;
+      case 'addTrack':
+        console.log(this.addTrack(argumentos[0],{name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3])}));
+        break;
+      case 'addUser':
+        console.log(this.addUser(argumentos[0]))
+        break;
+      case 'removeArtist':
+        this.removeArtist(argumentos[0]);
+        break;
+      case 'removeAlbum':
+        this.removeAlbum(argumentos[0]);
+        break;
+      case 'removeTrack':
+        this.removeTrack(argumentos[0]);
+        break;
+      case 'getAlbumsFromArtist':
+        console.log(this.getAlbumsFromArtist(argumentos[0]))
+        break;
+      case 'getTracksFromAlbum':
+        console.log(this.getTracksFromAlbum(argumentos[0]))
+        break
+      case 'printArtist':
+        try{
+          console.log(this.getArtist(argumentos[0]))
+        }catch (e) {
+          console.log(e.message)
         }
 
+        break;
+      case 'printAlbum':
+        try{
+          console.log(this.getAlbum(argumentos[0]))
+        }catch (e) {
+          console.log(e.message)
+        }
+        break;
+      case 'printTrack':
+        try{
+          console.log(this.getTrack(argumentos[0]))
+        }catch (e) {
+          console.log(e.message)
+        }
+        break;
+      case 'getTracksMatchingArtist':
+        console.log(this.getTracksMatchingArtist(argumentos[0]));
+        break;
+      case 'getTracksMatchingGenres':
+        console.log(this.getTracksMatchingGenres(eval(argumentos[0])));
+        break;
+      case 'createPlaylist':
+        this.createPlaylist(argumentos[0], eval(argumentos[1]), eval(argumentos[2]));
+        break;
+      case 'searchByName':
+        console.log(this.searchByName(argumentos[0]));
+        break;
+      case 'getArtists':
+        console.log(this.artists)
+        break
+      case 'getPlaylists':
+        console.log(this.playlists)
+        break
+      default :
+        console.log("no existe el metodo: ", metodo)
     }
 
-    save(filename) {
-        const listenersBkp = this.listeners;
-        this.listeners = [];
+  }
+  save(filename) {
+    const listenersBkp = this.listeners;
+    this.listeners = [];
 
         const serializedData = picklify.picklify(this);
 

@@ -1,17 +1,20 @@
 import { IdGenerator } from "./idGenerator"
 import{letraDeUnTema} from "./musixMatch"
+import { cpuUsage } from "process"
 
 
 export class Track{
-    id;
     constructor(
         public idAlbum?: Number,
+        public id?: Number,
         public name?: String,
         public duration?:Number,
         public genres?: Array<String>,
-        public lyrics?: String,
+        public lyrics?: String ,
     ){
-        this.id = IdGenerator.getNextId();
+        this.id = IdGenerator.getNextId()
+        this.genres = new Array()
+        this.lyrics = null
     }
     toJSON(){
         return {idAlbum: this.idAlbum,id: this.id, name: this.name, duration: this.duration, genres: this.genres}
@@ -23,20 +26,21 @@ export class Track{
     }
 
 
-    getLyrics(){
-        if(this.lyrics == null){
-           //letraDeUnTema(this.name).then((lyrics)=>  this.setLyrics(lyrics))
-           //console.log(this.lyrics) como trabaja con promesas y eso lo hace de forma asincrona, primero hace el return y luego la letraDeUnTema, o sea siempre me denota undefined 
-           return this.lyrics
-        }else{
-           return this.lyrics
+   async getLyrics(){
+        if( this.lyrics == null){
+          await this.buscarLyrics()   
+          return this.lyrics   
         }
-    
+        else{
+            console.log("entro por aca")
+            return this.lyrics
+        }  
     }
 
-    setLyrics(lyrics) {
-        this.lyrics = lyrics
-       //console.log(this.lyrics)
+    async buscarLyrics(){
+        const letra = await letraDeUnTema(this.name)
+        this.lyrics = letra
     }
+
     
 }
