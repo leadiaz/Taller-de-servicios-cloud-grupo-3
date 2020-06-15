@@ -10,74 +10,67 @@
       "artists": "__00002__",
       "playlists": "__00003__",
       "users": "__00004__",
-      "listeners": "__00001__"
+      "listeners": "__00005__"
     },
     "__00002__": {
-      "0": "__00006__",
-      "1": "__00007__"
+      "0": "__00006__"
     },
     "__00003__": {},
     "__00004__": {},
+    "__00005__": {},
     "__00006__": {
       "id": 1,
-      "name": "Marcelo",
-      "country": "Argentina",
-      "albums": "__00008__"
+      "name": "David bowie",
+      "country": "Usa",
+      "albums": "__00007__"
     },
     "__00007__": {
-      "id": 4,
-      "name": "Guns n Roses",
-      "country": "USA",
-      "albums": "__00009__"
+      "0": "__00008__",
+      "1": "__00009__"
     },
     "__00008__": {
-      "0": "__00010__",
-      "1": "__00011__",
-      "2": "__00002__"
-    },
-    "__00009__": {},
-    "__00010__": {
-      "idArtist": "1",
-      "id": 2,
-      "name": "Album 1",
-      "year": 15555,
-      "tracks": "__00012__"
-    },
-    "__00011__": {
       "idArtist": 1,
-      "id": 5,
-      "name": "Appetite For Destruction",
-      "year": 1987,
-      "tracks": "__00013__"
+      "id": 2,
+      "name": "Album de David Bowie",
+      "year": 2000,
+      "tracks": "__00010__"
     },
+    "__00009__": {
+      "idArtist": 1,
+      "id": 7,
+      "name": "pepito",
+      "year": 5555,
+      "tracks": "__00011__"
+    },
+    "__00010__": {
+      "0": "__00012__"
+    },
+    "__00011__": {},
     "__00012__": {
-      "0": "__00014__"
-    },
-    "__00013__": {},
-    "__00014__": {
-      "idAlbum": "2",
+      "idAlbum": 2,
       "id": 3,
       "name": "Stuck With U (with Justin Bieber)",
-      "duration": 1000,
-      "genres": "__00015__",
+      "duration": 20,
+      "genres": "__00013__",
       "lyrics": "Mmm\nHey, yeah\n(That's just for fun)\n(What?)\n(I'm stuck with you)\nAh\n\nI'm not one to stick around\nOne strike and you're out, baby\nDon't care if I sound crazy\nBut you never let me down, no, no\nThat's why when the sun's up, I'm stayin'\nStill layin' in your bed, singin'\n\nOoh, ooh, ooh, ooh\nGot all this time on my hands\nMight as well cancel our plans, yeah\nI could stay here for a lifetime\n\nSo, lock the door and throw out the key\nCan't fight this no more, it's just you and me\nAnd there's nothin' I, nothin' I, I can do\n...\n\n******* This Lyrics is NOT for Commercial use *******\n(1409620044221)"
     },
-    "__00015__": {}
+    "__00013__": {
+      "0": "pop"
+    }
   },
   "types": {
     "__00001__": "UNQfy",
     "__00002__": "Array",
     "__00003__": "Array",
     "__00004__": "Array",
+    "__00005__": "Array",
     "__00006__": "Artist",
-    "__00007__": "Artist",
-    "__00008__": "Array",
-    "__00009__": "Array",
-    "__00010__": "Album",
-    "__00011__": "Album",
-    "__00012__": "Array",
-    "__00013__": "Array",
-    "__00014__": "Track",
-    "__00015__": "Array"
+    "__00007__": "Array",
+    "__00008__": "Album",
+    "__00009__": "Album",
+    "__00010__": "Array",
+    "__00011__": "Array",
+    "__00012__": "Track",
+    "__00013__": "Array"
   }
 }

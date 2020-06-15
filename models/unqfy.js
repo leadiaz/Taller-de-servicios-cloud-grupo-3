@@ -432,7 +432,7 @@ var UNQfy = /** @class */ (function () {
     UNQfy.prototype.searchAlbums = function (anName) {
         var albums = [];
         this.getAlbums().forEach(function (album) {
-            if (album.name.includes(anName)) {
+            if (album.name.toLowerCase().includes(anName.toLowerCase())) {
                 albums.push(album);
             }
         });

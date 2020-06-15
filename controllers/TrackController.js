@@ -16,13 +16,13 @@ const unqfyApi = getUNQfy()
 
 function getTrack (req,res){
     const id = req.params.id 
-    console.log(id)
     if(id){
-
     try{
     const track = unqfyApi.getTrackById(id) 
-    res.status(200)
-    res.json({name:track.name,lyrics:track.getLyrics()})
+    track.getLyrics().then((lyrics)=>{
+        res.status(200)
+        res.json({name:track.name,lyrics:lyrics})
+    })
     }catch(error) {
         throw new NotFoundError.NotFoundError(id)
     }

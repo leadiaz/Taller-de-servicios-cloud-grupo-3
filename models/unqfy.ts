@@ -490,9 +490,10 @@ getElems(list,id,excepcion){
 searchAlbums(anName){
   const albums =[] 
   this.getAlbums().forEach((album) => {
-   if(album.name.includes(anName)){
+   if(album.name.toLowerCase().includes(anName.toLowerCase())){
      albums.push(album)
    }
+
   }
   )
   return albums

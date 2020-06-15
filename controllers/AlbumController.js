@@ -87,11 +87,15 @@ function deleteAlbum(req,res){
 
 
 function searchAlbums(req,res) {
-    const nameAlbum = req.query.name.toLowerCase()
-    const albums = unqfyApi.searchAlbums(nameAlbum)
-    res.status(200)
-    res.json(albums)
-
+    const nameAlbum = req.query.name
+    if(nameAlbum != undefined) {
+        const albums = unqfyApi.searchAlbums(nameAlbum)
+        res.status(200)
+        res.json(albums)
+    }else{
+        res.status(200)
+        res.json(unqfyApi.getAlbums())
+    }
 }
 
 
