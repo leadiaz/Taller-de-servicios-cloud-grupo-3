@@ -53,14 +53,19 @@ function getAlbum(req,res){
 
 function updateAlbum(req,res){
     const id = req.params.id;
-    const dody = req.dody
-    console.log('esto es el body', dody)
-    if(dody.year){
-        unqfyApi.getAlbumById(id).year = dody.year
-        console.log('estoy aca')
-        saveUNQfy(unqfyApi)
-        res.status(200)
-        res.json(unqfyApi.getAlbumById(id))
+    if(req.body.year){
+        try {
+            unqfyApi.getAlbumById(id).year = req.body.year
+            console.log('estoy aca')
+            saveUNQfy(unqfyApi)
+            res.status(200)
+            res.json(unqfyApi.getAlbumById(id))
+            
+        } catch (error) {
+            throw new NotFoundError(id)
+            
+        }
+       
     }else{
         res.send("Json mal formado")
     }
