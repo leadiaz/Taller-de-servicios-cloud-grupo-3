@@ -56,19 +56,31 @@ function main() {
     evalMethod(method, argumetos,unqfy);
     saveUNQfy(unqfy)
 }
+function setUp(unqfy) {
+    unqfy.addArtist({name:'David bowie',country:"Usa"})
+    unqfy.addAlbum(1,{name:'Album de David Bowie',year:2000})
+    unqfy.addTrack(2,{name:"Stuck With U (with Justin Bieber)",duration:20,genres:['pop']})
+    
+}
+
+
 function evalMethod(metodo, argumentos,unqfy){
     switch (metodo) {
-      case 'populateAlbumsForArtist': 
-        unqfy.populateAlbumsForArtist(argumentos[0]).then((albums) => 
+      case 'popularAlbumsForArtist': 
+        unqfy.popularAlbumsForArtist(argumentos[0]).then((albums) => 
         saveUNQfy(unqfy)
         );
          break;
       case 'getLyricsForTrack':
-        unqfy.getLyricsForTrack(argumentos[0]).then((string)=> 
-         console.log(string),
-         saveUNQfy(unqfy)
+        unqfy.getLyricsForTrack(argumentos[0]).then((string)=> {
+         saveUNQfy(unqfy),
+         console.log(string)
+        }
          );
-         break;   
+         break; 
+      case 'setUp':
+          setUp(unqfy)
+          break;      
       case 'addArtist':
         console.log(unqfy.addArtist({name: argumentos[0], country: argumentos[1]}));
         break;

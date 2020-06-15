@@ -69,7 +69,7 @@ var Track = /** @class */ (function () {
                         _a.sent();
                         return [2 /*return*/, this.lyrics];
                     case 2:
-                        console.log("entro por aca");
+                        console.log("No hace falta volver hacer el request");
                         return [2 /*return*/, this.lyrics];
                 }
             });

@@ -32,7 +32,7 @@ export class Track{
           return this.lyrics   
         }
         else{
-            console.log("entro por aca")
+            console.log("No hace falta volver hacer el request")
             return this.lyrics
         }  
     }

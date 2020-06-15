@@ -438,12 +438,16 @@ var UNQfy = /** @class */ (function () {
         });
         return albums;
     };
-    UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
+    UNQfy.prototype.popularAlbumsForArtist = function (artistName) {
         var _this = this;
         var idArtist = this.getArtist(artistName).id;
+        var albumsName = [];
         return controller_1.albumsArtistaPorName(artistName).then(function (albums) {
             albums.forEach(function (album) {
-                _this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+                if (!albumsName.includes(album.name)) {
+                    albumsName.push(album.name);
+                    _this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+                }
             });
             return albums;
         });

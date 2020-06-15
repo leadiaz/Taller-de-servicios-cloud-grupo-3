@@ -500,22 +500,27 @@ searchAlbums(anName){
 
 
 
- populateAlbumsForArtist(artistName) {
+popularAlbumsForArtist(artistName) {
  const idArtist = this.getArtist(artistName).id
+ const albumsName = []
  return   albumsArtistaPorName(artistName).then((albums) => { 
    albums.forEach(album => {
-    this.addAlbum(idArtist,{name:album.name,year:album.release_date}) 
+     if(!albumsName.includes(album.name)){ 
+       albumsName.push(album.name)
+       this.addAlbum(idArtist,{name:album.name,year:album.release_date})
+     }
    });
    return albums
  })
 }
 
 
-
 getLyricsForTrack(trackName) {
   const track = this.getTrack(trackName)
   return track.getLyrics()
  }
+
+
 
 
   

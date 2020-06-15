@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var token = 'BQA1Z2YDDi8OQIRT9gnhw8y9fzRiCVaCy3nplaDwrUDRGOG2fZgvNUyOCRwSSUvLYzI5YnTFwjjjG3p72ZaDNHd7sONrA-Xbko6An6zjTgeR2M1UHtHBQbtTTekjOzmveTX0Rbn6F3fXf04npGRCwB3R47H9SpM7VLLgI-SZIF2H18SKiw';
+var token = 'BQBpR_Kh-pW_VL-8rRIpx3BVMh9fkc9XQx5hgZ6YDBLhk7h7uSfZ99l-vkXUG_721ePyhmgg9mS0QDgYB4f7fjDXMWlO5WxzmmUhgu5Z2oeFt7q_kB3jXWY50sagKz9kMXz_G5xVgaXVHAAj3giDSbPqzRNnMEDlFnEFFo0F1sarlWEfiA';
 var rp = require('request-promise');
 var options = {
     url: "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks?offset=0&limit=50",
