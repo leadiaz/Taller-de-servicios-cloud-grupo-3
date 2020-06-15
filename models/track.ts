@@ -28,7 +28,7 @@ export class Track{
 
    async getLyrics(){
         if( this.lyrics == null){
-          await this.buscarLyrics()   
+          this.lyrics = await letraDeUnTema(this.name)   
           return this.lyrics   
         }
         else{
@@ -37,10 +37,7 @@ export class Track{
         }  
     }
 
-    async buscarLyrics(){
-        const letra = await letraDeUnTema(this.name)
-        this.lyrics = letra
-    }
+   
 
     
 }

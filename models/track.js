@@ -60,31 +60,19 @@ var Track = /** @class */ (function () {
     };
     Track.prototype.getLyrics = function () {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         if (!(this.lyrics == null)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.buscarLyrics()];
+                        _a = this;
+                        return [4 /*yield*/, musixMatch_1.letraDeUnTema(this.name)];
                     case 1:
-                        _a.sent();
+                        _a.lyrics = _b.sent();
                         return [2 /*return*/, this.lyrics];
                     case 2:
                         console.log("No hace falta volver hacer el request");
                         return [2 /*return*/, this.lyrics];
-                }
-            });
-        });
-    };
-    Track.prototype.buscarLyrics = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var letra;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, musixMatch_1.letraDeUnTema(this.name)];
-                    case 1:
-                        letra = _a.sent();
-                        this.lyrics = letra;
-                        return [2 /*return*/];
                 }
             });
         });
