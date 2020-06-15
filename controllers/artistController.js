@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
+const ArtistException = require('../Exceptions/artistExcepcion');
+const JSONException = require('../Exceptions/jsonException');
 
 function getUNQfy(filename) {
     if (filename === void 0) { filename = 'data.json'; }
@@ -20,16 +22,28 @@ function saveUNQfy(unq, filename = 'data.json') {
 function getArtist(req, res){
     const id = req.params.id;
     const UNQfy = getUNQfy();
-    res.status(200).send({artist: UNQfy.getArtistById(id)});
+    try {
+        res.status(200).json({artist: UNQfy.getArtistById(id)});    
+    } catch (error) {
+        throw new ArtistException.ArtistExcepcion();
+    }
+    
 }
 function saveArtist(req, res){
     const body = req.body;
     console.log(body);
     const UNQfy = getUNQfy();
     if(body.name && body.country){
-        const artist = UNQfy.addArtist({name: body.name, country: body.country});
-        saveUNQfy(UNQfy);
-        res.status(200).send({artist: artist});
+        try {
+            const artist = UNQfy.addArtist({name: body.name, country: body.country});
+            saveUNQfy(UNQfy);
+            res.status(200).json({artist: artist});    
+        } catch (error) {
+            throw ArtistException.ArtistExistsWithThatName(body.name);
+        }
+        
+    }else{
+        throw new JSONException.JSONException();
     }
 }
 
@@ -38,25 +52,36 @@ function updateArtist(req, res){
     const body = req.body;
     const UNQfy= getUNQfy();
     if(body.name && body.country){
-        const artist = UNQfy.getArtistById(id);
-        artist.update(body);
-        saveUNQfy(UNQfy);
-        res.status(200).send({artist: artist});   
+        try {
+            const artist = UNQfy.getArtistById(id);
+            artist.update(body);
+            saveUNQfy(UNQfy);
+            res.status(200).json({artist: artist});    
+        } catch (error) {
+            throw new ArtistException.ArtistExcepcion();
+        }
+           
+    }else{
+        throw new JSONException.JSONException();
     }
 }
 
 function deleteArtist(req, res){
     const id = req.params.id;
     const UNQfy = getUNQfy();
-    UNQfy.removeArtist(id);
-    saveUNQfy(UNQfy);
-    res.status(204).send({message: 'Se ha borrado el artista con éxito'});
+    try {
+        UNQfy.removeArtist(id);
+        saveUNQfy(UNQfy);
+        res.status(204).json({message: 'Se ha borrado el artista con éxito'});   
+    } catch (error) {
+        throw new ArtistException.ArtistExcepcion();
+    }
 }
 
 function getArtistQuery(req, res){
     const name = req.query.name;
     const UNQfy = getUNQfy();
-    res.status(200).send({artists: UNQfy.searchByName(name).artists});
+    res.status(200).json({artists: UNQfy.searchByName(name).artists});
 
 }
 

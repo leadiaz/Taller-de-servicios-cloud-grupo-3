@@ -10,11 +10,8 @@ import {NotExistAlbumError, AlbumExistsInArtistError} from "../Exceptions/albumE
 import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
 import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
 import {albumsArtistaPorName} from "./controller";
-import{saveUNQfy} from "../main"
-
-
-
-
+// import{saveUNQfy} from "../main"
+// const saveUNQfy = require('../main')
 
 const app = require('./controller');
 
@@ -235,7 +232,7 @@ export class UNQfy {
             const tracks = artist.getTracks();
             artist.removeAlbums();
             this.removeTracksFromPlayLists(tracks);
-            this.removeElem(this.artists, artist, new ArtistExcepcion('No existe el artista'));
+            this.removeElem(this.artists, artist, new ArtistExcepcion());
         } catch (error) {
             console.log(error.message);
         }
@@ -320,7 +317,7 @@ export class UNQfy {
 
     getArtistById(id) {
         try {
-            return this.getPorId(this.artists, id, new ArtistExcepcion('No existe el artista'));
+            return this.getPorId(this.artists, id, new ArtistExcepcion());
         } catch (error) {
             console.log(error.message)
         }
@@ -345,7 +342,7 @@ export class UNQfy {
     }
 
     getTrackById(id) {
-        return this.getPorId(this.getTracks(), id, new TrackExcepcion('No existe el track'));
+        return this.getPorId(this.getTracks(), id, new TrackExcepcion());
     }
 
     getPlaylistById(id) {
@@ -384,9 +381,8 @@ export class UNQfy {
          * un metodo duration() que retorne la duración de la playlist.
          * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
          */
-        const playlist = new Playlist()
+        const playlist = new Playlist(name)
         const tracks = this.getTracksMatchingGenres(genresToInclude)
-        playlist.name = name
         playlist.addTracks(tracks, maxDuration)
         this.playlists.push(playlist)
         return playlist;
@@ -402,7 +398,7 @@ export class UNQfy {
     //Retorna el artista con el name dado, sino lo encuentra lanza una excepcion
     getArtist(anArtist) {
         try {
-            return this.getElem(anArtist, this.artists, new ArtistExcepcion(anArtist))
+            return this.getElem(anArtist, this.artists, new ArtistExcepcion())
         } catch (error) {
             console.log(error.message)
         }
@@ -421,7 +417,7 @@ export class UNQfy {
     getTrack(aTrack) {
         let track;
         try {
-            return this.getElem(aTrack, this.getTracks(), new TrackExcepcion(aTrack))
+            return this.getElem(aTrack, this.getTracks(), new TrackExcepcion())
         } catch (error) {
             console.log(error.message);
         }
@@ -506,9 +502,10 @@ export class UNQfy {
     }
 
     populateAlbumsForArtist(artistName) {
-        const promiseAlbums = app.agregar(this, artistName)
+        const promiseAlbums = app(this, artistName)
+        console.log(promiseAlbums)
         const idArtist = this.getArtist(artistName).id
-        promiseAlbums.then((albums) => {
+        return promiseAlbums.then((albums) => {
             albums.forEach(album => {
                 this.addAlbum(idArtist, {name: album.name, year: album.release_date})
             });
@@ -532,13 +529,14 @@ export class UNQfy {
     switch (metodo) {
       case 'populateAlbumsForArtist':
         this.populateAlbumsForArtist(argumentos[0]).then((albums) =>
-        saveUNQfy(this)
+        // saveUNQfy(this)
+        this.save('data.json')
         );
          break;
       case 'getLyricsForTrack':
          this.getLyricsForTrack(argumentos[0]).then((string)=>
          console.log(string),
-         saveUNQfy(this)
+            this.save('data.json')
          );
          break;
       case 'addArtist':
