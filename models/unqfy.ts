@@ -262,7 +262,8 @@ export class UNQfy {
       artist.addAlbum(album)
      // console.log(artist.albums)
     }catch(error){
-      console.log(error.message);
+      throw error
+      
     }
     return album;
   }
@@ -275,7 +276,7 @@ export class UNQfy {
       this.removeTracksFromPlayLists(album.tracks)
       artist.removeAlbum(album)
     }catch (e) {
-      console.log(e.message)
+      throw e
     }
   }
 
@@ -521,92 +522,6 @@ getLyricsForTrack(trackName) {
 
 
   
-
-  evalMethod(metodo:string, argumentos:Array<any>){
-    switch (metodo) {
-      case 'populateAlbumsForArtist': 
-        this.populateAlbumsForArtist(argumentos[0]).then((albums) => 
-        saveUNQfy(this)
-        );
-         break;
-      case 'getLyricsForTrack':
-         this.getLyricsForTrack(argumentos[0]).then((string)=> 
-         console.log(string),
-         saveUNQfy(this)
-         );
-         break;   
-      case 'addArtist':
-        console.log(this.addArtist({name: argumentos[0], country: argumentos[1]}));
-        break;
-      case  'addAlbum':
-        console.log(this.addAlbum(argumentos[0], {name: argumentos[1], year: eval(argumentos[2])}));
-        break;
-      case 'addTrack':
-        console.log(this.addTrack(argumentos[0],{name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3])}));
-        break;
-      case 'addUser':
-        console.log(this.addUser(argumentos[0]))
-        break;  
-      case 'removeArtist':
-        this.removeArtist(argumentos[0]);
-        break;
-      case 'removeAlbum':
-        this.removeAlbum(argumentos[0]);
-        break;
-      case 'removeTrack':
-        this.removeTrack(argumentos[0]);
-        break;
-      case 'getAlbumsFromArtist':
-        console.log(this.getAlbumsFromArtist(argumentos[0]))
-        break;
-      case 'getTracksFromAlbum':
-        console.log(this.getTracksFromAlbum(argumentos[0]))
-        break
-      case 'printArtist':
-        try{
-          console.log(this.getArtist(argumentos[0]))
-        }catch (e) {
-          console.log(e.message)
-        }
-
-        break;
-      case 'printAlbum':
-        try{
-          console.log(this.getAlbum(argumentos[0]))
-        }catch (e) {
-          console.log(e.message)
-        }
-        break;
-      case 'printTrack':
-        try{
-          console.log(this.getTrack(argumentos[0]))
-        }catch (e) {
-          console.log(e.message)
-        }
-        break;
-      case 'getTracksMatchingArtist':
-        console.log(this.getTracksMatchingArtist(argumentos[0]));
-        break;
-      case 'getTracksMatchingGenres':
-        console.log(this.getTracksMatchingGenres(eval(argumentos[0])));
-        break;
-      case 'createPlaylist':
-        this.createPlaylist(argumentos[0], eval(argumentos[1]), eval(argumentos[2]));
-        break;
-      case 'searchByName':
-        console.log(this.searchByName(argumentos[0]));
-        break;
-      case 'getArtists':
-        console.log(this.artists)
-        break
-      case 'getPlaylists':
-        console.log(this.playlists)
-        break
-      default :
-        console.log("no existe el metodo: ", metodo)
-    }
-    
-  }
   save(filename) {
     const listenersBkp = this.listeners;
     this.listeners = [];

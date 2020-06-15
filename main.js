@@ -54,6 +54,6 @@ function main() {
         argumetos.push(process.argv[i]);
     }
     unqfy.evalMethod(method, argumetos);
-    saveUNQfy(unqfy);
+    // saveUNQfy(unqfy)
 }
 main();

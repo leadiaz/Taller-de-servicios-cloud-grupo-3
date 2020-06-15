@@ -1,5 +1,7 @@
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
+const { DuplicatedError } = require('../erroresApi/DuplicatedError');
+const { NotFoundError } = require('../erroresApi/NotFoundError');
 
 
 
@@ -20,14 +22,17 @@ const unqfyApi = getUNQfy()
 
 
 function addAlbum(req,res){
-    const body = req.body  
-    console.log(body)
+    const body = req.body; 
     if(body.artistId && body.name && body.year) {
-        console.log(body)
-        unqfyApi.addAlbum(body.artistId,{name:body.name,year:body.year})
-        saveUNQfy(unqfyApi)
-        res.status(201)
-        res.json(unqfyApi.getAlbum(body.name))
+        try {
+            unqfyApi.addAlbum(body.artistId,{name:body.name,year:body.year})
+            saveUNQfy(unqfyApi)
+            res.status(201)
+            res.json(unqfyApi.getAlbum(body.name))
+            
+        } catch (error) {
+            throw new DuplicatedError(body.name)  
+        }
     }else{
         res.send("Json mal formado")
     }
@@ -35,17 +40,24 @@ function addAlbum(req,res){
 
 function getAlbum(req,res){
     const id = req.params.id
-    console.log(id)
-    const album = unqfyApi.getAlbumById(id)
-    res.status(200)
-    res.json(album)
+    try {
+        const album = unqfyApi.getAlbumById(id)
+        res.status(200)
+        res.json(album)
+        
+    } catch (error) {
+        throw new NotFoundError(id)
+        
+    }
 }
 
 function updateAlbum(req,res){
     const id = req.params.id;
-    const year = req.body.year
-    if(year){
-        unqfyApi.getAlbumById(id).year = year
+    const dody = req.dody
+    console.log('esto es el body', dody)
+    if(dody.year){
+        unqfyApi.getAlbumById(id).year = dody.year
+        console.log('estoy aca')
         saveUNQfy(unqfyApi)
         res.status(200)
         res.json(unqfyApi.getAlbumById(id))
@@ -57,17 +69,18 @@ function updateAlbum(req,res){
 
 function deleteAlbum(req,res){
     const  id = req.params.id
-    unqfyApi.removeAlbum(id)
-    saveUNQfy(unqfyApi)
-    res.status(204)
+    try {
+        unqfyApi.removeAlbum(id)
+        saveUNQfy(unqfyApi)
+        res.status(204)
+        
+    } catch (error) {
+        throw new NotFoundError (id)
+    }
+    
 }
 
-function getTrack (req,res){
-    const id = req.params.id 
-    const track = unqfyApi.getTrackById(id) 
-    res.status(200)
-    res.json({name:track.name,lyrics:track.getLyrics()})
-}
+
 function searchAlbums(req,res) {
     const nameAlbum = req.query.name.toLowerCase()
     const albums = unqfyApi.searchAlbums(nameAlbum)
@@ -82,6 +95,5 @@ module.exports = {
     getAlbum,
     updateAlbum,
     deleteAlbum,
-    getTrack,
     searchAlbums,
 };
