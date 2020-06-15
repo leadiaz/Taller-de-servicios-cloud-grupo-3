@@ -440,7 +440,6 @@ var UNQfy = /** @class */ (function () {
     };
     UNQfy.prototype.populateAlbumsForArtist = function (artistName) {
         var _this = this;
-        //console.log(promiseAlbums)
         var idArtist = this.getArtist(artistName).id;
         return controller_1.albumsArtistaPorName(artistName).then(function (albums) {
             albums.forEach(function (album) {

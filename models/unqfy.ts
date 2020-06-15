@@ -500,10 +500,7 @@ searchAlbums(anName){
 
 
 
-
-
  populateAlbumsForArtist(artistName) {
- //console.log(promiseAlbums)
  const idArtist = this.getArtist(artistName).id
  return   albumsArtistaPorName(artistName).then((albums) => { 
    albums.forEach(album => {
