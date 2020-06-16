@@ -93,6 +93,7 @@ var UNQfy = /** @class */ (function () {
             if (error instanceof artistExcepcion_1.ArtistExistsWithThatName) {
                 console.log(error.message);
             }
+            throw error;
             return;
         }
         return artista;
@@ -295,6 +296,7 @@ var UNQfy = /** @class */ (function () {
         }
         catch (error) {
             console.log(error.message);
+            throw error;
         }
     };
     UNQfy.prototype.getAlbums = function () {
@@ -365,6 +367,7 @@ var UNQfy = /** @class */ (function () {
         }
         catch (error) {
             console.log(error.message);
+            throw error;
         }
     };
     //Retorna el album con el name dado, sino lo encuentra lanza una excepcion
@@ -473,13 +476,16 @@ var UNQfy = /** @class */ (function () {
         var albumsName = [];
         return controller_1.albumsArtistaPorName(artistName).then(function (albums) {
             albums.forEach(function (album) {
-                if (!albumsName.includes(album.name)) {
-                    albumsName.push(album.name);
-                    _this.addAlbum(idArtist, { name: album.name, year: album.release_date });
-                }
+                _this.evalSiExist(albumsName, album, idArtist);
             });
             return albums;
         });
+    };
+    UNQfy.prototype.evalSiExist = function (albumsName, album, idArtist) {
+        if (!albumsName.includes(album.name)) {
+            albumsName.push(album.name);
+            var _album = this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+        }
     };
     UNQfy.prototype.getLyricsForTrack = function (trackName) {
         var track = this.getTrack(trackName);

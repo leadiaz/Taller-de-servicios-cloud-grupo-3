@@ -5,6 +5,7 @@ const unqmod = require('../models/unqfy');
 const JSONException =  require('../Exceptions/jsonException');
 const TrackError = require('../Exceptions/trackExcepcion');
 const PlaylistException = require('../Exceptions/playListExcepcion');
+const ERROR_API = require('../Exceptions/excepcionesAPI');
 
 function getUNQfy(filename) {
     if (filename === void 0) { filename = 'data.json'; }
@@ -24,7 +25,7 @@ function savePlaylist(req, res){
     const UNQfy = getUNQfy();
     //esto esta mal, hay que ver el caso de crear playlist por trackIds
     if(body.name){
-        const playlist = UNQfy.createPlaylist(body);
+        const playlist = UNQfy.createPlaylist(body.name, body.genres, body.maxDuration);
         if(body.tracks){
             const trackIds = body.tracks;
             try {
@@ -50,7 +51,7 @@ function agregarTracks(trackIds, UNQfy, playlist) {
             playlist.addTrack(element);
         }
         catch (error) {
-            throw new TrackError.TrackExcepcion();
+            throw new ERROR_API.NotFound('Track');
         }
     });
 }
@@ -61,7 +62,7 @@ function getPlaylist(req, res){
     try {
         res.status(200).send({playlist: UNQfy.getPlaylistById(id)});    
     } catch (error) {
-        throw PlaylistException.NotExistPlayListError();
+        throw new ERROR_API.NotFound('Playlist');
     }
 }
 
@@ -73,7 +74,7 @@ function deletePlaylist(req, res){
         saveUNQfy(UNQfy);
         res.status(204);
     } catch (error) {
-        throw new PlaylistException.NotExistPlayListError();
+        throw new ERROR_API.NotFound('Playlist');
     }
 }
 

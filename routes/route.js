@@ -16,16 +16,17 @@ api.get('/api/artists/', ArtistController.getArtistQuery);
 api.post('/api/playlists', PlaylistController.savePlaylist);
 api.get('/api/playlists/:id', PlaylistController.getPlaylist);
 api.delete('/api/playlists/:id', PlaylistController.deletePlaylist);
-api.get('/api/playlists', PlaylistController.getPlaylistQuery);
+api.get('/api/playlists/', PlaylistController.getPlaylistQuery);
 
 
 app.set('json spaces',2);
 const PORT = process.env.PORT || 9000;
 
-app.use(api);
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+app.use(api);
 app.use(errorApi);
+
 
 
 app.listen(PORT,()=>{

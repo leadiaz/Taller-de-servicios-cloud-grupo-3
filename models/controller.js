@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var token = 'BQAoAPACspyWDnXxTv1PrFB2m0aJRW4n1-v6fXQlYmk2aoRhcGZ8QCy3TGFpc4NRt4Kfr9oMfdMno1FelwhAu8jjxIxO5Ld_9IsfeGDg13gBTl9pUGuYamX-lxlamacICEVtPqAa8mrOxhMyYk_hWUiOhKIJHdzngMhjJb3Uxlb18vOZEg';
+var tokenAccess = require('../spotifyCreds.json');
+var token = tokenAccess.access_token;
 var rp = require('request-promise');
 var options = {
     url: "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks?offset=0&limit=50",

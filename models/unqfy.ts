@@ -105,6 +105,7 @@ export class UNQfy {
             if (error instanceof ArtistExistsWithThatName) {
                 console.log(error.message)
             }
+            throw error
             return;
 
         }
@@ -326,6 +327,7 @@ export class UNQfy {
             return this.getPorId(this.artists, id, new ArtistExcepcion());
         } catch (error) {
             console.log(error.message)
+            throw error
         }
     }
 
@@ -407,6 +409,7 @@ export class UNQfy {
             return this.getElem(anArtist, this.artists, new ArtistExcepcion())
         } catch (error) {
             console.log(error.message)
+            throw error
         }
     }
 
@@ -526,15 +529,19 @@ popularAlbumsForArtist(artistName) {
  const albumsName = []
  return   albumsArtistaPorName(artistName).then((albums) => {
    albums.forEach(album => {
-     if(!albumsName.includes(album.name)){
-       albumsName.push(album.name)
-       this.addAlbum(idArtist,{name:album.name,year:album.release_date})
-     }
+     this.evalSiExist(albumsName, album, idArtist);
    });
    return albums
  })
 }
 
+
+    private evalSiExist(albumsName: any[], album: any, idArtist: any) {
+        if (!albumsName.includes(album.name)) {
+            albumsName.push(album.name);
+            const _album = this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+        }
+    }
 
 getLyricsForTrack(trackName) {
   const track = this.getTrack(trackName)

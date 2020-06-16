@@ -1,5 +1,5 @@
-
-let token = 'BQAoAPACspyWDnXxTv1PrFB2m0aJRW4n1-v6fXQlYmk2aoRhcGZ8QCy3TGFpc4NRt4Kfr9oMfdMno1FelwhAu8jjxIxO5Ld_9IsfeGDg13gBTl9pUGuYamX-lxlamacICEVtPqAa8mrOxhMyYk_hWUiOhKIJHdzngMhjJb3Uxlb18vOZEg'
+const tokenAccess = require('../spotifyCreds.json');
+let token = tokenAccess.access_token;
 
 const rp = require('request-promise');
 const options = {

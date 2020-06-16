@@ -65,8 +65,9 @@ function setUp(unqfy){
 
 function evalMethod(metodo, argumentos,unqfy){
     switch (metodo) {
-      case 'populateAlbumsForArtist': 
-        unqfy.popularAlbumsForArtist(argumentos[0]).then((albums) => 
+      case 'popularAlbumsForArtist': 
+        unqfy.popularAlbumsForArtist(argumentos[0])
+        .then((albums) => 
         saveUNQfy(unqfy)
         );
          break;

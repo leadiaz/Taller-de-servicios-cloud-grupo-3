@@ -4,6 +4,7 @@ const fs = require('fs');
 const unqmod = require('../models/unqfy');
 const ArtistException = require('../Exceptions/artistExcepcion');
 const JSONException = require('../Exceptions/jsonException');
+const ERROR_API = require('../Exceptions/excepcionesAPI');
 
 function getUNQfy(filename) {
     if (filename === void 0) { filename = 'data.json'; }
@@ -25,7 +26,7 @@ function getArtist(req, res){
     try {
         res.status(200).json({artist: UNQfy.getArtistById(id)});    
     } catch (error) {
-        throw new ArtistException.ArtistExcepcion();
+        throw new ERROR_API.NotFound('Artista');
     }
     
 }
@@ -39,7 +40,7 @@ function saveArtist(req, res){
             saveUNQfy(UNQfy);
             res.status(200).json({artist: artist});    
         } catch (error) {
-            throw ArtistException.ArtistExistsWithThatName(body.name);
+            throw new ERROR_API.Duplicate('Artista');
         }
         
     }else{
@@ -58,7 +59,7 @@ function updateArtist(req, res){
             saveUNQfy(UNQfy);
             res.status(200).json({artist: artist});    
         } catch (error) {
-            throw new ArtistException.ArtistExcepcion();
+            throw new ERROR_API.NotFound('Artista');
         }
            
     }else{
@@ -74,7 +75,7 @@ function deleteArtist(req, res){
         saveUNQfy(UNQfy);
         res.status(204).json({message: 'Se ha borrado el artista con éxito'});   
     } catch (error) {
-        throw new ArtistException.ArtistExcepcion();
+        throw new ERROR_API.NotFound('Artista');
     }
 }
 
