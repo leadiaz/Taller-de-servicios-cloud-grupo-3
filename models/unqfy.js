@@ -255,7 +255,11 @@ var UNQfy = /** @class */ (function () {
             - una propiedad duration (number),
             - una propiedad genres (lista de strings)
         */
-        var track = new track_1.Track(albumId, trackData.name, trackData.duration, trackData.genres);
+        var track = new track_1.Track();
+        track.idAlbum = albumId;
+        track.name = trackData.name;
+        track.duration = trackData.duration;
+        track.genres = trackData.genres;
         var album = this.getAlbumById(albumId);
         album.addTrack(track);
         return track;

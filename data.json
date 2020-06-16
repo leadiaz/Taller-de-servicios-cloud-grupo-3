@@ -10,14 +10,13 @@
       "artists": "__00002__",
       "playlists": "__00003__",
       "users": "__00004__",
-      "listeners": "__00005__"
+      "listeners": "__00001__"
     },
     "__00002__": {
       "0": "__00006__"
     },
     "__00003__": {},
     "__00004__": {},
-    "__00005__": {},
     "__00006__": {
       "name": "David bowie",
       "country": "Usa",
@@ -25,173 +24,40 @@
       "albums": "__00007__"
     },
     "__00007__": {
-      "0": "__00008__",
-      "1": "__00002__",
-      "2": "__00003__",
-      "3": "__00004__",
-      "4": "__00009__",
-      "5": "__00006__",
-      "6": "__00007__",
-      "7": "__00008__",
-      "8": "__00010__",
-      "9": "__00011__",
-      "10": "__00012__",
-      "11": "__00013__",
-      "12": "__00014__",
-      "13": "__00015__",
-      "14": "__00016__",
-      "15": "__00017__",
-      "16": "__00018__",
-      "17": "__00019__",
-      "18": "__00020__",
-      "19": "__00021__"
+      "0": "__00008__"
     },
     "__00008__": {
       "idArtist": 1,
       "name": "Album 1",
       "year": 2000,
       "id": 2,
-      "tracks": "__00010__"
+      "tracks": "__00009__"
     },
     "__00009__": {
-      "idArtist": 1,
-      "name": "Space Oddity (2019 Mix)",
-      "year": "2019-11-14",
-      "id": 7,
-      "tracks": "__00022__"
+      "0": "__00010__"
     },
     "__00010__": {
-      "idArtist": 1,
-      "name": "Glastonbury 2000 (Live)",
-      "year": "2018-11-30",
-      "id": 11,
-      "tracks": "__00023__"
+      "idAlbum": 2,
+      "id": 3,
+      "name": "Stuck With U (with Justin Bieber)",
+      "duration": 10,
+      "genres": "__00011__",
+      "lyrics": "Mmm\nHey, yeah\n(That's just for fun)\n(What?)\n(I'm stuck with you)\nAh\n\nI'm not one to stick around\nOne strike and you're out, baby\nDon't care if I sound crazy\nBut you never let me down, no, no\nThat's why when the sun's up, I'm stayin'\nStill layin' in your bed, singin'\n\nOoh, ooh, ooh, ooh\nGot all this time on my hands\nMight as well cancel our plans, yeah\nI could stay here for a lifetime\n\nSo, lock the door and throw out the key\nCan't fight this no more, it's just you and me\nAnd there's nothin' I, nothin' I, I can do\n...\n\n******* This Lyrics is NOT for Commercial use *******\n(1409620044221)"
     },
     "__00011__": {
-      "idArtist": 1,
-      "name": "ライヴ・イン・モントリオール1983 (Live)",
-      "year": "2018-10-24",
-      "id": 12,
-      "tracks": "__00024__"
-    },
-    "__00012__": {
-      "idArtist": 1,
-      "name": "Welcome To The Blackout (Live London '78)",
-      "year": "2018-04-20",
-      "id": 13,
-      "tracks": "__00025__"
-    },
-    "__00013__": {
-      "idArtist": 1,
-      "name": "Stage (2017) [Live]",
-      "year": "2017-09-29",
-      "id": 14,
-      "tracks": "__00026__"
-    },
-    "__00014__": {
-      "idArtist": 1,
-      "name": "Cracked Actor (Live, Los Angeles '74)",
-      "year": "2017-04-22",
-      "id": 15,
-      "tracks": "__00027__"
-    },
-    "__00015__": {
-      "idArtist": 1,
-      "name": "Blackstar",
-      "year": "2016-01-08",
-      "id": 16,
-      "tracks": "__00028__"
-    },
-    "__00016__": {
-      "idArtist": 1,
-      "name": "The Next Day",
-      "year": "2013-03-08",
-      "id": 17,
-      "tracks": "__00029__"
-    },
-    "__00017__": {
-      "idArtist": 1,
-      "name": "A Reality Tour",
-      "year": "2010-01-26",
-      "id": 18,
-      "tracks": "__00030__"
-    },
-    "__00018__": {
-      "idArtist": 1,
-      "name": "VH1 Storytellers (Live)",
-      "year": "2009-07-06",
-      "id": 19,
-      "tracks": "__00031__"
-    },
-    "__00019__": {
-      "idArtist": 1,
-      "name": "Glass Spider (Live Montreal '87, 2018 Remaster)",
-      "year": "2007-10-23",
-      "id": 20,
-      "tracks": "__00032__"
-    },
-    "__00020__": {
-      "idArtist": 1,
-      "name": "Reality",
-      "year": "2003-09-16",
-      "id": 21,
-      "tracks": "__00033__"
-    },
-    "__00021__": {
-      "idArtist": 1,
-      "name": "Heathen",
-      "year": "2002-06-11",
-      "id": 22,
-      "tracks": "__00034__"
-    },
-    "__00022__": {},
-    "__00023__": {},
-    "__00024__": {},
-    "__00025__": {},
-    "__00026__": {},
-    "__00027__": {},
-    "__00028__": {},
-    "__00029__": {},
-    "__00030__": {},
-    "__00031__": {},
-    "__00032__": {},
-    "__00033__": {},
-    "__00034__": {}
+      "0": "pop"
+    }
   },
   "types": {
     "__00001__": "UNQfy",
     "__00002__": "Array",
     "__00003__": "Array",
     "__00004__": "Array",
-    "__00005__": "Array",
     "__00006__": "Artist",
     "__00007__": "Array",
     "__00008__": "Album",
-    "__00009__": "Album",
-    "__00010__": "Album",
-    "__00011__": "Album",
-    "__00012__": "Album",
-    "__00013__": "Album",
-    "__00014__": "Album",
-    "__00015__": "Album",
-    "__00016__": "Album",
-    "__00017__": "Album",
-    "__00018__": "Album",
-    "__00019__": "Album",
-    "__00020__": "Album",
-    "__00021__": "Album",
-    "__00022__": "Array",
-    "__00023__": "Array",
-    "__00024__": "Array",
-    "__00025__": "Array",
-    "__00026__": "Array",
-    "__00027__": "Array",
-    "__00028__": "Array",
-    "__00029__": "Array",
-    "__00030__": "Array",
-    "__00031__": "Array",
-    "__00032__": "Array",
-    "__00033__": "Array",
-    "__00034__": "Array"
+    "__00009__": "Array",
+    "__00010__": "Track",
+    "__00011__": "Array"
   }
 }

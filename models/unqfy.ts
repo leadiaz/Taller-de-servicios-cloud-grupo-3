@@ -282,7 +282,13 @@ export class UNQfy {
             - una propiedad duration (number),
             - una propiedad genres (lista de strings)
         */
-        const track = new Track(albumId, trackData.name, trackData.duration, trackData.genres);
+        
+        const track = new Track();
+        track.idAlbum = albumId
+        track.name = trackData.name
+        track.duration =  trackData.duration
+        track.genres =  trackData.genres
+
         const album: Album = this.getAlbumById(albumId);
         album.addTrack(track)
         return track;
