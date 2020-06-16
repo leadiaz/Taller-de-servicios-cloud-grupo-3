@@ -24,7 +24,7 @@ function getArtist(req, res){
     const id = req.params.id;
     const UNQfy = getUNQfy();
     try {
-        res.status(200).json({artist: UNQfy.getArtistById(id)});    
+        res.status(200).json(UNQfy.getArtistById(id));    
     } catch (error) {
         throw new ERROR_API.NotFound('Artista');
     }
@@ -38,7 +38,7 @@ function saveArtist(req, res){
         try {
             const artist = UNQfy.addArtist({name: body.name, country: body.country});
             saveUNQfy(UNQfy);
-            res.status(200).json({artist: artist});    
+            res.status(200).json(artist);    
         } catch (error) {
             throw new ERROR_API.Duplicate('Artista');
         }
@@ -57,7 +57,7 @@ function updateArtist(req, res){
             const artist = UNQfy.getArtistById(id);
             artist.update(body);
             saveUNQfy(UNQfy);
-            res.status(200).json({artist: artist});    
+            res.status(200).json(artist);    
         } catch (error) {
             throw new ERROR_API.NotFound('Artista');
         }
@@ -73,7 +73,7 @@ function deleteArtist(req, res){
     try {
         UNQfy.removeArtist(id);
         saveUNQfy(UNQfy);
-        res.status(204).json({message: 'Se ha borrado el artista con éxito'});   
+        res.status(204);   
     } catch (error) {
         throw new ERROR_API.NotFound('Artista');
     }
@@ -82,7 +82,7 @@ function deleteArtist(req, res){
 function getArtistQuery(req, res){
     const name = req.query.name;
     const UNQfy = getUNQfy();
-    res.status(200).json({artists: UNQfy.searchByName(name).artists});
+    res.status(200).json(UNQfy.searchByName(name).artists);
 
 }
 
