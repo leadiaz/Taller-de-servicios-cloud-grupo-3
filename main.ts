@@ -12,7 +12,7 @@ function getUNQfy(filename = 'data.json') {
   return unqfy;
 }
 
-export function saveUNQfy(unqfy, filename = 'data.json') {
+function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 

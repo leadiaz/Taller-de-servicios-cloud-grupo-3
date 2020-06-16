@@ -5,9 +5,10 @@ export class User {
       name: string
       id: Number
       tracks:Track[]
-    constructor(){
+    constructor(name){
         this.id = IdGenerator.getNextId()
         this.tracks = []
+        this.name = name
     }
 
 

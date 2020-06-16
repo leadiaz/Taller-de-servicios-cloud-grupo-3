@@ -1,10 +1,10 @@
 import {AlbumExistsInArtistError, NotExistAlbumError} from "../Exceptions/albumException";
 
 export class Artist{
-    albums:Album[]
+    albums:Album[];
+    id;
 
     constructor(
-        public id?:Number,
         public name?:String,
         public country?:String,
     ){
@@ -26,8 +26,6 @@ export class Artist{
     getTracks():Track[]{
         return this.albums.reduce((accumulator, album) => {return accumulator.concat(album.tracks)}, [])  
     }
-
-
     removeAlbum(anAlbum){
         const album = this.albums.find(album => album.id === anAlbum.id)
         if(!album){
@@ -48,9 +46,14 @@ export class Artist{
     private existeAlbum(name: any) {
         return this.albums.some(album => {return album.name === name})
     }
+    update(body){
+        this.name = body.name;
+        this.country = body.country;
+    }
 }
 
 
 import { Album } from "./album";
 import { Track } from "./track";
 import { IdGenerator } from "./idGenerator";
+

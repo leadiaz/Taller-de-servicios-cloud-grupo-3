@@ -2,18 +2,14 @@
 exports.__esModule = true;
 var idGenerator_1 = require("./idGenerator");
 var Playlist = /** @class */ (function () {
-    function Playlist(id, name, tracks) {
-        this.id = id;
+    function Playlist(name) {
         this.name = name;
-        this.tracks = tracks;
         this.id = idGenerator_1.IdGenerator.getNextId();
-        this.tracks = new Array();
+        this.tracks = [];
+        this.duration = 0;
     }
     Playlist.prototype.toJSON = function () {
         return { id: this.id, name: this.name, tracks: this.tracks };
-    };
-    Playlist.prototype.duration = function () {
-        return 0;
     };
     Playlist.prototype.hasTrack = function (aTrack) {
         return this.tracks.includes(aTrack);
@@ -26,8 +22,13 @@ var Playlist = /** @class */ (function () {
             if (n < maxDuration && track.duration < maxDuration) {
                 _this.tracks.push(track);
                 n = n + track.duration;
+                _this.duration += track.duration;
             }
         });
+    };
+    Playlist.prototype.addTrack = function (track) {
+        this.duration += track.duration;
+        this.tracks.push(track);
     };
     Playlist.prototype.removeAtrack = function (aTrack) {
         this.tracks.splice(this.tracks.indexOf(aTrack), 1);

@@ -5,8 +5,8 @@ export class  TrackExistsInAlbumError extends Error{
     }
 }
 export class TrackExcepcion extends Error{
-    constructor(trackName:string){
-        super("No existe el track con este nombre: "+ trackName)
-        this.name = "TrackError"
+    constructor(){
+        super("No existe el track")
+        this.name = "TrackExcepcion"
     }
 }

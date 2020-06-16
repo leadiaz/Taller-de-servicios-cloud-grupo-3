@@ -2,43 +2,39 @@ import{Track} from "./track"
 import { IdGenerator } from "./idGenerator";
 
 export class Playlist{
-    
+    tracks: any[];
+    id: number;
+    duration: number;
+
     constructor(
-        public id?: Number,
         public name?: String,
-        public tracks?: Array<Track>,
-        
     ){
         this.id = IdGenerator.getNextId()
-        this.tracks = new Array();
+        this.tracks = []
+        this.duration = 0
     }
     toJSON(){
         return {id: this.id, name: this.name, tracks: this.tracks}
     }
 
-
-    duration():Number{
-     return 0;
-    }
-
     hasTrack(aTrack):Boolean{
         return this.tracks.includes(aTrack)
     }
-    addTracks(tracks: Track[], maxDuration: Number) {
+    addTracks(tracks: Track[], maxDuration) {
         // var item = items[Math.floor(Math.random() * items.length)];
-        var n: any = 0
+        let n = 0
         tracks.forEach((track) => {
             if(n < maxDuration && track.duration < maxDuration){
                this.tracks.push(track)
                n = n + track.duration
-            }
-            
+               this.duration += track.duration
+            } 
         })
-        
-      }
-
-    
-
+    }
+    addTrack(track){
+        this.duration += track.duration
+        this.tracks.push(track)
+    }
     removeAtrack(aTrack){
         this.tracks.splice(this.tracks.indexOf(aTrack),1)
     }

@@ -2,9 +2,10 @@
 exports.__esModule = true;
 var idGenerator_1 = require("./idGenerator");
 var User = /** @class */ (function () {
-    function User() {
+    function User(name) {
         this.id = idGenerator_1.IdGenerator.getNextId();
         this.tracks = [];
+        this.name = name;
     }
     //El usuario escucha un tema
     User.prototype.listenTrack = function (aTrack) {

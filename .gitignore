@@ -2,3 +2,5 @@
 .vscode
 .eslintrc.json
 node_modules/
+spotifyCreds.json
+data.json

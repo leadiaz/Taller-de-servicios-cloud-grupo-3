@@ -26,9 +26,9 @@ var TrackExistsInAlbumError = /** @class */ (function (_super) {
 exports.TrackExistsInAlbumError = TrackExistsInAlbumError;
 var TrackExcepcion = /** @class */ (function (_super) {
     __extends(TrackExcepcion, _super);
-    function TrackExcepcion(trackName) {
-        var _this = _super.call(this, "No existe el track con este nombre: " + trackName) || this;
-        _this.name = "TrackError";
+    function TrackExcepcion() {
+        var _this = _super.call(this, "No existe el track") || this;
+        _this.name = "TrackExcepcion";
         return _this;
     }
     return TrackExcepcion;

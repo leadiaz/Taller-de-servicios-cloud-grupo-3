@@ -7,7 +7,7 @@ export class Track{
         public idAlbum?: Number,
         public id?: Number,
         public name?: String,
-        public duration?:Number,
+        public duration?:number,
         public genres?: Array<String>,
         public lyrics?: String ,
     ){
