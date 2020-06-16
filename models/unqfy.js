@@ -229,7 +229,7 @@ var UNQfy = /** @class */ (function () {
         }
         catch (error) {
             console.log(error.message);
-            return;
+            throw error;
         }
         return album;
     };
@@ -242,6 +242,7 @@ var UNQfy = /** @class */ (function () {
         }
         catch (e) {
             console.log(e.message);
+            throw e;
         }
     };
     // trackData: objeto JS con los datos necesarios para crear un track

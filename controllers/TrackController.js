@@ -1,6 +1,6 @@
 const fs = require('fs');
 const unq = require('../models/unqfy');
-const  NotFoundError  = require('../erroresApi/NotFoundError');
+const ERROR_API = require('../Exceptions/excepcionesAPI');
 
 function getUNQfy(filename) {
     if (filename === void 0) { filename = 'data.json'; }
@@ -24,10 +24,10 @@ function getTrack (req,res){
         res.json({name:track.name,lyrics:lyrics})
     })
     }catch(error) {
-        throw new NotFoundError.NotFoundError(id)
+        throw new ERROR_API.NotFound('Track')
     }
     }else{
-        res.send("Json mal formado")
+        throw new JSONException.JSONException();
     }
 }
 

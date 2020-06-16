@@ -255,7 +255,7 @@ export class UNQfy {
             artist.addAlbum(album);
         } catch (error) {
             console.log(error.message);
-            return;
+            throw error
         }
         return album;
     }
@@ -268,6 +268,7 @@ export class UNQfy {
             artist.removeAlbum(album)
         } catch (e) {
             console.log(e.message)
+            throw e 
         }
     }
 

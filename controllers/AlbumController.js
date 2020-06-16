@@ -1,8 +1,6 @@
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
-const { DuplicatedError } = require('../erroresApi/DuplicatedError');
-const { NotFoundError } = require('../erroresApi/NotFoundError');
-
+const ERROR_API = require('../Exceptions/excepcionesAPI');
 
 
 function getUNQfy(filename) {
@@ -31,10 +29,10 @@ function addAlbum(req,res){
             res.json(unqfyApi.getAlbum(body.name))
             
         } catch (error) {
-            throw new DuplicatedError(body.name)  
+            throw new ERROR_API.Duplicate('Album')
         }
     }else{
-        res.send("Json mal formado")
+        throw new JSONException.JSONException();
     }
 }
 
@@ -46,7 +44,7 @@ function getAlbum(req,res){
         res.json(album)
         
     } catch (error) {
-        throw new NotFoundError(id)
+        throw new ERROR_API.NotFound('Album')
         
     }
 }
@@ -62,12 +60,12 @@ function updateAlbum(req,res){
             res.json(unqfyApi.getAlbumById(id))
             
         } catch (error) {
-            throw new NotFoundError(id)
+            throw new ERROR_API.NotFound('Album')
             
         }
        
     }else{
-        res.send("Json mal formado")
+        throw new JSONException.JSONException();
     }
 }
 
@@ -80,7 +78,7 @@ function deleteAlbum(req,res){
         res.status(204)
         
     } catch (error) {
-        throw new NotFoundError (id)
+        throw new ERROR_API.NotFound('Album')
     }
     
 }
