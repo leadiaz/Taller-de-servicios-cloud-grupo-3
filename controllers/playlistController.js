@@ -23,7 +23,6 @@ function saveUNQfy(unq, filename = 'data.json') {
 function savePlaylist(req, res){
     const body = req.body;
     const UNQfy = getUNQfy();
-    //esto esta mal, hay que ver el caso de crear playlist por trackIds
     if(body.name){
         const playlist = UNQfy.createPlaylist(body.name, body.genres, body.maxDuration);
         if(body.tracks){
@@ -31,13 +30,13 @@ function savePlaylist(req, res){
             try {
                 agregarTracks(trackIds, UNQfy, playlist);
                 saveUNQfy(UNQfy);
-                res.status(201).send({playlist: playlist});
+                res.status(201).send(playlist);
             } catch (error) {
                 throw error;
             }    
         }else{
             saveUNQfy(UNQfy);
-            res.status(201).send({playlist: playlist});
+            res.status(201).send(playlist);
         }
     }else{
         throw new JSONException.JSONException();
@@ -60,7 +59,7 @@ function getPlaylist(req, res){
     const id = req.param.id;
     const UNQfy =  getUNQfy();
     try {
-        res.status(200).send({playlist: UNQfy.getPlaylistById(id)});    
+        res.status(200).send(UNQfy.getPlaylistById(id));    
     } catch (error) {
         throw new ERROR_API.NotFound('Playlist');
     }
@@ -86,7 +85,7 @@ function getPlaylistQuery(req, res){
         return playlist.duration < query.durationLT
                 && playlist.duration > query.durationGT;
     });
-    res.status(200).json({playlists: playlists});
+    res.status(200).json(playlists);
 }
 
 module.exports = {

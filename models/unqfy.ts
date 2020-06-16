@@ -54,22 +54,22 @@ export class UNQfy {
     searchByName(nombre: string) {
         const result: SearchResult = new SearchResult()
         this.artists.forEach((artist) => {
-            if (artist.name.includes(nombre)) {
+            if (artist.name.toLowerCase().includes(nombre.toLowerCase())) {
                 result.addArtist(artist)
             }
         });
         this.getAlbums().forEach(album => {
-            if (album.name.includes(nombre)) {
+            if (album.name.toLowerCase().includes(nombre.toLowerCase())) {
                 result.addAbum(album)
             }
         });
         this.getTracks().forEach(track => {
-            if (track.name.includes(nombre)) {
+            if (track.name.toLowerCase().includes(nombre.toLowerCase())) {
                 result.addTrack(track)
             }
         });
         this.playlists.forEach((playList) => {
-            if (playList.name.includes(nombre)) {
+            if (playList.name.toLowerCase().includes(nombre.toLowerCase())) {
                 result.addPlaylist(playList)
             }
         })
