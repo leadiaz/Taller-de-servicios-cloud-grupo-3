@@ -486,7 +486,7 @@ var UNQfy = /** @class */ (function () {
     UNQfy.prototype.evalSiExist = function (albumsName, album, idArtist) {
         if (!albumsName.includes(album.name)) {
             albumsName.push(album.name);
-            var _album = this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+            this.addAlbum(idArtist, { name: album.name, year: album.release_date });
         }
     };
     UNQfy.prototype.getLyricsForTrack = function (trackName) {

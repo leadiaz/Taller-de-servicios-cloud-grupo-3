@@ -26,7 +26,7 @@ export class Track{
 
 
    async getLyrics(){
-        if( this.lyrics == null){
+        if(this.lyrics == null){
           this.lyrics = await letraDeUnTema(this.name)   
           return this.lyrics   
         }

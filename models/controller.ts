@@ -16,6 +16,7 @@ function getIdArtistDeSpotify(artistName) {
       json: true,
     }).then((response) => {return response.artists.items[0]})
  }
+ 
  function albumesDeArtistaPorId(id) {
     return  rp.get({
           url: 'https://api.spotify.com/v1/artists/' +id + '/albums',

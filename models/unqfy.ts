@@ -536,14 +536,13 @@ popularAlbumsForArtist(artistName) {
    return albums
  })
 }
-
-
-    private evalSiExist(albumsName: any[], album: any, idArtist: any) {
+private evalSiExist(albumsName: any[], album: any, idArtist: any) {
         if (!albumsName.includes(album.name)) {
             albumsName.push(album.name);
-            const _album = this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+            this.addAlbum(idArtist, { name: album.name, year: album.release_date });
         }
     }
+
 
 getLyricsForTrack(trackName) {
   const track = this.getTrack(trackName)
