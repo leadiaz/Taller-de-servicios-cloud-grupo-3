@@ -32,13 +32,12 @@ function getArtist(req, res){
 }
 function saveArtist(req, res){
     const body = req.body;
-    console.log(body);
     const UNQfy = getUNQfy();
     if(body.name && body.country){
         try {
             const artist = UNQfy.addArtist({name: body.name, country: body.country});
             saveUNQfy(UNQfy);
-            res.status(200).json(artist);    
+            res.status(201).json(artist);    
         } catch (error) {
             throw new ERROR_API.Duplicate('Artista');
         }
@@ -80,9 +79,16 @@ function deleteArtist(req, res){
 }
 
 function getArtistQuery(req, res){
+    
     const name = req.query.name;
     const UNQfy = getUNQfy();
-    res.status(200).json(UNQfy.searchByName(name).artists);
+    if(name != undefined){
+        res.status(200).json(UNQfy.searchByName(name).artists);
+    }
+    else{
+     res.status(200).json(UNQfy.artists);
+    }
+    
 
 }
 

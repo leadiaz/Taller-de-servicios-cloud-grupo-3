@@ -11,9 +11,9 @@ const ControllerTrack = require('..//controllers/TrackController')
 
 
 api.get('/api/artists/:id/' ,ArtistController.getArtist);
-api.post('/api/artists/', ArtistController.saveArtist);
-api.patch('/api/artists/:id/', ArtistController.updateArtist);
-api.delete('/api/artists/:id/', ArtistController.deleteArtist);
+api.post('/api/artists', ArtistController.saveArtist);
+api.put('/api/artists/:id/', ArtistController.updateArtist);
+api.delete('/api/artists/:id', ArtistController.deleteArtist);
 api.get('/api/artists/', ArtistController.getArtistQuery);
 
 api.post('/api/playlists', PlaylistController.savePlaylist);
@@ -41,6 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(api);
 app.use(errorApi);
+
 
 
 

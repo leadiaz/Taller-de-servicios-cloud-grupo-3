@@ -236,6 +236,7 @@ export class UNQfy {
             this.removeElem(this.artists, artist, new ArtistExcepcion());
         } catch (error) {
             console.log(error.message);
+            throw error
         }
     }
 

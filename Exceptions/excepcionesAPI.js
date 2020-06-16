@@ -13,7 +13,21 @@ class Duplicate extends Error{
     }
 }
 
+class RELATED_RESOURCE_NOT_FOUND extends Error {
+    constructor(tipo){
+        super('No existe '+tipo);
+        this.name = 'RELATED_RESOURCE_NOT_FOUND';
+    }
+}
+class RESOURCE_NOT_FOUND extends Error {
+    constructor(tipo){
+        super('Invalida '+tipo);
+        this.name = 'RESOURCE_NOT_FOUND';
+    }
+}
+
 module.exports= {
     NotFound,
-    Duplicate
+    Duplicate,
+    RELATED_RESOURCE_NOT_FOUND
 }

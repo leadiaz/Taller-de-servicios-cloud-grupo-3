@@ -210,6 +210,7 @@ var UNQfy = /** @class */ (function () {
         }
         catch (error) {
             console.log(error.message);
+            throw error;
         }
     };
     // albumData: objeto JS con los datos necesarios para crear un album

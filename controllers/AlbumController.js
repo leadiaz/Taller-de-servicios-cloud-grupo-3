@@ -1,6 +1,8 @@
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
 const ERROR_API = require('../Exceptions/excepcionesAPI');
+const { ArtistExcepcion } = require('../Exceptions/artistExcepcion');
+const JsonException = require('../Exceptions/jsonException')
 
 
 function getUNQfy(filename) {
@@ -26,13 +28,17 @@ function addAlbum(req,res){
             unqfyApi.addAlbum(body.artistId,{name:body.name,year:body.year})
             saveUNQfy(unqfyApi)
             res.status(201)
-            res.json(unqfyApi.getAlbum(body.name))
+            res.json(unqfyApi.getAlbum(body.name).toJSON())
             
         } catch (error) {
-            throw new ERROR_API.Duplicate('Album')
+            if(error instanceof ArtistExcepcion) {
+                throw new ERROR_API.RELATED_RESOURCE_NOT_FOUND('Artist')
+            }else{
+                throw new ERROR_API.Duplicate('Album')   
+            }
         }
     }else{
-        throw new JSONException.JSONException();
+        throw new JsonException.JSONException();
     }
 }
 
