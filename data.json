@@ -10,14 +10,13 @@
       "artists": "__00002__",
       "playlists": "__00003__",
       "users": "__00004__",
-      "listeners": "__00005__"
+      "listeners": "__00001__"
     },
     "__00002__": {
       "0": "__00006__"
     },
     "__00003__": {},
     "__00004__": {},
-    "__00005__": {},
     "__00006__": {
       "id": 1,
       "name": "David bowie",
@@ -30,7 +29,7 @@
     "__00008__": {
       "idArtist": 1,
       "id": 2,
-      "name": "Album de David Bowie",
+      "name": "Album 1",
       "year": 2000,
       "tracks": "__00009__"
     },
@@ -41,7 +40,7 @@
       "idAlbum": 2,
       "id": 3,
       "name": "Stuck With U (with Justin Bieber)",
-      "duration": 20,
+      "duration": 10,
       "genres": "__00011__",
       "lyrics": "Mmm\nHey, yeah\n(That's just for fun)\n(What?)\n(I'm stuck with you)\nAh\n\nI'm not one to stick around\nOne strike and you're out, baby\nDon't care if I sound crazy\nBut you never let me down, no, no\nThat's why when the sun's up, I'm stayin'\nStill layin' in your bed, singin'\n\nOoh, ooh, ooh, ooh\nGot all this time on my hands\nMight as well cancel our plans, yeah\nI could stay here for a lifetime\n\nSo, lock the door and throw out the key\nCan't fight this no more, it's just you and me\nAnd there's nothin' I, nothin' I, I can do\n...\n\n******* This Lyrics is NOT for Commercial use *******\n(1409620044221)"
     },
@@ -54,7 +53,6 @@
     "__00002__": "Array",
     "__00003__": "Array",
     "__00004__": "Array",
-    "__00005__": "Array",
     "__00006__": "Artist",
     "__00007__": "Array",
     "__00008__": "Album",
