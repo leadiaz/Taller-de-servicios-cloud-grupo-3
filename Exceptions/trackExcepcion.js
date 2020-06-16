@@ -1,36 +1,17 @@
-"use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
-var TrackExistsInAlbumError = /** @class */ (function (_super) {
-    __extends(TrackExistsInAlbumError, _super);
-    function TrackExistsInAlbumError(trackName) {
-        var _this = _super.call(this, "Ya existe un track con este nombre " + trackName) || this;
-        _this.trackName = trackName;
-        _this.name = "TrackExistsInAlbumError";
-        return _this;
+class  TrackExistsInAlbumError extends Error{
+    constructor(trackName){
+    super("Ya existe un track con este nombre "+trackName)
+    this.name = "TrackExistsInAlbumError"
+}
+}
+class TrackExcepcion extends Error{
+    constructor(){
+        super("No existe el track")
+        this.name = "TrackExcepcion"
     }
-    return TrackExistsInAlbumError;
-}(Error));
-exports.TrackExistsInAlbumError = TrackExistsInAlbumError;
-var TrackExcepcion = /** @class */ (function (_super) {
-    __extends(TrackExcepcion, _super);
-    function TrackExcepcion() {
-        var _this = _super.call(this, "No existe el track") || this;
-        _this.name = "TrackExcepcion";
-        return _this;
-    }
-    return TrackExcepcion;
-}(Error));
-exports.TrackExcepcion = TrackExcepcion;
+}
+
+module.exports = {
+    TrackExcepcion,
+    TrackExistsInAlbumError
+}

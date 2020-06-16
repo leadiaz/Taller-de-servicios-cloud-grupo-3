@@ -144,3 +144,13 @@ describe('User Creation', function () {
         assert.equal(unqfy.howManyTimesListenTrackByAnUser('Marcelo', 'Welcome to the jungle'), 3);
     });
 });
+
+describe('populate', function () {
+    var unqfy = null,
+      beforeEach(function () {
+        unqfy = new libunqfy.UNQfy();
+    })
+    it('safsaf', function () {
+
+    })
+})
