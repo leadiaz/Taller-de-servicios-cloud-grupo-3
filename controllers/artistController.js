@@ -72,7 +72,8 @@ function deleteArtist(req, res){
     try {
         UNQfy.removeArtist(id);
         saveUNQfy(UNQfy);
-        res.status(204);   
+        res.status(204);
+        res.json({message: 'borrado correctamente'});   
     } catch (error) {
         throw new ERROR_API.NotFound('Artista');
     }

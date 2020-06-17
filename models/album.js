@@ -10,7 +10,7 @@ var Album = /** @class */ (function () {
         this.tracks = [];
     }
     Album.prototype.toJSON = function () {
-        return { idArtist: this.idArtist, id: this.id, name: this.name, year: this.year, tracks: this.tracks };
+        return { id: this.id, name: this.name, year: this.year, tracks: this.tracks };
     };
     Album.prototype.addTrack = function (track) {
         // if(this.existeTrack(track.name)){
@@ -27,6 +27,9 @@ var Album = /** @class */ (function () {
     };
     Album.prototype.existeTrack = function (name) {
         return this.tracks.some(function (track) { return track.name === name; });
+    };
+    Album.prototype.updateYear = function (year) {
+        this.year = year;
     };
     return Album;
 }());

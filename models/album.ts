@@ -16,7 +16,7 @@ export class Album{
       this.tracks = []
   }
   toJSON(){
-    return {idArtist: this.idArtist, id: this.id, name:this.name, year: this.year, tracks: this.tracks}
+    return {id: this.id, name:this.name, year: this.year, tracks: this.tracks}
   }
   addTrack(track){
     // if(this.existeTrack(track.name)){
@@ -36,6 +36,9 @@ export class Album{
 
   private existeTrack(name: any) {
     return this.tracks.some(track => {return track.name === name})
+  }
+  updateYear(year){
+    this.year = year;
   }
 }
 

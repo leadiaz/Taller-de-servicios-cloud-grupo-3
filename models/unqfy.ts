@@ -44,8 +44,9 @@ export class UNQfy {
 
     //Elimina el elemento dado de la array dada, si el elemento no se encuentra en la array, lanza una excepcion
     private removeElem(listaARecorrer, elemAEliminar, excepcion) {
-        if (listaARecorrer.indexOf(elemAEliminar) >= 0) {
-            listaARecorrer.splice(elemAEliminar, 1)
+        const index = listaARecorrer.indexOf(elemAEliminar) 
+        if ( index>= 0) {
+            listaARecorrer.splice(index, 1)
         } else {
             throw excepcion;
         }
