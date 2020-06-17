@@ -2,12 +2,16 @@
 const express = require('express');
 const app = express();
 const api = express.Router();
+const ERRORAPI  = require('../Exceptions/excepcionesAPI')
 
 const errorApi = require('../erroresApi/errors');
 const ArtistController = require('../controllers/artistController');
 const PlaylistController = require('../controllers/playlistController');
 const ControllerAlbum = require('..//controllers/AlbumController')
 const ControllerTrack = require('..//controllers/TrackController')
+
+
+
 
 
 api.get('/api/artists/:id/' ,ArtistController.getArtist);
@@ -28,6 +32,10 @@ api.patch('/api/albums/:id',ControllerAlbum.updateAlbum)
 api.delete('/api/albums/:id',ControllerAlbum.deleteAlbum)
 api.get('/api/tracks/:id/lyrics',ControllerTrack.getTrack)
 api.get('/api/albums',ControllerAlbum.searchAlbums)
+
+api.all('*', function(req, res) {
+    throw new ERRORAPI.RESOURCE_NOT_FOUND('URL')
+})
 
 
 

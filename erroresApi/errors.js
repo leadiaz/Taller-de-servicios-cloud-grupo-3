@@ -41,6 +41,14 @@ function errorHalder(error,req,res,next){
                         })            
          
 
+                }else{
+                    if(error instanceof ERROR_API.RESOURCE_NOT_FOUND){
+                        res.status(404).json( {
+                            status: 404,
+                            errorCode: "RESOURCE_NOT_FOUND"
+                            })
+                            
+                    }
                 }  
             }
 
