@@ -23,13 +23,13 @@ const unqfyApi = getUNQfy()
 
 function addAlbum(req,res){
     const body = req.body; 
+    const UNQfy = getUNQfy();
     if(body.artistId && body.name && body.year) {
         try {
-            unqfyApi.addAlbum(body.artistId,{name:body.name,year:body.year})
-            saveUNQfy(unqfyApi)
-            res.status(201)
-            res.json(unqfyApi.getAlbum(body.name).toJSON())
-            
+            const album = UNQfy.addAlbum(body.artistId,{name:body.name,year:body.year});
+            saveUNQfy(UNQfy);
+            res.status(201);
+            res.json(album.toJSON());           
         } catch (error) {
             if(error instanceof ArtistExcepcion) {
                 throw new ERROR_API.RELATED_RESOURCE_NOT_FOUND('Artist')
@@ -44,61 +44,59 @@ function addAlbum(req,res){
 
 function getAlbum(req,res){
     const id = req.params.id
+    const UNQfy = getUNQfy();
     try {
-        const album = unqfyApi.getAlbumById(id)
-        res.status(200)
-        res.json(album)
+        const album = UNQfy.getAlbumById(id);
+        res.status(200);
+        res.json(album);
         
     } catch (error) {
-        throw new ERROR_API.NotFound('Album')
+        throw new ERROR_API.NotFound('Album');
         
     }
 }
 
 function updateAlbum(req,res){
     const id = req.params.id;
-    if(req.body.year){
+    const body = req.body;
+    const UNQfy = getUNQfy();
+    if(body.year){
         try {
-            unqfyApi.getAlbumById(id).year = req.body.year
-            console.log('estoy aca')
-            saveUNQfy(unqfyApi)
-            res.status(200)
-            res.json(unqfyApi.getAlbumById(id))
-            
+            const album = UNQfy.getAlbumById(id);
+            album.updateYear(body.year);
+            saveUNQfy(UNQfy);
+            res.status(200).json(album.toJSON());
         } catch (error) {
-            throw new ERROR_API.NotFound('Album')
-            
+            throw new ERROR_API.NotFound('Album');   
         }
-       
     }else{
-        throw new JSONException.JSONException();
+        throw new JsonException.JSONException();
     }
 }
 
 
 function deleteAlbum(req,res){
-    const  id = req.params.id
+    const  id = req.params.id;
+    const UNQfy = getUNQfy();
     try {
-        unqfyApi.removeAlbum(id)
-        saveUNQfy(unqfyApi)
-        res.status(204)
-        
+        UNQfy.removeAlbum(id);
+        saveUNQfy(UNQfy);
+        res.status(204).json({message: 'Borrado exitosamente'});
     } catch (error) {
-        throw new ERROR_API.NotFound('Album')
+        throw new ERROR_API.NotFound('Album');
     }
-    
 }
 
-
 function searchAlbums(req,res) {
-    const nameAlbum = req.query.name
+    const nameAlbum = req.query.name;
+    const UNQfy = getUNQfy();
     if(nameAlbum != undefined) {
-        const albums = unqfyApi.searchAlbums(nameAlbum)
-        res.status(200)
-        res.json(albums)
+        const albums = UNQfy.searchByName(nameAlbum).albums;
+        res.status(200);
+        res.json(albums);
     }else{
-        res.status(200)
-        res.json(unqfyApi.getAlbums())
+        res.status(200);
+        res.json(UNQfy.getAlbums());
     }
 }
 

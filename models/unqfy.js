@@ -32,8 +32,9 @@ var UNQfy = /** @class */ (function () {
     };
     //Elimina el elemento dado de la array dada, si el elemento no se encuentra en la array, lanza una excepcion
     UNQfy.prototype.removeElem = function (listaARecorrer, elemAEliminar, excepcion) {
-        if (listaARecorrer.indexOf(elemAEliminar) >= 0) {
-            listaARecorrer.splice(elemAEliminar, 1);
+        var index = listaARecorrer.indexOf(elemAEliminar);
+        if (index >= 0) {
+            listaARecorrer.splice(index, 1);
         }
         else {
             throw excepcion;
