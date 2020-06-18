@@ -252,6 +252,7 @@ export class UNQfy {
             - una propiedad year (number)
         */
         const album = new Album(artistId, albumData.name, albumData.year);
+       // console.log(album)
         try {
             const artist = this.getArtistById(artistId);
             artist.addAlbum(album);
@@ -532,17 +533,17 @@ popularAlbumsForArtist(artistName) {
  const albumsName = []
  return   albumsArtistaPorName(artistName).then((albums) => {
    albums.forEach(album => {
-     this.evalSiExist(albumsName, album, idArtist);
+    if (!albumsName.includes(album.name)) {
+        albumsName.push(album.name);
+        this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+    }
    });
    return albums
  })
 }
-private evalSiExist(albumsName: any[], album: any, idArtist: any) {
-        if (!albumsName.includes(album.name)) {
-            albumsName.push(album.name);
-            this.addAlbum(idArtist, { name: album.name, year: album.release_date });
-        }
-    }
+
+
+
 
 
 getLyricsForTrack(trackName) {

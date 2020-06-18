@@ -225,6 +225,7 @@ var UNQfy = /** @class */ (function () {
             - una propiedad year (number)
         */
         var album = new album_1.Album(artistId, albumData.name, albumData.year);
+        // console.log(album)
         try {
             var artist = this.getArtistById(artistId);
             artist.addAlbum(album);
@@ -479,16 +480,13 @@ var UNQfy = /** @class */ (function () {
         var albumsName = [];
         return controller_1.albumsArtistaPorName(artistName).then(function (albums) {
             albums.forEach(function (album) {
-                _this.evalSiExist(albumsName, album, idArtist);
+                if (!albumsName.includes(album.name)) {
+                    albumsName.push(album.name);
+                    _this.addAlbum(idArtist, { name: album.name, year: album.release_date });
+                }
             });
             return albums;
         });
-    };
-    UNQfy.prototype.evalSiExist = function (albumsName, album, idArtist) {
-        if (!albumsName.includes(album.name)) {
-            albumsName.push(album.name);
-            this.addAlbum(idArtist, { name: album.name, year: album.release_date });
-        }
     };
     UNQfy.prototype.getLyricsForTrack = function (trackName) {
         var track = this.getTrack(trackName);

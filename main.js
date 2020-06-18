@@ -54,7 +54,7 @@ function main() {
         argumetos.push(process.argv[i]);
     }
     evalMethod(method, argumetos,unqfy);
-    saveUNQfy(unqfy)
+    //saveUNQfy(unqfy)
 }
 
 function setUp(unqfy){
@@ -80,27 +80,35 @@ function evalMethod(metodo, argumentos,unqfy){
          break;   
       case 'setUp':
           setUp(unqfy)
+          saveUNQfy(unqfy)
           break;   
       case 'addArtist':
         console.log(unqfy.addArtist({name: argumentos[0], country: argumentos[1]}));
+        saveUNQfy(unqfy)
         break;
       case  'addAlbum':
         console.log(unqfy.addAlbum(argumentos[0], {name: argumentos[1], year: eval(argumentos[2])}));
+        saveUNQfy(unqfy)
         break;
       case 'addTrack':
         console.log(unqfy.addTrack(argumentos[0],{name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3])}));
+        saveUNQfy(unqfy)
         break;
       case 'addUser':
         console.log(unqfy.addUser(argumentos[0]))
+        saveUNQfy(unqfy)
         break;  
       case 'removeArtist':
         unqfy.removeArtist(argumentos[0]);
+        saveUNQfy(unqfy)
         break;
       case 'removeAlbum':
         unqfy.removeAlbum(argumentos[0]);
+        saveUNQfy(unqfy)
         break;
       case 'removeTrack':
         unqfy.removeTrack(argumentos[0]);
+        saveUNQfy(unqfy)
         break;
       case 'getAlbumsFromArtist':
         console.log(unqfy.getAlbumsFromArtist(argumentos[0]))
@@ -141,6 +149,7 @@ function evalMethod(metodo, argumentos,unqfy){
         break;
       case 'createPlaylist':
         unqfy.createPlaylist(argumentos[0], eval(argumentos[1]), eval(argumentos[2]));
+        saveUNQfy(unqfy)
         break;
       case 'searchByName':
         console.log(unqfy.searchByName(argumentos[0]));

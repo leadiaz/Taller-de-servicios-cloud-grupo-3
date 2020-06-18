@@ -19,6 +19,7 @@ export class Artist{
              throw new AlbumExistsInArtistError(album.name)
 
         }else{
+            
             this.albums.push(album)
           }
     }
