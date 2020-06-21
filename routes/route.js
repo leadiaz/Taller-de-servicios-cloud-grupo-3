@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 const express = require('express');
 const app = express();
@@ -33,7 +35,7 @@ api.delete('/api/albums/:id',ControllerAlbum.deleteAlbum)
 api.get('/api/tracks/:id/lyrics',ControllerTrack.getTrack)
 api.get('/api/albums',ControllerAlbum.searchAlbums)
 
-api.all('*', function(req, res) {
+api.all('*', function(_req, res) {
     throw new ERRORAPI.RESOURCE_NOT_FOUND('URL')
 })
 

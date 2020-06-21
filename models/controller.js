@@ -1,13 +1,10 @@
 "use strict";
 exports.__esModule = true;
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-var-requires */
 var tokenAccess = require('../spotifyCreds.json');
 var token = tokenAccess.access_token;
 var rp = require('request-promise');
-var options = {
-    url: "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks?offset=0&limit=50",
-    headers: { Authorization: 'Bearer ' + token },
-    json: true
-};
 function getIdArtistDeSpotify(artistName) {
     return rp.get({
         url: 'https://api.spotify.com/v1/search?q=' + artistName + '&type=artist',

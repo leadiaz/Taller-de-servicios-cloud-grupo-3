@@ -1,19 +1,18 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {Artist} from "./artist";
 import {Album} from './album';
 import {Track} from './track';
 import {Playlist} from './playlist';
 import {ArtistExcepcion, ArtistExistsWithThatName} from "../Exceptions/artistExcepcion";
-import {TrackExcepcion, TrackExistsInAlbumError} from "../Exceptions/trackExcepcion"
+import {TrackExcepcion} from "../Exceptions/trackExcepcion"
 import { SearchResult } from "./searchResult";
 import { User } from "./user";
-import {NotExistAlbumError, AlbumExistsInArtistError} from "../Exceptions/albumException";
+import {NotExistAlbumError} from "../Exceptions/albumException";
 import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
 import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
 import {albumsArtistaPorName} from "./controller";
-import{saveUNQfy} from "../main"
 
 
-const app = require('./controller');
 
 import picklify = require('picklify'); // para cargar/guarfar unqfy
 import fs = require('fs'); // para cargar/guarfar unqfy
@@ -28,9 +27,9 @@ export class UNQfy {
 
 
     constructor() {
-        this.artists = new Array()
-        this.playlists = new Array()
-        this.users = new Array()
+        this.artists = []
+        this.playlists = []
+        this.users = []
     }
 
     private getPorId(listaARecorrer, id, excepcion) {
@@ -52,6 +51,7 @@ export class UNQfy {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     searchByName(nombre: string) {
         const result: SearchResult = new SearchResult()
         this.artists.forEach((artist) => {
@@ -93,7 +93,7 @@ export class UNQfy {
     //   artistData.name (string)
     //   artistData.country (string)
     // retorna: el nuevo artista creado
-    addArtist(artistData) {
+    addArtist(artistData: any) {
         /* Crea un artista y lo agrega a unqfy.
         El objeto artista creado debe soportar (al menos):
         - una propiedad name (string)
@@ -169,8 +169,8 @@ export class UNQfy {
 
     //DUDAS EN LA IMPLEMENTACION, SIN TERMINAR EL TOP 3 DE TRACKS
     top3(list) {
-        var n = 0
-        const top3 = new Array()
+        const n = 0
+        const top3 = []
         while (list.length > n) {
             top3.push(list[0].track)
         }
@@ -202,7 +202,7 @@ export class UNQfy {
 
     //Denota una array de objetos, [{track: track , cant: 0}]
    private cantDeVecesQueSeRepite(listaDeRepetidos){
-       var newList = new Array()
+       const newList = []
        new Set(listaDeRepetidos).forEach((elem) => { newList.push({track:elem,cant: this.count(elem,listaDeRepetidos)}) })
        return newList
     }
@@ -217,7 +217,7 @@ export class UNQfy {
 
     //Retorna la cantidad de veces que un elemento se repite en la Array dada
     private count(elem, list) {
-        var count = 0;
+        let count = 0;
         list.array.forEach(e => {
             if (e === elem) {
                 count++;
@@ -363,19 +363,20 @@ export class UNQfy {
 
     // genres: array de generos(strings)
     // retorna: los tracks que contenga alguno de los generos en el parametro genres
-    getTracksMatchingGenres(genres: Array<String>) {
+    getTracksMatchingGenres(genres: Array<string>) {
         return this.getTracks().filter(track => track.anyGenre(genres))
     }
 
     //retorna: los tracks de un genero en particular
-    getTracksMatchingGenre(genre: String) {
+    getTracksMatchingGenre(genre: string) {
         return this.getTracks().filter(track => track.genres.includes(genre))
     }
 
     // artistName: nombre de artista(string)
     // retorna: los tracks interpredatos por el artista con nombre artistName
     getTracksMatchingArtist(artistName) {
-        let artist = this.artists.find(artist => artist.name === artistName)
+        // eslint-disable-next-line no-shadow
+        const artist = this.artists.find(artist => artist.name === artistName)
         if (!artist) {
             return []
         }
@@ -428,7 +429,6 @@ export class UNQfy {
 
     //Retorna el track con el name dado, sino lo encuentra lanza una excepcion
     getTrack(aTrack) {
-        let track;
         try {
             return this.getElem(aTrack, this.getTracks(), new TrackExcepcion())
         } catch (error) {
@@ -459,7 +459,7 @@ export class UNQfy {
     //Retorna el elemento si es que se encuentra en la array, sino lanza una excepcion
     //Este metodo tendria que ser privado pero lo estoy probando en el test
     private getElem(nameElem, list, excepcion) {
-        let elem = list.find(elemento => elemento.name == nameElem)
+        const elem = list.find(elemento => elemento.name == nameElem)
         if (!elem) {
             throw excepcion
         } else {

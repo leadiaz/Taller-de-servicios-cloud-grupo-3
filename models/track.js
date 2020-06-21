@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 var idGenerator_1 = require("./idGenerator");
 var musixMatch_1 = require("./musixMatch");
 var Track = /** @class */ (function () {
@@ -47,7 +48,7 @@ var Track = /** @class */ (function () {
         this.genres = genres;
         this.lyrics = lyrics;
         this.id = idGenerator_1.IdGenerator.getNextId();
-        this.genres = new Array();
+        this.genres = [];
         this.lyrics = null;
     }
     Track.prototype.toJSON = function () {

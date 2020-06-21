@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import{Track} from "./track"
 import { IdGenerator } from "./idGenerator";
 
@@ -7,7 +8,7 @@ export class Playlist{
     duration: number;
 
     constructor(
-        public name?: String,
+        public name?: string,
     ){
         this.id = IdGenerator.getNextId()
         this.tracks = []
@@ -17,7 +18,7 @@ export class Playlist{
         return {id: this.id, name: this.name, tracks: this.tracks}
     }
 
-    hasTrack(aTrack):Boolean{
+    hasTrack(aTrack):boolean{
         return this.tracks.includes(aTrack)
     }
     addTracks(tracks: Track[], maxDuration) {

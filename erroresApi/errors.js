@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 const JSONERROR = require('../Exceptions/jsonException');
 const ERROR_API = require('../Exceptions/excepcionesAPI');
@@ -48,6 +49,9 @@ function errorHalder(error,req,res,next){
                             errorCode: "RESOURCE_NOT_FOUND"
                             })
                             
+                    }
+                    else{
+                        next(error)
                     }
                 }  
             }

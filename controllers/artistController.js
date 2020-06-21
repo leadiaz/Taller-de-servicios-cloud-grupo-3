@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict';
 
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
-const ArtistException = require('../Exceptions/artistExcepcion');
 const JSONException = require('../Exceptions/jsonException');
 const ERROR_API = require('../Exceptions/excepcionesAPI');
 

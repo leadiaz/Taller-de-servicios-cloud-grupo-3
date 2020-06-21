@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {Artist} from "./artist";
 import {Album} from "./album";
 import {Playlist} from "./playlist";
@@ -12,10 +13,10 @@ export class SearchResult {
         public tracks?: Array<Track>
     ) {
         
-        this.albums = new Array()
-        this.artists = new Array()
-        this.playlists = new Array()
-        this.tracks = new Array()
+        this.albums = []
+        this.artists = []
+        this.playlists = []
+        this.tracks = []
 
     }
 

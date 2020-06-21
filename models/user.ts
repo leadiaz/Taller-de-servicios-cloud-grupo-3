@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Track } from "./track";
 import { IdGenerator } from "./idGenerator";
 
 export class User {
       name: string
-      id: Number
+      id: number
       tracks:Track[]
-    constructor(name){
+    constructor(name: string){
         this.id = IdGenerator.getNextId()
         this.tracks = []
         this.name = name
@@ -13,7 +14,7 @@ export class User {
 
 
 //El usuario escucha un tema
-listenTrack(aTrack){
+listenTrack(aTrack: Track){
     this.tracks.push(aTrack)
 }
 
@@ -23,8 +24,8 @@ songsHeard():Set<Track>{
 }
 
 //Retorna: las veces que un usuario escucho un tema 
-howManyTimesListenTrack(aTrack){
-  var n = 0 
+howManyTimesListenTrack(aTrack: Track){
+  let n = 0 
   this.tracks.forEach((track) => {if(track === aTrack){n = n +1}}           )
   return n;
 }

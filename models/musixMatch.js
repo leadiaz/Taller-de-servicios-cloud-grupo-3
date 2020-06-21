@@ -1,15 +1,8 @@
 "use strict";
 exports.__esModule = true;
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-var-requires */
 var rp = require('request-promise');
-var BASE_URL = "http://api.musixmatch.com/ws/1.1";
-//"http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=15953433"  letra
-var op = {
-    uri: "http://api.musixmatch.com/ws/1.1/track.search?q_track=Stuck With U (with Justin Bieber)",
-    qs: {
-        apikey: '4477a287ed1373afbeb10c146db00cfc'
-    },
-    json: true
-};
 function letraDeUnTema(trackname) {
     return rp.get({
         uri: "http://api.musixmatch.com/ws/1.1/track.search?q_track=" + trackname,
@@ -35,10 +28,8 @@ function letraDeTrack(id) {
         },
         json: true
     }).then(function (response) {
-        //console.log(response.message.body.lyrics.lyrics_body)
         {
             return response.message.body.lyrics.lyrics_body;
         }
     });
 }
-// letraDeUnTema("Stuck With U (with Justin Bieber)")

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 "use strict";
 exports.__esModule = true;
 var fs = require('fs'); // necesitado para guardar/cargar unqfy
@@ -49,7 +50,7 @@ function main() {
     // console.log('arguments: ');
     var unqfy = getUNQfy();
     var method = process.argv.length > 2 ? process.argv[2] : '';
-    var argumetos = new Array();
+    var argumetos = [];
     for (var i = 3; i < process.argv.length; i++) {
         argumetos.push(process.argv[i]);
     }
@@ -67,7 +68,7 @@ function evalMethod(metodo, argumentos,unqfy){
     switch (metodo) {
       case 'popularAlbumsForArtist': 
         unqfy.popularAlbumsForArtist(argumentos[0])
-        .then((albums) => 
+        .then(() => 
         saveUNQfy(unqfy)
         );
          break;

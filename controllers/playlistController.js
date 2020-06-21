@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict';
 
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
 const JSONException =  require('../Exceptions/jsonException');
-const TrackError = require('../Exceptions/trackExcepcion');
-const PlaylistException = require('../Exceptions/playListExcepcion');
 const ERROR_API = require('../Exceptions/excepcionesAPI');
 
 function getUNQfy(filename) {

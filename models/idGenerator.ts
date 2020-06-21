@@ -1,5 +1,5 @@
 export class IdGenerator {
-     static id: number = 1
+     static id = 1
   
 
      public static getNextId():number{

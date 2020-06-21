@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Track } from "./track";
-import {TrackExistsInAlbumError} from "../Exceptions/trackExcepcion";
 import { IdGenerator } from "./idGenerator";
+import { TrackExistsInAlbumError } from "../Exceptions/trackExcepcion";
 
 export class Album{
   tracks:Track[];
   id
 
   constructor(
-    public idArtist?: Number,
-    public name?: String,
-    public year?: Number,
+    public idArtist?: number,
+    public name?: string,
+    public year?: number,
 
     ){
       this.id = IdGenerator.getNextId()
@@ -19,9 +20,9 @@ export class Album{
     return {id: this.id, name:this.name, year: this.year, tracks: this.tracks}
   }
   addTrack(track){
-    // if(this.existeTrack(track.name)){
-    //   throw new TrackExistsInAlbumError(track.name)
-    // }
+    if(this.existeTrack(track.name)){
+      throw new TrackExistsInAlbumError(track.name)
+    }
       this.tracks.push(track)
   }
 
@@ -30,7 +31,7 @@ export class Album{
   }
 
   removeTrack(anTrack){
-    let index = this.tracks.indexOf(anTrack)
+    const index = this.tracks.indexOf(anTrack)
     this.tracks.splice(index, 1)
   }
 

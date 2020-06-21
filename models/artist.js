@@ -1,5 +1,7 @@
 "use strict";
 exports.__esModule = true;
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 var albumException_1 = require("../Exceptions/albumException");
 var Artist = /** @class */ (function () {
     function Artist(name, country) {

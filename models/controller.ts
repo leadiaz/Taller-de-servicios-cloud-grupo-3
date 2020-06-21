@@ -1,12 +1,9 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const tokenAccess = require('../spotifyCreds.json');
-let token = tokenAccess.access_token;
+const token = tokenAccess.access_token;
 
 const rp = require('request-promise');
-const options = {
-     url: "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj/tracks?offset=0&limit=50",
-     headers: { Authorization: 'Bearer ' + token },
-     json: true,
-};
 
 
 function getIdArtistDeSpotify(artistName) {
@@ -26,7 +23,7 @@ function getIdArtistDeSpotify(artistName) {
 
  }
 
- export function albumsArtistaPorName(artistName){
+ export function albumsArtistaPorName(artistName: any){
    return  getIdArtistDeSpotify(artistName)
      .then((artist) => albumesDeArtistaPorId(artist.id))
      .then((albums) =>  {

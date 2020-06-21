@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
 const ERROR_API = require('../Exceptions/excepcionesAPI');
@@ -18,7 +19,6 @@ function saveUNQfy(unq, filename = 'data.json') {
     unq.save(filename);
 }
 
-const unqfyApi = getUNQfy()
 
 
 function addAlbum(req,res){

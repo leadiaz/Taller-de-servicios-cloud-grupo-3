@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { IdGenerator } from "./idGenerator"
 import{letraDeUnTema} from "./musixMatch"
 
 
 export class Track{
     constructor(
-        public idAlbum?: Number,
-        public id?: Number,
-        public name?: String,
+        public idAlbum?: number,
+        public id?: number,
+        public name?: string,
         public duration?:number,
-        public genres?: Array<String>,
-        public lyrics?: String ,
+        public genres?: Array<string>,
+        public lyrics?: string ,
     ){
         this.id = IdGenerator.getNextId()
-        this.genres = new Array()
+        this.genres = []
         this.lyrics = null
     }
     toJSON(){
@@ -20,7 +21,7 @@ export class Track{
     }
 
     //Dado un array de Genres retorna true si el track contiene algun genre 
-    anyGenre(genres){
+    anyGenre(genres: any[]){
         return genres.some(genre => {return this.genres.includes(genre)})
     }
 

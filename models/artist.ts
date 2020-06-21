@@ -1,12 +1,14 @@
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {AlbumExistsInArtistError, NotExistAlbumError} from "../Exceptions/albumException";
 
 export class Artist{
     albums:Album[];
-    id;
+    id: number;
 
     constructor(
-        public name?:String,
-        public country?:String,
+        public name?:string,
+        public country?:string,
     ){
         this.id = IdGenerator.getNextId()
         this.albums = []
@@ -14,7 +16,7 @@ export class Artist{
     toJSON(){
         return {id: this.id, name: this.name, country:this.country, albums: this.albums }
     }
-    addAlbum(album){
+    addAlbum(album: Album){
         if(this.existeAlbum(album.name)){
              throw new AlbumExistsInArtistError(album.name)
 
@@ -32,7 +34,7 @@ export class Artist{
         if(!album){
             throw new NotExistAlbumError(anAlbum.name)
         }else {
-            let index = this.albums.indexOf(album)
+            const index = this.albums.indexOf(album)
             album.removeTracks()
             this.albums.splice(index, 1)
         }

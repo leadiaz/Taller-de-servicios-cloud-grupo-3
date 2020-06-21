@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 'use strict';
 exports.__esModule = true;
 const assert = require('chai').assert;
 const libunqfy = require('./models/unqfy');
-const io = require('socket.io');
 function createAndAddArtist(unqfy, artistName, country) {
     const artist = unqfy.addArtist({ name: artistName, country: country });
     return artist;
@@ -132,7 +132,6 @@ describe('User Creation', () => {
         assert.equal(user2.name, 'Gonzalo');
     });
     it('canciones que escucho user', () => {
-        const user1 = createAndAddUser(unqfy, 'Marcelo');
         const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album1 = createAndAddAlbum(unqfy, artist1.id, 'Leyendas', 1920);
         const track1 = createAndAddTrack(unqfy, album1.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
