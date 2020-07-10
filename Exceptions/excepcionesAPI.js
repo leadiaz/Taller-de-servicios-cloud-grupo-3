@@ -1,34 +1,47 @@
 'use strict';
-class NotFound extends Error{
-    constructor(tipo){
-        super('No existe '+tipo);
-        this.name = 'NotFound';
+
+class APIError extends Error{
+    constructor(name, statusCode, errorCode, message = null){
+        super(message || name);
+        this.name = name;
+        this.status = statusCode;
+        this.errorCode = errorCode;
+    }
+}
+class NotFound extends APIError{
+    constructor(){
+        super('NotFound',404,'RESOURCE_NOT_FOUND');
     }
 }
 
-class Duplicate extends Error{
-    constructor(tipo){
-        super(tipo + ' Duplicado');
-        this.name = 'Duplicate';
+class Duplicate extends APIError{
+    constructor(){
+        super('Duplicate', 409, 'RESOURCE_ALREADY_EXISTS');
     }
 }
 
-class RELATED_RESOURCE_NOT_FOUND extends Error {
-    constructor(tipo){
-        super('No existe '+tipo);
-        this.name = 'RELATED_RESOURCE_NOT_FOUND';
+class RelatedResourceNotFound extends APIError {
+    constructor(){
+        super('RelatedResourceNotFound', 404, 'RELATED_RESOURCE_NOT_FOUND');
+        
     }
 }
-class RESOURCE_NOT_FOUND extends Error {
-    constructor(tipo){
-        super('Invalida '+tipo);
-        this.name = 'RESOURCE_NOT_FOUND';
+class InvalidURL extends APIError {
+    constructor(){
+        super('InvalidURL', 404,'RESOURCE_NOT_FOUND' );
+    }
+}
+class JSONException extends APIError {
+    constructor() {
+        super('JSONException', 400, 'BAD_REQUEST');
     }
 }
 
 module.exports= {
+    APIError,
     NotFound,
     Duplicate,
-    RELATED_RESOURCE_NOT_FOUND,
-    RESOURCE_NOT_FOUND
-}
+    RelatedResourceNotFound,
+    InvalidURL,
+    JSONException
+};

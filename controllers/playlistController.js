@@ -3,7 +3,6 @@
 
 const fs = require('fs');
 const unqmod = require('../models/unqfy');
-const JSONException =  require('../Exceptions/jsonException');
 const ERROR_API = require('../Exceptions/excepcionesAPI');
 
 function getUNQfy(filename) {
@@ -31,14 +30,14 @@ function savePlaylist(req, res){
                 saveUNQfy(UNQfy);
                 res.status(201).send(playlist);
             } catch (error) {
-                throw error;
+                throw ERROR_API.RelatedResourceNotFound();
             }    
         }else{
             saveUNQfy(UNQfy);
             res.status(201).send(playlist);
         }
     }else{
-        throw new JSONException.JSONException();
+        throw new ERROR_API.JSONException();
     }
 }
 
@@ -49,7 +48,7 @@ function agregarTracks(trackIds, UNQfy, playlist) {
             playlist.addTrack(element);
         }
         catch (error) {
-            throw new ERROR_API.NotFound('Track');
+            throw new ERROR_API.NotFound();
         }
     });
 }
@@ -60,7 +59,7 @@ function getPlaylist(req, res){
     try {
         res.status(200).send(UNQfy.getPlaylistById(id));    
     } catch (error) {
-        throw new ERROR_API.NotFound('Playlist');
+        throw new ERROR_API.NotFound();
     }
 }
 
@@ -72,7 +71,7 @@ function deletePlaylist(req, res){
         saveUNQfy(UNQfy);
         res.status(204);
     } catch (error) {
-        throw new ERROR_API.NotFound('Playlist');
+        throw new ERROR_API.NotFound();
     }
 }
 

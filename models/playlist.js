@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 exports.__esModule = true;
-var idGenerator_1 = require("./idGenerator");
-var Playlist = /** @class */ (function () {
+const idGenerator_1 = require('./idGenerator');
+const Playlist = /** @class */ (function () {
     function Playlist(name) {
         this.name = name;
         this.id = idGenerator_1.IdGenerator.getNextId();
@@ -15,10 +15,10 @@ var Playlist = /** @class */ (function () {
         return this.tracks.includes(aTrack);
     };
     Playlist.prototype.addTracks = function (tracks, maxDuration) {
-        var _this = this;
+        const _this = this;
         // var item = items[Math.floor(Math.random() * items.length)];
-        var n = 0;
-        tracks.forEach(function (track) {
+        let n = 0;
+        tracks.forEach((track) => {
             if (n < maxDuration && track.duration < maxDuration) {
                 _this.tracks.push(track);
                 n = n + track.duration;

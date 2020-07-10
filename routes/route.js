@@ -4,13 +4,13 @@
 const express = require('express');
 const app = express();
 const api = express.Router();
-const ERRORAPI  = require('../Exceptions/excepcionesAPI')
+const ERRORAPI  = require('../Exceptions/excepcionesAPI');
 
 const errorApi = require('../erroresApi/errors');
 const ArtistController = require('../controllers/artistController');
 const PlaylistController = require('../controllers/playlistController');
-const ControllerAlbum = require('..//controllers/AlbumController')
-const ControllerTrack = require('..//controllers/TrackController')
+const ControllerAlbum = require('..//controllers/AlbumController');
+const ControllerTrack = require('..//controllers/TrackController');
 
 
 
@@ -28,21 +28,16 @@ api.delete('/api/playlists/:id', PlaylistController.deletePlaylist);
 api.get('/api/playlists/', PlaylistController.getPlaylistQuery);
 
 //Albums y Tracks
-api.post('/api/albums',ControllerAlbum.addAlbum)
-api.get('/api/albums/:id',ControllerAlbum.getAlbum)
-api.patch('/api/albums/:id',ControllerAlbum.updateAlbum)
-api.delete('/api/albums/:id',ControllerAlbum.deleteAlbum)
-api.get('/api/tracks/:id/lyrics',ControllerTrack.getTrack)
-api.get('/api/albums',ControllerAlbum.searchAlbums)
+api.post('/api/albums',ControllerAlbum.addAlbum);
+api.get('/api/albums/:id',ControllerAlbum.getAlbum);
+api.patch('/api/albums/:id',ControllerAlbum.updateAlbum);
+api.delete('/api/albums/:id',ControllerAlbum.deleteAlbum);
+api.get('/api/tracks/:id/lyrics',ControllerTrack.getTrack);
+api.get('/api/albums',ControllerAlbum.searchAlbums);
 
-api.all('*', function(_req, res) {
-    throw new ERRORAPI.RESOURCE_NOT_FOUND('URL')
-})
-
-
-
-
-
+api.all('*', (_req, res) => {
+    throw new ERRORAPI.InvalidURL();
+});
 
 app.set('json spaces',2);
 const PORT = process.env.PORT || 9000;
@@ -51,9 +46,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(api);
 app.use(errorApi);
-
-
-
 
 app.listen(PORT,()=>{
     console.log('Server on port ', PORT);

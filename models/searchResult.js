@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 exports.__esModule = true;
-var albumException_1 = require("../Exceptions/albumException");
-var SearchResult = /** @class */ (function () {
+const albumException_1 = require('../Exceptions/albumException');
+const SearchResult = /** @class */ (function () {
     function SearchResult(artists, albums, playlists, tracks) {
         this.artists = artists;
         this.albums = albums;
@@ -13,7 +13,7 @@ var SearchResult = /** @class */ (function () {
         this.tracks = new Array();
     }
     SearchResult.prototype.toJSON = function () {
-        return { "artists": this.artists, "albums": this.albums, "tracks": this.tracks, "playlists": this.playlists };
+        return { artists: this.artists, albums: this.albums, tracks: this.tracks, playlists: this.playlists };
     };
     SearchResult.prototype.addAbum = function (album) {
         if (this.existeAlbum(album.name)) {
@@ -31,7 +31,7 @@ var SearchResult = /** @class */ (function () {
         this.tracks.push(track);
     };
     SearchResult.prototype.existeAlbum = function (name) {
-        return this.albums.some(function (album) {
+        return this.albums.some((album) => {
             return album.name === name;
         });
     };

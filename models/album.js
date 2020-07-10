@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 exports.__esModule = true;
-var idGenerator_1 = require("./idGenerator");
-var trackExcepcion_1 = require("../Exceptions/trackExcepcion");
-var Album = /** @class */ (function () {
+const idGenerator_1 = require('./idGenerator');
+const trackExcepcion_1 = require('../Exceptions/trackExcepcion');
+const Album = /** @class */ (function () {
     function Album(idArtist, name, year) {
         this.idArtist = idArtist;
         this.name = name;
@@ -23,11 +23,11 @@ var Album = /** @class */ (function () {
         this.tracks = [];
     };
     Album.prototype.removeTrack = function (anTrack) {
-        var index = this.tracks.indexOf(anTrack);
+        const index = this.tracks.indexOf(anTrack);
         this.tracks.splice(index, 1);
     };
     Album.prototype.existeTrack = function (name) {
-        return this.tracks.some(function (track) { return track.name === name; });
+        return this.tracks.some((track) => { return track.name === name; });
     };
     Album.prototype.updateYear = function (year) {
         this.year = year;

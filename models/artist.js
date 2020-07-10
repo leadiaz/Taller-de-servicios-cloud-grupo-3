@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 exports.__esModule = true;
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-var albumException_1 = require("../Exceptions/albumException");
-var Artist = /** @class */ (function () {
+const albumException_1 = require('../Exceptions/albumException');
+const Artist = /** @class */ (function () {
     function Artist(name, country) {
         this.name = name;
         this.country = country;
@@ -22,27 +22,27 @@ var Artist = /** @class */ (function () {
         }
     };
     Artist.prototype.getTracks = function () {
-        return this.albums.reduce(function (accumulator, album) { return accumulator.concat(album.tracks); }, []);
+        return this.albums.reduce((accumulator, album) => { return accumulator.concat(album.tracks); }, []);
     };
     Artist.prototype.removeAlbum = function (anAlbum) {
-        var album = this.albums.find(function (album) { return album.id === anAlbum.id; });
+        const album = this.albums.find((album) => { return album.id === anAlbum.id; });
         if (!album) {
             throw new albumException_1.NotExistAlbumError(anAlbum.name);
         }
         else {
-            var index = this.albums.indexOf(album);
+            const index = this.albums.indexOf(album);
             album.removeTracks();
             this.albums.splice(index, 1);
         }
     };
     Artist.prototype.removeAlbums = function () {
-        this.albums.forEach(function (album) {
+        this.albums.forEach((album) => {
             album.removeTracks();
         });
         this.albums = [];
     };
     Artist.prototype.existeAlbum = function (name) {
-        return this.albums.some(function (album) { return album.name === name; });
+        return this.albums.some((album) => { return album.name === name; });
     };
     Artist.prototype.update = function (body) {
         this.name = body.name;
@@ -51,4 +51,4 @@ var Artist = /** @class */ (function () {
     return Artist;
 }());
 exports.Artist = Artist;
-var idGenerator_1 = require("./idGenerator");
+var idGenerator_1 = require('./idGenerator');

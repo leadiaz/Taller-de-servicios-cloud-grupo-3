@@ -1,12 +1,14 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-eval */
 /* eslint-disable @typescript-eslint/no-var-requires */
-"use strict";
+'use strict';
 exports.__esModule = true;
-var fs = require('fs'); // necesitado para guardar/cargar unqfy
-var unqmod = require('./models/unqfy'); // importamos el modulo unqfy
+const fs = require('fs'); // necesitado para guardar/cargar unqfy
+const unqmod = require('./models/unqfy'); // importamos el modulo unqfy
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename) {
     if (filename === void 0) { filename = 'data.json'; }
-    var unqfy = new unqmod.UNQfy();
+    let unqfy = new unqmod.UNQfy();
     if (fs.existsSync(filename)) {
         unqfy = unqmod.UNQfy.load(filename);
     }
@@ -47,124 +49,122 @@ exports.saveUNQfy = saveUNQfy;
 
 */
 function main() {
-    // console.log('arguments: ');
-    var unqfy = getUNQfy();
-    var method = process.argv.length > 2 ? process.argv[2] : '';
-    var argumetos = [];
-    for (var i = 3; i < process.argv.length; i++) {
+    const unqfy = getUNQfy();
+    const method = process.argv.length > 2 ? process.argv[2] : '';
+    const argumetos = [];
+    for (let i = 3; i < process.argv.length; i++) {
         argumetos.push(process.argv[i]);
     }
     evalMethod(method, argumetos,unqfy);
-    //saveUNQfy(unqfy)
 }
 
 function setUp(unqfy){
-   unqfy.addArtist({name:'David bowie',country:'Usa'})
-   unqfy.addAlbum(1,{name:'Album 1',year:2000})
-   unqfy.addTrack(2,{name:'Stuck With U (with Justin Bieber)',duration:10,genres:['pop']})
+    unqfy.addArtist({name:'David bowie',country:'Usa'});
+    unqfy.addAlbum(1,{name:'Album 1',year:2000});
+    unqfy.addTrack(2,{name:'Stuck With U (with Justin Bieber)',duration:10,genres:['pop']});
 }
 
 function evalMethod(metodo, argumentos,unqfy){
     switch (metodo) {
-      case 'popularAlbumsForArtist': 
+    case 'popularAlbumsForArtist': 
         unqfy.popularAlbumsForArtist(argumentos[0])
-        .then(() => 
-        saveUNQfy(unqfy)
-        );
-         break;
-      case 'getLyricsForTrack':
+            .then(() => 
+                saveUNQfy(unqfy)
+            );
+        break;
+    case 'getLyricsForTrack':
         unqfy.getLyricsForTrack(argumentos[0]).then((string)=> {
-         console.log(string),
-         saveUNQfy(unqfy)
+            console.log(string),
+            saveUNQfy(unqfy);
         }
-         );
-         break;   
-      case 'setUp':
-          setUp(unqfy)
-          saveUNQfy(unqfy)
-          break;   
-      case 'addArtist':
+        );
+        break;   
+    case 'setUp':
+        setUp(unqfy);
+        saveUNQfy(unqfy);
+        break;   
+    case 'addArtist':
         console.log(unqfy.addArtist({name: argumentos[0], country: argumentos[1]}));
-        saveUNQfy(unqfy)
+        saveUNQfy(unqfy);
         break;
-      case  'addAlbum':
+    case  'addAlbum':
         console.log(unqfy.addAlbum(argumentos[0], {name: argumentos[1], year: eval(argumentos[2])}));
-        saveUNQfy(unqfy)
+        saveUNQfy(unqfy);
         break;
-      case 'addTrack':
+    case 'addTrack':
         console.log(unqfy.addTrack(argumentos[0],{name: argumentos[1], duration: eval(argumentos[2]), genres: eval(argumentos[3])}));
-        saveUNQfy(unqfy)
+        saveUNQfy(unqfy);
         break;
-      case 'addUser':
-        console.log(unqfy.addUser(argumentos[0]))
-        saveUNQfy(unqfy)
+    case 'addUser':
+        console.log(unqfy.addUser(argumentos[0]));
+        saveUNQfy(unqfy);
         break;  
-      case 'removeArtist':
+    case 'removeArtist':
         unqfy.removeArtist(argumentos[0]);
-        saveUNQfy(unqfy)
+        saveUNQfy(unqfy);
         break;
-      case 'removeAlbum':
+    case 'removeAlbum':
         unqfy.removeAlbum(argumentos[0]);
-        saveUNQfy(unqfy)
+        saveUNQfy(unqfy);
         break;
-      case 'removeTrack':
+    case 'removeTrack':
         unqfy.removeTrack(argumentos[0]);
-        saveUNQfy(unqfy)
+        saveUNQfy(unqfy);
         break;
-      case 'getAlbumsFromArtist':
-        console.log(unqfy.getAlbumsFromArtist(argumentos[0]))
+    case 'getAlbumsFromArtist':
+        console.log(unqfy.getAlbumsFromArtist(argumentos[0]));
         break;
-      case 'getTracksFromAlbum':
-        console.log(unqfy.getTracksFromAlbum(argumentos[0]))
-        break
-      case 'printArtist':
+    case 'getTracksFromAlbum':
+        console.log(unqfy.getTracksFromAlbum(argumentos[0]));
+        break;
+    case 'printArtist':
         try{
           
-          console.log(unqfy.getArtist(argumentos[0]))
+            console.log(unqfy.getArtist(argumentos[0]));
         }catch (e) {
-          console.log(e.message)
+            console.log(e.message);
         }
 
         break;
-      case 'printAlbum':
+    case 'printAlbum':
         try{
-          console.log(unqfy.getAlbum(argumentos[0]))
+            console.log(unqfy.getAlbum(argumentos[0]));
         }catch (e) {
-          console.log(e.message)
+            console.log(e.message);
         }
         break;
-      case 'printTrack':
+    case 'printTrack':
         try{
           
-          console.log('los argumentos son',argumentos[0])
-          console.log(unqfy.getTrack(argumentos[0]))
+            console.log('los argumentos son',argumentos[0]);
+            console.log(unqfy.getTrack(argumentos[0]));
         }catch (e) {
-          console.log(e.message)
+            console.log(e.message);
         }
         break;
-      case 'getTracksMatchingArtist':
+    case 'getTracksMatchingArtist':
         console.log(unqfy.getTracksMatchingArtist(argumentos[0]));
         break;
-      case 'getTracksMatchingGenres':
+    case 'getTracksMatchingGenres':
         console.log(unqfy.getTracksMatchingGenres(eval(argumentos[0])));
         break;
-      case 'createPlaylist':
+    case 'createPlaylist':
         unqfy.createPlaylist(argumentos[0], eval(argumentos[1]), eval(argumentos[2]));
-        saveUNQfy(unqfy)
+        saveUNQfy(unqfy);
         break;
-      case 'searchByName':
+    case 'searchByName':
         console.log(unqfy.searchByName(argumentos[0]));
         break;
-      case 'getArtists':
-        console.log(unqfy.artists)
-        break
-      case 'getPlaylists':
-        console.log(unqfy.playlists)
-        break
-      default :
-        console.log("no existe el metodo: ", metodo)
+    case 'getArtists':
+        console.log(unqfy.artists);
+        break;
+    case 'getPlaylists':
+        console.log(unqfy.playlists);
+        break;
+    default :
+        console.log('no existe el metodo: ', metodo);
     }
 
-  }
+}
 
 main();

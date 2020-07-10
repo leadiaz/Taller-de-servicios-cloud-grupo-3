@@ -12,26 +12,24 @@ function getUNQfy(filename) {
     return unqfy;
 }
 
-
-const unqfyApi = getUNQfy()
-
 function getTrack (req,res){
-    const id = req.params.id 
+    const id = req.params.id;
+    const UNQfy = getUNQfy();
     if(id){
-    try{
-    const track = unqfyApi.getTrackById(id) 
-    track.getLyrics().then((lyrics)=>{
-        res.status(200)
-        res.json({name:track.name,lyrics:lyrics})
-    })
-    }catch(error) {
-        throw new ERROR_API.NotFound('Track')
-    }
+        try{
+            const track = UNQfy.getTrackById(id);
+            track.getLyrics().then((lyrics)=>{
+            res.status(200);
+            res.json({name:track.name,lyrics:lyrics});
+            });
+        }catch(error) {
+            throw new ERROR_API.NotFound();
+        }
     }else{
-        throw new JSONException.JSONException();
+        throw new ERROR_API.JSONException();
     }
 }
 
 module.exports = {
     getTrack
-}
+};

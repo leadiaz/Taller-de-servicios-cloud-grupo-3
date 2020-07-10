@@ -112,7 +112,7 @@ describe('Playlist Creation and properties', () => {
         const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
         const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
         assert.equal(playlist.name, 'my playlist');
-        assert.isAtMost(playlist.duration(), 1400);
+        assert.isAtMost(playlist.duration, 1400);
         assert.isTrue(playlist.hasTrack(t1));
         assert.isTrue(playlist.hasTrack(t2));
         assert.isTrue(playlist.hasTrack(t3));
@@ -142,17 +142,5 @@ describe('User Creation', () => {
         unqfy.userListenTrack('Marcelo', 'Welcome to the jungle');
         unqfy.userListenTrack('Marcelo', 'Welcome to the jungle');
         assert.equal(unqfy.howManyTimesListenTrackByAnUser('Marcelo', 'Welcome to the jungle'), 3);
-    });
-});
-
-describe('populate', () => {
-    let unqfy = null;
-    beforeEach(() => {
-        unqfy = new libunqfy.UNQfy();
-    });
-    it('safsaf', () => {
-        unqfy.addArtist({name: 'David bowie', country:'USA'});
-        const artist = unqfy.popularAlbumsForArtist('David bowie');
-        console.log(artist)
     });
 });
