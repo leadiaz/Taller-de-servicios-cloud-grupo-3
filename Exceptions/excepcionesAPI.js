@@ -36,6 +36,11 @@ class JSONException extends APIError {
         super('JSONException', 400, 'BAD_REQUEST');
     }
 }
+class InternalServerError extends APIError {
+    constructor() {
+        super('InternalServerError', 500, 'INTERNAL_SERVER_ERROR');
+    }
+}
 
 module.exports= {
     APIError,
@@ -43,5 +48,6 @@ module.exports= {
     Duplicate,
     RelatedResourceNotFound,
     InvalidURL,
-    JSONException
+    JSONException,
+    InternalServerError
 };
