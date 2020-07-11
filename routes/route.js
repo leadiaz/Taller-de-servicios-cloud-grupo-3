@@ -14,8 +14,6 @@ const ControllerTrack = require('..//controllers/TrackController');
 
 
 
-
-
 api.get('/api/artists/:id/' ,ArtistController.getArtist);
 api.post('/api/artists', ArtistController.saveArtist);
 api.put('/api/artists/:id/', ArtistController.updateArtist);
@@ -34,6 +32,8 @@ api.patch('/api/albums/:id',ControllerAlbum.updateAlbum);
 api.delete('/api/albums/:id',ControllerAlbum.deleteAlbum);
 api.get('/api/tracks/:id/lyrics',ControllerTrack.getTrack);
 api.get('/api/albums',ControllerAlbum.searchAlbums);
+
+
 
 api.all('*', (_req, res) => {
     throw new ERRORAPI.InvalidURL();

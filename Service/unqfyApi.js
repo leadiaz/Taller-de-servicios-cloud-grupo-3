@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
-const errorApi = require('../erroresApi/errors');
+const errorHandler = require('../erroresApi/errors');
 const ControllerAlbum = require('../controllers/AlbumController');
 const ControllerTrack = require('../controllers/TrackController');
 
@@ -19,7 +19,7 @@ router.use(express.json());
 app.use('/api', router); 
 app.use(router);
 app.use(express.urlencoded({extended:true}));
-app.use(errorApi);
+app.use(errorHandler);
 
 
 app.set('json spaces',2);

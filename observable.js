@@ -1,7 +1,7 @@
 
 const rp = require('request-promise');
 
-const urlUnquyRest = 'http://localhost:8080/api';
+const API = 'http://localhost:8080/api';
 const errors = require('./Exceptions/excepcionesAPI');
 const ServerInternalError = errors.InternalServerError;
 
@@ -12,7 +12,7 @@ class Observable{
     }
     changeAddAlbum(artista, album){
         const options = {
-            url: urlUnquyRest + '/notify',
+            url: API + '/notify',
             body: {
                 artistId: artista.artistId,
                 subject: 'Nuevo Album para el artista ' + artista.name,

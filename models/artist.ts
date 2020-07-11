@@ -1,8 +1,9 @@
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {AlbumExistsInArtistError, NotExistAlbumError} from "../Exceptions/albumException";
+import { Observable} from '../observable';
 
-export class Artist{
+export class Artist extends Observable{
     albums:Album[];
     id: number;
 
@@ -10,6 +11,7 @@ export class Artist{
         public name?:string,
         public country?:string,
     ){
+        super();
         this.id = IdGenerator.getNextId()
         this.albums = []
     }
@@ -21,8 +23,8 @@ export class Artist{
              throw new AlbumExistsInArtistError(album.name)
 
         }else{
-            
-            this.albums.push(album)
+            this.albums.push(album);
+            this.change(this, album);
           }
     }
     

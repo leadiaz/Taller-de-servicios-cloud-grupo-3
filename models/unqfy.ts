@@ -16,9 +16,9 @@ import {albumsArtistaPorName} from "./controller";
 
 import picklify = require('picklify'); // para cargar/guarfar unqfy
 import fs = require('fs'); // para cargar/guarfar unqfy
-import observer = require('../observable');
 
-export class UNQfy extends observer.Observable{
+
+export class UNQfy {
     artists: Array<Artist>;
     playlists: Array<Playlist>;
     users: Array<User>;
@@ -26,7 +26,6 @@ export class UNQfy extends observer.Observable{
     private listeners: any[];
 
     constructor() {
-        super();
         this.artists = [];
         this.playlists = [];
         this.users = [];
@@ -245,11 +244,9 @@ export class UNQfy extends observer.Observable{
             - una propiedad year (number)
         */
         const album = new Album(artistId, albumData.name, albumData.year);
-       // console.log(album)
         try {
             const artist = this.getArtistById(artistId);
             artist.addAlbum(album);
-            this.change(artist, album);
         } catch (error) {
             console.log(error.message);
             throw error
