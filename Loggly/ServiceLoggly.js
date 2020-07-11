@@ -1,8 +1,6 @@
 const  winston  = require('winston');
 const  {Loggly} = require('winston-loggly-bulk');
-const service = require('./Logger');
 const Logger = require('./Logger');
-const { eventNames } = require('./Logger');
 
 winston.add(new Loggly({
     token: "471fa208-9af4-407d-bffd-09bfc88cadaf",
@@ -17,7 +15,7 @@ winston.add(new Loggly({
 }
 
 //winston.log('info', "HOlaaaaaaaaaaaaaaaa World from Node.js!");
-//loguearEvento('error',"Se agrego nada acaaaaaaaaaaaaaaaaaaaaaa")
+loguearEvento('error',"hola pepito")
 //winston.info('que es esto?')
 module.exports = {
     loguearEvento
