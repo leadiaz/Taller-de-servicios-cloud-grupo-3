@@ -1,4 +1,4 @@
-const error = require('../Exceptions/excepcionesAPI');
+const error = require('../UNQfy/Exceptions/excepcionesAPI');
 const Notifier = require('../notificador');
 const notificador = new Notifier.Notificador();
 

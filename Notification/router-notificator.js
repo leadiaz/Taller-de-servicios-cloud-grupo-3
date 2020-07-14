@@ -2,8 +2,8 @@
 const express = require('express');
 const app = express();
 const api = express.Router();
-const ERRORAPI  = require('../Exceptions/excepcionesAPI');
-const errorHandler = require('../erroresApi/errors');
+const ERRORAPI  = require('../UNQfy/Exceptions/excepcionesAPI');
+const errorHandler = require('../UNQfy/erroresApi/errors');
 
 const NotificationController = require('../controllers/notificationController');
 /** Notificador */
