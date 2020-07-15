@@ -6,17 +6,30 @@ winston.add(new Loggly({
     token: "471fa208-9af4-407d-bffd-09bfc88cadaf",
     subdomain: "SUBDOMAIN",
     tags: ["Winston-NodeJS"],
-    json: true
+    json: true,
+    level: ["debug","warning"],
 }));
 
- function loguearEvento(nivel,nameEvent) {
-    winston.log(nivel,nameEvent)
-    Logger.log(nivel,nameEvent)
+
+
+
+ function loguearEvento(nivel,message) {
+    winston.log(nivel,message)
+    if (nivel === "warning") {
+        Logger.warn(message)
+        winston.warn(message)
+    }else{
+        Logger.log(nivel,message)
+    }    
 }
 
-//winston.log('info', "HOlaaaaaaaaaaaaaaaa World from Node.js!");
-loguearEvento('error',"hola pepito")
-//winston.info('que es esto?')
+
+
+
+
+
+
+
 module.exports = {
     loguearEvento
 }
