@@ -1,12 +1,22 @@
-export default class ArtistAndSubscriptors{
+class ArtistAndSubscriptors{
     constructor(id){
         this.idArtist = id;
-        this.emailsUsers = [];
+        this.emailsUsers = ['leadiaz94@gmail.com'];
     }
 
     agregarEmail(emailsUser){
-        if(!(this.emailsUsers.filter(e => e === emailsUser).length > 0)){ 
+        if(!this.emailsUsers.includes(email => email == emailsUser)){ 
             this.emailsUsers.push(emailsUser);
         }
     }
+    sacarEmail(emailsUser){
+        this.emailsUsers = this.emailsUsers.filter(mail => mail != emailsUser);
+    }
+    deleteEmails(){
+        this.emailsUsers = [];
+    }
 }
+
+module.exports = {
+    ArtistAndSubscriptors
+};

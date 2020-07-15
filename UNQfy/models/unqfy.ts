@@ -12,8 +12,6 @@ import { NotExistPlayListError } from "../Exceptions/playListExcepcion";
 import { NoExistUserError, ExistsUserError } from "../Exceptions/userExcepcion";
 import {albumsArtistaPorName} from "./controller";
 
-
-
 import picklify = require('picklify'); // para cargar/guarfar unqfy
 import fs = require('fs'); // para cargar/guarfar unqfy
 

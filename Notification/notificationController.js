@@ -1,5 +1,5 @@
 const error = require('../UNQfy/Exceptions/excepcionesAPI');
-const Notifier = require('../notificador');
+const Notifier = require('../Notification/notificador');
 const notificador = new Notifier.Notificador();
 
 function subscribe(req, res) {
@@ -8,7 +8,7 @@ function subscribe(req, res) {
         throw new error.JSONException();
     }
     notificador.suscribirseAUnArtista(body.artistId, body.email).then(() => {
-        res.json();
+        res.json({message: 'suscripción éxitosa'});
     }).catch((error) => {
         if (error) {
             res.status(error.status);
@@ -38,7 +38,7 @@ function notify(req, res){
         throw new error.JSONException();
     }
     notificador.notificarUsuarios(body).then(()=>{
-        res.json();
+        res.json('OK!');
     }).catch((error) => {
         if (error) {
             res.status(error.status);
@@ -48,10 +48,10 @@ function notify(req, res){
 }
 
 function getSubscriptionsForArtist(req, res) {
-    if(!(req.params.artistId)){
+    if(!(req.query.artistId)){
         throw new error.JSONException();
     }
-    const artId = parseInt(req.params.artistId);
+    const artId = parseInt(req.query.artistId);
     notificador.getsEmails(artId).then((parIdEm)=>{
         res.json({
             artistId: parIdEm.idArtist,
@@ -65,14 +65,15 @@ function getSubscriptionsForArtist(req, res) {
     });
 }
 function deleteSubscriptions(req, res) {
-    const artId = parseInt(req.params.artistId);
-    notificador.deleteEmails(artId).then(()=>{
-        res.json();
-    }).catch((error) => {
-        if (error) {
-            res.status(error.status);
-            res.json({status: error.status, errorCode: error.errorCode});
-        }
+    const body = req.body;
+    if(!body.artistId){
+        throw new error.JSONException();
+    }
+    notificador.deleteEmails(body.artistId).then(()=>{
+        res.json({message: 'OK!'});
+    }).catch(() => {
+        res.status(error.status);
+        res.json({status: error.status, errorCode: error.errorCode});
     });
 }
 

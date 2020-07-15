@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 exports.__esModule = true;
-const idGenerator_1 = require('./idGenerator');
-const User = /** @class */ (function () {
+var idGenerator_1 = require("./idGenerator");
+var User = /** @class */ (function () {
     function User(name) {
         this.id = idGenerator_1.IdGenerator.getNextId();
         this.tracks = [];
@@ -17,8 +17,8 @@ const User = /** @class */ (function () {
     };
     //Retorna: las veces que un usuario escucho un tema 
     User.prototype.howManyTimesListenTrack = function (aTrack) {
-        let n = 0;
-        this.tracks.forEach((track) => { if (track === aTrack) {
+        var n = 0;
+        this.tracks.forEach(function (track) { if (track === aTrack) {
             n = n + 1;
         } });
         return n;

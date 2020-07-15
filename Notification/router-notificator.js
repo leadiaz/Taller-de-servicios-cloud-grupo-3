@@ -5,9 +5,9 @@ const api = express.Router();
 const ERRORAPI  = require('../UNQfy/Exceptions/excepcionesAPI');
 const errorHandler = require('../UNQfy/erroresApi/errors');
 
-const NotificationController = require('../controllers/notificationController');
+const NotificationController = require('./notificationController');
 /** Notificador */
-api.post('/api/susbcribe', NotificationController.subscribe);
+api.post('/api/subscribe', NotificationController.subscribe);
 api.post('/api/unsubscribe', NotificationController.unsubscribe);
 api.post('/api/notify', NotificationController.notify);
 api.get('/api/subscriptions',NotificationController.getSubscriptionsForArtist);

@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 exports.__esModule = true;
-const IdGenerator = /** @class */ (function () {
+var IdGenerator = /** @class */ (function () {
     function IdGenerator() {
     }
     IdGenerator.getNextId = function () {

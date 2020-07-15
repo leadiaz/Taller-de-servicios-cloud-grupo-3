@@ -24,7 +24,7 @@ export class Artist extends Observable{
 
         }else{
             this.albums.push(album);
-            this.change(this, album);
+            super.change(this, album);
           }
     }
     

@@ -1,10 +1,10 @@
 /* eslint-disable eqeqeq */
 
 const rp = require('request-promise');
-const errors = require('./Exceptions/excepcionesAPI');
+const errors = require('../UNQfy/Exceptions/excepcionesAPI');
 const ArtistNotFound = errors.RelatedResourceNotFound;
-const URL = 'http://localhost:5000/api';
-const ArtistAndSubscritors = require('./models/artistAndSubscriptors');
+const URL = 'http://localhost:9000/api';
+const ArtistAndSubscritors = require('./artistAndSubscriptors');
 
 const ServerInternalError = errors.InternalServerError;
 const getGmailClient = require('./gmailClient');
@@ -15,17 +15,18 @@ class Notificador{
     constructor(){
         this.mapaDeSuscriptores = [];
     }
-    crearMensaje(mailSubscriptor, artistName){
-        const subject = `${artistName} agregó un nuevo album`;
+    crearMensaje(data, email){
+        const subject = `${data.subject}`;
         const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
         const messageParts = [
-            'From: Leandro <leadiaz94@gmail.com>',
-            `To: ${mailSubscriptor}`,
+            `From: ${data.from}`,
+            `To: ${email}`,
+            // 'To: leadiaz94@gmail.com',
             'Content-Type: text/html; charset=utf-8',
             'MIME-Version: 1.0',
             `Subject: ${utf8Subject}`,
             '',
-            `Este mensaje es para avisarte que ${artistName} ha agregado un nuevo album`,
+            `${data.message}`,
         ];
         const message = messageParts.join('\n');
         const encodedMessage = Buffer.from(message)
@@ -36,64 +37,64 @@ class Notificador{
   
         return encodedMessage;
     }
-    enviarMails(idArtist, emailsUsers){
-        // return new Promise.all(emailsUsers).then(email => {
-        //     gmailClient.users.messages.send(
-        //         {
-        //           userId: 'me',
-        //           requestBody: {
-        //             raw: this.crearMensaje(),
-        //           },
-        //         }
-        //       );
-        // })
+    enviarMails(data, emailsUsers){
+        const request = emailsUsers.map(email => {
+            gmailClient.users.messages.send({
+                userId: 'me',
+                requestBody: {
+                    raw: this.crearMensaje(data, email)
+                }
+            });
+        });
+        // eslint-disable-next-line no-undef
+        return Promise.all(request).catch(()=>{
+            throw new ServerInternalError();
+        });
     }
-    notificarUsuarios(param){
-        // return this.verificarSiExisteArtista(param.artistId).then((artista)=> {
-        //     return this.getsEmailsArtistIdFromMap(artista.id);
-        // }).then(result => {
-        //     this.enviarMails(result.idArtist, result.emailsUsers);
-        // }).catch(errors => {
-        //     throw new ServerInternalError();
-        // });
+    /**
+     * 
+     * @param {artistId, subject,message, from} data 
+     */
+    notificarUsuarios(data){
+        return this.verificarSiExisteArtista(data.artistId).then((artista)=> {
+            const artist_emails = this.getsEmailsArtistIdFromMap(artista.id);
+            this.enviarMails(data, artist_emails.emailsUsers);
+        }).catch(() => {
+            throw new ServerInternalError();
+        });
     }
     getsEmailsArtistIdFromMap(artistid){
         let  parIdEm = this.mapaDeSuscriptores.find(pares=> pares.idArtist === artistid);
-        if(parIdEm === undefined){
-            parIdEm = new ArtistAndSubscritors.ArtistAndSubscritors(artistid);
+        if(!parIdEm){
+            parIdEm = new ArtistAndSubscritors.ArtistAndSubscriptors(artistid);
             this.mapaDeSuscriptores.push(parIdEm);
         }
         return parIdEm;
     }
     
-
     getsEmails(artistID){
- 
-        return  this.verificarSiExisteArtista(artistID)
-            .then(()=> {
-                return this.getsEmailsArtistIdFromMap(artistID);
-            });
+        return  this.verificarSiExisteArtista(artistID).then(()=> {
+            return this.getsEmailsArtistIdFromMap(artistID);
+        });
     }
 
     deleteEmails(artistID){
         return  this.verificarSiExisteArtista(artistID).then(()=> {
-            this.getsEmailsArtistIdFromMap(artistID).setearEmails([]);
-            return true;});
+            this.getsEmailsArtistIdFromMap(artistID).deleteEmails();
+        });
     }
 
     suscribirseAUnArtista(artistID,mailUsuario){
         return  this.verificarSiExisteArtista(artistID).then(()=> {
             this.getsEmailsArtistIdFromMap(artistID).agregarEmail(mailUsuario);
-            console.log(this.mapaDeSuscriptores);
-            return true;});
+        });
     }
 
     desubscribirseAUnArtista(artistID,mailUsuario){
         return  this.verificarSiExisteArtista(artistID)
             .then(()=> {
-                this.getsEmailsArtistIdFromMap(artistID).sacarEmail(mailUsuario);
-                console.log(this.mapaDeSuscriptores);
-                return true;
+                const map = this.getsEmailsArtistIdFromMap(artistID);
+                map.sacarEmail(mailUsuario);
             });
     }
 
@@ -109,15 +110,14 @@ class Notificador{
     verificarSiExisteArtista(artistId){
         const options = {
             url: URL + '/artists/'+artistId,
+            // headers: {'User-Agent': 'Request-Promise'},
             json: true,
         };
         return rp.get(options).then((artist)=>{
+            console.log(artist, 'en la promesa');
             return artist;
-        }).catch((error) => {
-            if (error) {
-                console.log('Error ' + error.message);
-                throw new ArtistNotFound();
-            }
+        }).catch(() => {
+            throw new ArtistNotFound();
         }); 
     }
     

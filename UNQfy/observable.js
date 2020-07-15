@@ -1,36 +1,32 @@
-
-const rp = require('request-promise');
-
-const API = 'http://localhost:8080/api';
-const errors = require('./Exceptions/excepcionesAPI');
-const ServerInternalError = errors.InternalServerError;
-
-class Observable{
-    constructor(){}
-    change(artista, album){
-        this.changeAddAlbum(artista,album);
+"use strict";
+exports.__esModule = true;
+var rp = require('request-promise');
+var unqfy = require('../endpoints').unqfy;
+var API = unqfy;
+var errors = require('./Exceptions/excepcionesAPI');
+var ServerInternalError = errors.InternalServerError;
+var Observable = /** @class */ (function () {
+    function Observable() {
     }
-    changeAddAlbum(artista, album){
-        const options = {
+    Observable.prototype.change = function (artista, album) {
+        this.changeAddAlbum(artista, album);
+    };
+    Observable.prototype.changeAddAlbum = function (artista, album) {
+        var options = {
             url: API + '/notify',
             body: {
                 artistId: artista.artistId,
                 subject: 'Nuevo Album para el artista ' + artista.name,
                 message: 'Se ha agregado el album ' + album.name + ' al artista ' + artista.name,
-                from: 'pruebawebservices@gmail.com',
+                from: 'pruebawebservices@gmail.com'
             },
-            json: true,
+            json: true
         };
-        rp.post(options).then(() => {
-            console.log('Notificaciones enviadas con exitos'); 
-        }).catch((error) => {
-            if (error) {
-                throw new ServerInternalError();
-            }
-        }); 
-    }
-}
-
-module.exports = {
-    Observable: Observable
-};
+        rp.post(options)["catch"](function () {
+            throw new ServerInternalError();
+        });
+        console.log(options.url);
+    };
+    return Observable;
+}());
+exports.Observable = Observable;
