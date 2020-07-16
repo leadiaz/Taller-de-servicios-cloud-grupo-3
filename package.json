@@ -21,6 +21,7 @@
     "puppeteer": "^3.0.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
+    "slackbots": "^1.2.0",
     "socket.io": "^2.3.0",
     "test": "^0.6.0",
     "winston-papertrail": "git+https://github.com/kenperkins/winston-papertrail.git#v2"

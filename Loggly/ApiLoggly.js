@@ -6,7 +6,9 @@ const LogglyController = require('./LogglyController')
 app.set('json spaces',2);
 const PORT = process.env.PORT || 9000;
 
-api.post('/api/event',LogglyController.agregarEvento)
+api.post('/api/loggly/event',LogglyController.agregarEvento)
+api.post('/api/loggly/modifyState',LogglyController.modifyState)
+
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(api);
