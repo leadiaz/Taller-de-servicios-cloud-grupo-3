@@ -27,7 +27,6 @@ function modifyState(req,res) {
         res.json({result: "El servidor se ha activado"})
     }
     else {
-        console.log('asddasasdasdsa')
         ServicioLoggly.desactivar()
         res.status(201)
         res.json({result: "El servidor se ha desactivado"})
