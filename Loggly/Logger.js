@@ -10,8 +10,10 @@ module.exports =  createLogger({
        new transports.File({
            maxFiles: 5120000,
            maxFiles: 5, 
-           filename:  './log-api.text'
+           filename:  './log-api.text',
+           level: 'debug',
+         
+         
        })
     ]
 })
-
