@@ -19,22 +19,29 @@ function agregarEvento(req,res){
     }
 
 }
-function modifyState(req,res) {
-    const body = req.body 
-    if(body.newState == "activar") {
+
+function activarLoggly(req,res) {
         ServicioLoggly.activar()
         res.status(201)<
         res.json({result: "El servidor se ha activado"})
-    }
-    else {
-        ServicioLoggly.desactivar()
-        res.status(201)
-        res.json({result: "El servidor se ha desactivado"})
-    }
+}
+
+function desactivarLoggly(req,res){
+    ServicioLoggly.desactivar()
+    res.status(201)
+    res.json({result: "El servidor se ha desactivado"})
+
+}
+
+function stateLoggly(req,res){
+    res.status(200)
+    res.json({stateLoggly: ServicioLoggly.estadoLoggly()})
 }
 
 
 module.exports = {
     agregarEvento,
-    modifyState,
+    activarLoggly,
+    desactivarLoggly,
+    stateLoggly,
 }

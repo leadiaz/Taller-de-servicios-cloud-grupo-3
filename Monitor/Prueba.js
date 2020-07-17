@@ -1,13 +1,13 @@
 // Require the Bolt for JavaScript package (github.com/slackapi/bolt)
-const { App } = require('slackbots');
+const slack = require('slackbots');
 
-const app = new App({
-  signingSecret: "grupo3-monitor-notifications"
-});
+console.log(slack.defaultMaxListeners)
+
+
 
 // Listen to a message containing the substring "hello"
 // app.message requires your app to subscribe to the message.channels event
-app.message("hello", async ({ payload, context }) => {
+slack.message("hello", async ({ payload, context }) => {
   try {
     // Call the chat.postMessage method using the built-in WebClient
     const result = await app.client.chat.postMessage({
@@ -31,3 +31,6 @@ app.message("hello", async ({ payload, context }) => {
 
   console.log("⚡️ Bolt app is running!");
 })();
+
+
+curl -X POST -H 'Content-type:application/json'  --data '{"channel":"grupo3-monitor-notifications","text":"hola"}'  https://hooks.slack.com/services/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

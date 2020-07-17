@@ -33,10 +33,10 @@ class LogglyService {
 
     estadoLoggly() {
         if(this.state) {
-            return "El servidor Loggly se encuentra activado"
+            return "Funcionando"
         }
         else{
-            return "El servidor Loggly se encuetra desactivado"
+            return "No funcionando"
         }
     }
 
