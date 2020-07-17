@@ -36,7 +36,7 @@ var Artist = /** @class */ (function (_super) {
         }
         else {
             this.albums.push(album);
-            _super.prototype.notify.call(this, this, album);
+            this.notify(this, album, true);
         }
     };
     Artist.prototype.getTracks = function () {

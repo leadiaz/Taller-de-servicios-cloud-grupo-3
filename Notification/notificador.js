@@ -1,9 +1,11 @@
 /* eslint-disable eqeqeq */
 
 const rp = require('request-promise');
+const endpoints = require('../endpoints');
+const URL_Notificador = endpoints.notification;
 const errors = require('../UNQfy/Exceptions/excepcionesAPI');
 const ArtistNotFound = errors.RelatedResourceNotFound;
-const URL = 'http://localhost:9000/api';
+const URL = endpoints.unqfy;
 const ArtistAndSubscritors = require('./artistAndSubscriptors');
 
 const ServerInternalError = errors.InternalServerError;
@@ -16,20 +18,20 @@ class Notificador{
         this.mapaDeSuscriptores = [];
     }
     update(artista, album){
+        console.log(artista.id);
         const options = {
-            url: URL + '/notify',
+            url: URL_Notificador + '/notify',
             body: {
-                artistId: artista.artistId,
+                artistId: artista.id,
                 subject: 'Nuevo Album para el artista ' + artista.name,
                 message: 'Se ha agregado el album ' + album.name + ' al artista ' + artista.name,
-                from: 'pruebawebservices@gmail.com',
+                from: 'leadiaz94@gmail.com',
             },
             json: true,
         };
         rp.post(options).catch(() => {
             throw new ServerInternalError();
         }); 
-        console.log(options.url);
     }
     crearMensaje(data, email){
         const subject = `${data.subject}`;

@@ -15,6 +15,7 @@ var userExcepcion_1 = require("../Exceptions/userExcepcion");
 var controller_1 = require("./controller");
 var picklify = require("picklify"); // para cargar/guarfar unqfy
 var fs = require("fs"); // para cargar/guarfar unqfy
+var notificador_1 = require("../../Notification/notificador");
 var UNQfy = /** @class */ (function () {
     function UNQfy() {
         this.artists = [];
@@ -507,7 +508,7 @@ var UNQfy = /** @class */ (function () {
     UNQfy.load = function (filename) {
         var serializedData = fs.readFileSync(filename, { encoding: 'utf-8' });
         //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-        var classes = [UNQfy, artist_1.Artist, album_1.Album, track_1.Track, playlist_1.Playlist, user_1.User];
+        var classes = [UNQfy, artist_1.Artist, album_1.Album, track_1.Track, playlist_1.Playlist, user_1.User, notificador_1.Notificador];
         return picklify.unpicklify(JSON.parse(serializedData), classes);
     };
     return UNQfy;
