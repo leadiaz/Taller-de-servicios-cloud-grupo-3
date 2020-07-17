@@ -16,7 +16,7 @@ exports.__esModule = true;
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 var albumException_1 = require("../Exceptions/albumException");
-var observable_1 = require("../observable");
+var observable_1 = require("./observable");
 var Artist = /** @class */ (function (_super) {
     __extends(Artist, _super);
     function Artist(name, country) {
@@ -36,7 +36,7 @@ var Artist = /** @class */ (function (_super) {
         }
         else {
             this.albums.push(album);
-            _super.prototype.change.call(this, this, album);
+            _super.prototype.notify.call(this, this, album);
         }
     };
     Artist.prototype.getTracks = function () {

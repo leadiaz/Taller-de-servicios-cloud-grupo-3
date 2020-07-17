@@ -15,6 +15,22 @@ class Notificador{
     constructor(){
         this.mapaDeSuscriptores = [];
     }
+    update(artista, album){
+        const options = {
+            url: URL + '/notify',
+            body: {
+                artistId: artista.artistId,
+                subject: 'Nuevo Album para el artista ' + artista.name,
+                message: 'Se ha agregado el album ' + album.name + ' al artista ' + artista.name,
+                from: 'pruebawebservices@gmail.com',
+            },
+            json: true,
+        };
+        rp.post(options).catch(() => {
+            throw new ServerInternalError();
+        }); 
+        console.log(options.url);
+    }
     crearMensaje(data, email){
         const subject = `${data.subject}`;
         const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
@@ -47,7 +63,7 @@ class Notificador{
             });
         });
         // eslint-disable-next-line no-undef
-        return Promise.all(request).catch(()=>{
+        return new Promise.all(request).catch(()=>{
             throw new ServerInternalError();
         });
     }
@@ -64,7 +80,7 @@ class Notificador{
         });
     }
     getsEmailsArtistIdFromMap(artistid){
-        let  parIdEm = this.mapaDeSuscriptores.find(pares=> pares.idArtist === artistid);
+        let  parIdEm = this.mapaDeSuscriptores.find(pares=> pares.idArtist == artistid);
         if(!parIdEm){
             parIdEm = new ArtistAndSubscritors.ArtistAndSubscriptors(artistid);
             this.mapaDeSuscriptores.push(parIdEm);
@@ -96,15 +112,6 @@ class Notificador{
                 const map = this.getsEmailsArtistIdFromMap(artistID);
                 map.sacarEmail(mailUsuario);
             });
-    }
-
-    eliminarArtistSuscribe(artistName){
-        try {
-            const artista = this.unquiFy.getArtistByName(artistName);
-            this.mapaDeSuscriptores= this.mapaDeSuscriptores.filter((pares) => pares.idArtist != artista.artistId);
-        } catch (error) {
-            throw error;
-        }
     }
 
     verificarSiExisteArtista(artistId){

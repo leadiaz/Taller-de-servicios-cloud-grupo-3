@@ -1,6 +1,6 @@
 const error = require('../UNQfy/Exceptions/excepcionesAPI');
-const Notifier = require('../Notification/notificador');
-const notificador = new Notifier.Notificador();
+const Notificador = require('../Notification/notificador');
+const notificador = new Notificador.Notificador();
 
 function subscribe(req, res) {
     const body = req.body;

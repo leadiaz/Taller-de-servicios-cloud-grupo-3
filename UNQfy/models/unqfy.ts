@@ -14,6 +14,7 @@ import {albumsArtistaPorName} from "./controller";
 
 import picklify = require('picklify'); // para cargar/guarfar unqfy
 import fs = require('fs'); // para cargar/guarfar unqfy
+import { Notificador } from "../../Notification/notificador";
 
 
 export class UNQfy {
@@ -556,7 +557,7 @@ popularAlbumsForArtist(artistName) {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, Playlist,User];
+    const classes = [UNQfy, Artist, Album, Track, Playlist,User, Notificador];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
