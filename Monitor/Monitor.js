@@ -5,23 +5,28 @@ const URLNotificador = ""
 const UrlUNQFY = ""
 
 class Monitor  {
-
-
-
+   estadoDeApis
+   recarga 
+   valor = true
     constructor(){
         this.state = true;
+        this.pepe()
     }
-
+   
     servidoresActivos(){
+     
         
     }
 
     activarMonitoreo() {
         this.state = true;
+        this.valor = true
+        this.pepe()
     }
 
     desactivarMonitoreo(){
         this.state = false;
+        this.valor = false;
     }
 
     notificarASlack(nameService) {
@@ -31,6 +36,7 @@ class Monitor  {
         this.postMessage(messege)
     }
     postMessage(message){
+        console.log(message)
         const options = {
             url: "https://hooks.slack.com/services/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",
             body: {
@@ -70,21 +76,30 @@ class Monitor  {
         }
        return rp.get(options)
     }
+    pepe () {
+        if(this.valor){
+            this.monitoreo()
+            setTimeout(this.pepe.bind(this),1000)
+        }
+
+    }
+
 
     async monitoreo(){
-       const loggly = await this.stateDeServiceLoggly()
-       const notificador = await this.stateDeServiceNotificador()
-       const unqfy        = await this.stateDeUnqfy()
-       const apis        = [loggly,notificador,unqfy]
+       const loggly      = await this.stateDeServiceLoggly()
+    //    const notificador = await this.stateDeServiceNotificador()
+    //    const unqfy       = await this.stateDeUnqfy()
+       const apis        = [loggly]
        apis.forEach(service => {
-           if(service.state == "No Funcionando"){
-              this.notificarASlack(service.name)
+           if(service.stateLoggly == "No funcionando"){
+              this.notificarASlack('Loggly')   
+              this.estadoDeApis = false       
+           }
+           else{
+               this.estadoDeApis = true
            }
        });
     }
-
-    
-
 }
 
 
@@ -94,10 +109,3 @@ class Monitor  {
 module.exports = {
     Monitor
 }
-
-const pepe = new Monitor()
-
-
-//pepe.postMessage('probando')
-
-pepe.stateDeServiceLoggly().then(response => console.log(response))

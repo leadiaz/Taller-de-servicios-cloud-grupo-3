@@ -5,9 +5,9 @@ const ServiceMonitor = new Monitor.Monitor()
 
 
 function estadoDeServidores(req,res) {
-   if(ServiceMonitor.servidoresActivos()){
+   if(ServiceMonitor.estadoDeApis){
      res.status(200)
-     res.json({result: "Los servidores se encuentrar activos"})
+     res.json({result: "Los servidores se encuentran activos"})
    }else {
      res.status(200)
      res.json({result: "No todos los servidores se encuentran activos"})
