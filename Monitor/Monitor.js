@@ -3,7 +3,7 @@ const { response } = require('express');
 const URLLoggly = "http://localhost:9000/api/loggly/state"
 const URLNotificador = ""
 const UrlUNQFY = ""
-const url = require('./wookUrl') 
+const url = require('../wookUrl.json') 
 const urlGRUPO3 = url.URLGRUPO3
 
 class Monitor  {
