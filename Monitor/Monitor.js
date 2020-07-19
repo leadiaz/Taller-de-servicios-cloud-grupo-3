@@ -3,6 +3,8 @@ const { response } = require('express');
 const URLLoggly = "http://localhost:9000/api/loggly/state"
 const URLNotificador = ""
 const UrlUNQFY = ""
+const url = require('./wookUrl') 
+const urlGRUPO3 = url.URLGRUPO3
 
 class Monitor  {
    estadoDeApis
@@ -10,7 +12,7 @@ class Monitor  {
    valor = true
     constructor(){
         this.state = true;
-        this.pepe()
+      //  this.pepe()
     }
    
     servidoresActivos(){
@@ -38,7 +40,7 @@ class Monitor  {
     postMessage(message){
         console.log(message)
         const options = {
-            url: "https://hooks.slack.com/services/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",
+            url: urlGRUPO3,
             body: {
                 text: message,
             },
@@ -103,8 +105,10 @@ class Monitor  {
 }
 
 
+console.log(urlGRUPO3)
 
-
+const pepe = new Monitor()
+pepe.postMessage('pruebaaa')
 
 module.exports = {
     Monitor
