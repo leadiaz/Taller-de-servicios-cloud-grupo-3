@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 8080;
 api.post('/api/monitor/activar',ControllerMonitor.activarMonitoreo)
 api.post('/api/monitor/desactivar',ControllerMonitor.desactivarMonitoreo)
 api.get('/api/monitor/estadoServidores',ControllerMonitor.estadoDeServidores)
+api.get('/api/monitor/prueba',ControllerMonitor.servicios)
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));

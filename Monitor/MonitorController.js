@@ -1,7 +1,10 @@
 const Monitor = require('./Monitor')
 const ServiceMonitor = new Monitor.Monitor()
 
-
+function servicios(req,res){
+  res.json(ServiceMonitor.servers)
+  
+}
 
 
 function estadoDeServidores(req,res) {
@@ -31,6 +34,7 @@ function desactivarMonitoreo(req,res){
 module.exports = {
   estadoDeServidores,
   activarMonitoreo,
-  desactivarMonitoreo
+  desactivarMonitoreo,
+  servicios
 }
 
