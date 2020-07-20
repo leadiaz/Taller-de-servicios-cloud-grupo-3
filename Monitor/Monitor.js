@@ -75,7 +75,7 @@ class Monitor {
 
     eliminarServerName(serverName) {
         if (this.fallenserver.indexOf(serverName) >= 0) {
-            this.fallenserver.splice(indice, 1)
+            this.fallenserver.splice(this.fallenserver.indexOf(serverName), 1)
         }
     }
 
@@ -126,10 +126,10 @@ class Monitor {
         await this.stateDeServiceNotificador()
         await this.stateDeUnqfy()
         this.servers.forEach(server => {
-            if (server.stateServer == "No Funcionando") {
-                this.avisarServicioNoFuncionando(server.nameService)
+            if (server.stateServer == "No funcionando") {
+                this.avisarServicioNoFuncionando(server.name)
             } else {
-                this.avisarServicioVolvioAFuncionar(server.nameService)
+                this.avisarServicioVolvioAFuncionar(server.name)
             }
 
         });
