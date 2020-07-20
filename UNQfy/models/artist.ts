@@ -1,19 +1,23 @@
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {AlbumExistsInArtistError, NotExistAlbumError} from "../Exceptions/albumException";
+const Notificador = require('../../Notification/notificador');
 import { Observable } from "./observable";
 
-export class Artist extends Observable {
+const notificador = new Notificador.Notificador()
+
+export class Artist  {
     albums:Album[];
     id: number;
+    observers:any[]
 
     constructor(
         public name?:string,
         public country?:string,
     ){
-        super()
         this.id = IdGenerator.getNextId();
         this.albums = [];
+        this.observers = [notificador];
     }
     toJSON(){
         return {id: this.id, name: this.name, country:this.country, albums: this.albums };
@@ -24,8 +28,13 @@ export class Artist extends Observable {
 
         }else{
             this.albums.push(album);
-            this.notify(this, album, true);
+            this.notify(album);
           }
+    }
+    notify(album){
+        this.observers.forEach( observer => {
+            observer.update(this, album)
+        })
     }
     
     getTracks():Track[]{

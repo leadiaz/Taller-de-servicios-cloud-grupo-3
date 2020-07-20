@@ -1,31 +1,17 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 exports.__esModule = true;
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 var albumException_1 = require("../Exceptions/albumException");
-var observable_1 = require("./observable");
-var Artist = /** @class */ (function (_super) {
-    __extends(Artist, _super);
+var Notificador = require('../../Notification/notificador');
+var notificador = new Notificador.Notificador();
+var Artist = /** @class */ (function () {
     function Artist(name, country) {
-        var _this = _super.call(this) || this;
-        _this.name = name;
-        _this.country = country;
-        _this.id = idGenerator_1.IdGenerator.getNextId();
-        _this.albums = [];
-        return _this;
+        this.name = name;
+        this.country = country;
+        this.id = idGenerator_1.IdGenerator.getNextId();
+        this.albums = [];
+        this.observers = [notificador];
     }
     Artist.prototype.toJSON = function () {
         return { id: this.id, name: this.name, country: this.country, albums: this.albums };
@@ -36,8 +22,14 @@ var Artist = /** @class */ (function (_super) {
         }
         else {
             this.albums.push(album);
-            this.notify(this, album, true);
+            this.notify(album);
         }
+    };
+    Artist.prototype.notify = function (album) {
+        var _this = this;
+        this.observers.forEach(function (observer) {
+            observer.update(_this, album);
+        });
     };
     Artist.prototype.getTracks = function () {
         return this.albums.reduce(function (accumulator, album) { return accumulator.concat(album.tracks); }, []);
@@ -67,6 +59,6 @@ var Artist = /** @class */ (function (_super) {
         this.country = body.country;
     };
     return Artist;
-}(observable_1.Observable));
+}());
 exports.Artist = Artist;
 var idGenerator_1 = require("./idGenerator");
