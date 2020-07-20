@@ -9,7 +9,7 @@ const notificador = new Notificador.Notificador()
 export class Artist  {
     albums:Album[];
     id: number;
-    observers:any[]
+    observers:any[];
 
     constructor(
         public name?:string,

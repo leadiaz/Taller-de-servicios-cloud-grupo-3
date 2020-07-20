@@ -12,8 +12,8 @@ export class Track{
         public genres?: Array<string>,
         public lyrics?: string ,
     ){
-        this.id = IdGenerator.getNextId()
-        this.genres = []
+        this.id = IdGenerator.getNextId();
+        this.genres = [];
         this.lyrics = null
     }
     toJSON(){

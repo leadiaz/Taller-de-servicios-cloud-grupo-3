@@ -16,11 +16,14 @@ var controller_1 = require("./controller");
 var picklify = require("picklify"); // para cargar/guarfar unqfy
 var fs = require("fs"); // para cargar/guarfar unqfy
 var notificador_1 = require("../../Notification/notificador");
+var Loggly_1 = require("../../Loggly/Loggly");
+var Logger = new Loggly_1.LogglyService();
 var UNQfy = /** @class */ (function () {
     function UNQfy() {
         this.artists = [];
         this.playlists = [];
         this.users = [];
+        this.observador = Logger;
     }
     UNQfy.prototype.getPorId = function (listaARecorrer, id, excepcion) {
         var elementEncontrado = listaARecorrer.find(function (element) { return element.id == id; });
@@ -91,6 +94,7 @@ var UNQfy = /** @class */ (function () {
         var artista;
         try {
             artista = this.agregarArtista(artistData);
+            this.observador.loguearEvento('info', 'Se ha agregado un nuevo artista: ' + artista.name);
         }
         catch (error) {
             if (error instanceof artistExcepcion_1.ArtistExistsWithThatName) {
@@ -209,6 +213,7 @@ var UNQfy = /** @class */ (function () {
             artist.removeAlbums();
             this.removeTracksFromPlayLists(tracks);
             this.removeElem(this.artists, artist, new artistExcepcion_1.ArtistExcepcion());
+            this.observador.loguearEvento('info', 'Se ha eliminado el artista ' + artist.name + ' de UNQfy');
         }
         catch (error) {
             console.log(error.message);
@@ -229,6 +234,7 @@ var UNQfy = /** @class */ (function () {
         try {
             var artist = this.getArtistById(artistId);
             artist.addAlbum(album);
+            this.observador.loguearEvento('info', 'Se ha agregado el album ' + album.name + ' al artista ' + artist.name);
         }
         catch (error) {
             console.log(error.message);
@@ -242,6 +248,7 @@ var UNQfy = /** @class */ (function () {
             var artist = this.getArtistById(album.idArtist);
             this.removeTracksFromPlayLists(album.tracks);
             artist.removeAlbum(album);
+            this.observador.loguearEvento('info', 'Se ha eliminado el album ' + album.name + ' del artista ' + artist.name);
         }
         catch (e) {
             console.log(e.message);
@@ -260,13 +267,10 @@ var UNQfy = /** @class */ (function () {
             - una propiedad duration (number),
             - una propiedad genres (lista de strings)
         */
-        var track = new track_1.Track();
-        track.idAlbum = albumId;
-        track.name = trackData.name;
-        track.duration = trackData.duration;
-        track.genres = trackData.genres;
+        var track = new track_1.Track(albumId, trackData.name, trackData.duration);
         var album = this.getAlbumById(albumId);
         album.addTrack(track);
+        this.observador.loguearEvento('info', 'Se ha agregado el track ' + track.name + ' al album ' + album.name);
         return track;
     };
     //Elimino el track con la id dado
@@ -274,8 +278,10 @@ var UNQfy = /** @class */ (function () {
         var track;
         try {
             track = this.getTrackById(idTrack);
-            this.getAlbumById(track.idAlbum).removeTrack(track); // ?
+            var album = this.getAlbumById(track.idAlbum); // ?
+            album.removeTrack(track);
             this.removeTrackFromPlayList(track);
+            this.observador.loguearEvento('info', 'Se ha eliminado el track ' + track.name + ' del album ' + album.name);
         }
         catch (error) {
             console.log(error.message);
@@ -508,7 +514,7 @@ var UNQfy = /** @class */ (function () {
     UNQfy.load = function (filename) {
         var serializedData = fs.readFileSync(filename, { encoding: 'utf-8' });
         //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-        var classes = [UNQfy, artist_1.Artist, album_1.Album, track_1.Track, playlist_1.Playlist, user_1.User, notificador_1.Notificador];
+        var classes = [UNQfy, artist_1.Artist, album_1.Album, track_1.Track, playlist_1.Playlist, user_1.User, notificador_1.Notificador, Loggly_1.LogglyService];
         return picklify.unpicklify(JSON.parse(serializedData), classes);
     };
     return UNQfy;

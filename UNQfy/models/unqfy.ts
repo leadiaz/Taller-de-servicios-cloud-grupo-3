@@ -15,19 +15,22 @@ import {albumsArtistaPorName} from "./controller";
 import picklify = require('picklify'); // para cargar/guarfar unqfy
 import fs = require('fs'); // para cargar/guarfar unqfy
 import { Notificador } from "../../Notification/notificador";
+import { LogglyService } from "../../Loggly/Loggly";
 
+const Logger = new LogglyService();
 
 export class UNQfy {
     artists: Array<Artist>;
     playlists: Array<Playlist>;
     users: Array<User>;
-
+    observador: any;
     private listeners: any[];
 
     constructor() {
         this.artists = [];
         this.playlists = [];
         this.users = [];
+        this.observador = Logger;
     }
 
     private getPorId(listaARecorrer, id, excepcion) {
@@ -100,6 +103,7 @@ export class UNQfy {
         let artista;
         try {
             artista = this.agregarArtista(artistData);
+            this.observador.loguearEvento('info','Se ha agregado un nuevo artista: ' + artista.name );
         } catch (error) {
             if (error instanceof ArtistExistsWithThatName) {
                 console.log(error.message);
@@ -226,6 +230,7 @@ export class UNQfy {
             artist.removeAlbums();
             this.removeTracksFromPlayLists(tracks);
             this.removeElem(this.artists, artist, new ArtistExcepcion());
+            this.observador.loguearEvento('info','Se ha eliminado el artista ' + artist.name +' de UNQfy');
         } catch (error) {
             console.log(error.message);
             throw error;
@@ -246,6 +251,7 @@ export class UNQfy {
         try {
             const artist = this.getArtistById(artistId);
             artist.addAlbum(album);
+            this.observador.loguearEvento('info','Se ha agregado el album ' + album.name +' al artista ' + artist.name);
         } catch (error) {
             console.log(error.message);
             throw error
@@ -259,6 +265,7 @@ export class UNQfy {
             const artist = this.getArtistById(album.idArtist);
             this.removeTracksFromPlayLists(album.tracks);
             artist.removeAlbum(album);
+            this.observador.loguearEvento('info','Se ha eliminado el album ' + album.name + ' del artista ' + artist.name);
         } catch (e) {
             console.log(e.message);
             throw e ;
@@ -278,14 +285,10 @@ export class UNQfy {
             - una propiedad genres (lista de strings)
         */
         
-        const track = new Track();
-        track.idAlbum = albumId;
-        track.name = trackData.name;
-        track.duration =  trackData.duration;
-        track.genres =  trackData.genres;
-
+        const track = new Track(albumId, trackData.name, trackData.duration);
         const album: Album = this.getAlbumById(albumId);
         album.addTrack(track);
+        this.observador.loguearEvento('info','Se ha agregado el track ' + track.name + ' al album ' + album.name);
         return track;
     }
 
@@ -294,8 +297,10 @@ export class UNQfy {
         let track;
         try {
             track = this.getTrackById(idTrack);
-            this.getAlbumById(track.idAlbum).removeTrack(track); // ?
+            let album = this.getAlbumById(track.idAlbum); // ?
+            album.removeTrack(track);
             this.removeTrackFromPlayList(track);
+            this.observador.loguearEvento('info','Se ha eliminado el track ' + track.name + ' del album ' + album.name);
         } catch (error) {
             console.log(error.message);
         }
@@ -557,7 +562,7 @@ popularAlbumsForArtist(artistName) {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, Playlist,User, Notificador];
+    const classes = [UNQfy, Artist, Album, Track, Playlist,User, Notificador, LogglyService];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
