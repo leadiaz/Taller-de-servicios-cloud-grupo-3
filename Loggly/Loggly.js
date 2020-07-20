@@ -53,6 +53,10 @@ class LogglyService {
 
         }    
     }
+
+    aviso(){
+        
+    }
     
 }
 

@@ -3,55 +3,93 @@ const { response } = require('express');
 const URLLoggly = "http://localhost:9000/api/loggly/state"
 const URLNotificador = ""
 const UrlUNQFY = ""
+const url = require('../wookUrl.json')
 
-class Monitor  {
+const urlGRUPO3 = url.URLGRUPO3
 
-
-
-    constructor(){
+class Monitor {
+    servers = new Array()
+    fallenserver = new Array()
+    myVar
+    constructor() {
         this.state = true;
+        this.servers.push({ stateServer: "", name: 'Logger' });
+        this.servers.push({ stateServer: "", name: 'UNQfy' });
+        this.servers.push({ stateServer: "", name: 'Notificador' });
+        
     }
 
-    servidoresActivos(){
-        
+    servidoresActivos() {
+        return this.servers.every(server => server.stateServer === "Funcionando")
+    }
+
+
+
+    myFunction() {
+        this.myVar = setTimeout(this.myFunction.bind(this), 2000);
+        this.monitoreo()      
+    }
+
+    myStopFunction() {
+        clearTimeout(this.myVar);
     }
 
     activarMonitoreo() {
         this.state = true;
+        this.myFunction()
     }
 
-    desactivarMonitoreo(){
+    desactivarMonitoreo() {
         this.state = false;
+        this.myStopFunction()
     }
 
-    notificarASlack(nameService) {
+    obtenerHora() {
         const hoy = new Date()
-        const hora = hoy.getHours() + ':'  + hoy.getMinutes()
-        const messege = `${hora} El servicio ${nameService} ha dejado de funcionar`
-        this.postMessage(messege)
+        const hora = hoy.getHours() + ':' + hoy.getMinutes()
+        return hora
     }
-    postMessage(message){
+
+    notificarASlackFalla(nameService) {
+        const messege = `${this.obtenerHora()} El servicio ${nameService} ha dejado de funcionar`
+        this.postMessage(messege, nameService)
+    }
+
+
+    postMessage(message, nameService) {
         const options = {
-            url: "https://hooks.slack.com/services/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",
+            url: urlGRUPO3,
             body: {
                 text: message,
             },
-            
+
             json: true,
         };
         rp.post(options).then(response => {
             console.log("envie el mensaje mostro");
         }).catch(err => {
-            console.log("algo malio sal");
+            this.eliminarServerName(nameService)
         });
     }
 
+
+    eliminarServerName(serverName) {
+        if (this.fallenserver.indexOf(serverName) >= 0) {
+            this.fallenserver.splice(this.fallenserver.indexOf(serverName), 1)
+        }
+    }
+
     stateDeServiceLoggly() {
-       const options = {
-           url: URLLoggly,
-           json: true
-       }
-      return rp.get(options)
+        const options = {
+            url: URLLoggly,
+            json: true
+        }
+        return rp.get(options).then(body => {
+            this.servers[0].stateServer = body.stateLoggly
+        })
+            .catch(response => {
+                this.servers[0].stateServer = "No funcionando"
+            })
     }
 
 
@@ -60,44 +98,78 @@ class Monitor  {
             url: URLNotificador,
             json: true
         }
-       return rp.get(options)
+        return rp.get(options).then(body => {
+            this.servers[2].stateServer = body.state
+        })
+            .catch(response => {
+                this.servers[2].stateServer = "No funcionando"
+            })
     }
 
-    stateDeUnqfy(){
+    stateDeUnqfy() {
         const options = {
             url: UrlUNQFY,
             json: true
         }
-       return rp.get(options)
+        return rp.get(options).then(body => {
+            this.servers[1].stateServer = body.state
+        })
+            .catch(response => {
+                this.servers[1].stateServer = "No funcionando"
+            })
     }
 
-    async monitoreo(){
-       const loggly = await this.stateDeServiceLoggly()
-       const notificador = await this.stateDeServiceNotificador()
-       const unqfy        = await this.stateDeUnqfy()
-       const apis        = [loggly,notificador,unqfy]
-       apis.forEach(service => {
-           if(service.state == "No Funcionando"){
-              this.notificarASlack(service.name)
-           }
-       });
+
+
+    async monitoreo() {
+        await this.stateDeServiceLoggly()
+        await this.stateDeServiceNotificador()
+        await this.stateDeUnqfy()
+        this.servers.forEach(server => {
+            if (server.stateServer == "No funcionando") {
+                this.avisarServicioNoFuncionando(server.name)
+            } else {
+                this.avisarServicioVolvioAFuncionar(server.name)
+            }
+
+        });
     }
 
-    
+
+
+    avisarServicioNoFuncionando(serverName) {
+        if (this.fallenserver.indexOf(serverName) < 0) {
+            this.fallenserver.push(serverName)
+            this.notificarASlackFalla(serverName)
+        }
+    }
+
+    avisarServicioVolvioAFuncionar(serverName) {
+        if (this.fallenserver.indexOf(serverName) >= 0) {
+            this.notificarASlackNormalidad(serverName)
+        }
+
+    }
+
+
+
+    notificarASlackNormalidad(serverName) {
+        const messege = `${this.obtenerHora()} El servicio ${nameService} ha vuelto a la normalidad `
+        this.postMessage(messege, serverName)
+        eliminarServerName(serverName)
+    }
+
 
 }
 
 
 
-
+const pepe = new Monitor()
+//pepe.monitoreo()
+//pepe.stateDeServiceLoggly()
+//pepe.activarMonitoreo()
+//pepe.desactivarMonitoreo()
 
 module.exports = {
     Monitor
 }
-
-const pepe = new Monitor()
-
-
-//pepe.postMessage('probando')
-
-pepe.stateDeServiceLoggly().then(response => console.log(response))
