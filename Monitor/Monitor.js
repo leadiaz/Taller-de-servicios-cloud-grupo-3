@@ -8,19 +8,17 @@ const url = require('../wookUrl.json')
 const urlGRUPO3 = url.URLGRUPO3
 
 class Monitor {
-    estadoDeApis
-    recarga
     servers = new Array()
     fallenserver = new Array()
     constructor() {
         this.state = true;
-        this.servers.push({ url: URLLoggly, stateServer: "", name: 'Logger' });
-        this.servers.push({ url: UrlUNQFY, stateServer: "", name: 'UNQfy' });
-        this.servers.push({ url: URLNotificador, stateServer: "", name: 'Notificador' });
+        this.servers.push({ stateServer: "", name: 'Logger' });
+        this.servers.push({ stateServer: "", name: 'UNQfy' });
+        this.servers.push({ stateServer: "", name: 'Notificador' });
     }
 
     servidoresActivos() {
-        console.log(this.servers)
+      return this.servers.every(server => server.stateServer === "Funcionando" )
     }
 
     activarMonitoreo() {
@@ -44,7 +42,6 @@ class Monitor {
 
 
     postMessage(message,nameService) {
-        console.log(message)
         const options = {
             url: urlGRUPO3,
             body: {
@@ -62,8 +59,9 @@ class Monitor {
 
 
     eliminarServerName(serverName) {
-        var indice = this.fallenserver.indexOf(serverName)
-        this.fallenserver.splice(indice,1)
+        if( this.fallenserver.indexOf(serverName) >= 0){
+            this.fallenserver.splice(indice,1)
+        }
     }
 
     stateDeServiceLoggly() {
@@ -71,7 +69,10 @@ class Monitor {
             url: URLLoggly,
             json: true
         }
-        return rp.get(options).catch(response => {
+        return rp.get(options).then(body =>{
+          this.servers[0].stateServer = body.state
+        })
+        .catch(response => {
             this.servers[0].stateServer = "No funcionando"
         })
     }
@@ -82,7 +83,10 @@ class Monitor {
             url: URLNotificador,
             json: true
         }
-        return rp.get(options).catch(response => {
+        return rp.get(options).then(body=>{
+            this.servers[2].stateServer = body.state
+        })
+        .catch(response => {
             this.servers[2].stateServer = "No funcionando"
         })
     }
@@ -92,12 +96,15 @@ class Monitor {
             url: UrlUNQFY,
             json: true
         }
-        return rp.get(options).catch(response => {
+        return rp.get(options).then(body=>{
+            this.servers[1].stateServer = body.state
+        })
+        .catch(response => {
             this.servers[1].stateServer = "No funcionando"
         })
     }
 
-
+   
 
     async monitoreo() {
         await this.stateDeServiceLoggly()
@@ -144,7 +151,7 @@ class Monitor {
 
 const pepe = new Monitor()
 pepe.monitoreo()
-pepe.stateDeUnqfy()
+pepe.stateDeServiceLoggly()
 
 
 module.exports = {
