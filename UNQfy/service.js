@@ -4,13 +4,13 @@
 const express = require('express');
 const app = express();
 const api = express.Router();
-const ERRORAPI  = require('../Exceptions/excepcionesAPI');
+const ERRORAPI  = require('./Exceptions/excepcionesAPI');
 
-const errorApi = require('../erroresApi/errors');
-const ArtistController = require('../controllers/artistController');
-const PlaylistController = require('../controllers/playlistController');
-const ControllerAlbum = require('..//controllers/AlbumController');
-const ControllerTrack = require('..//controllers/TrackController');
+const errorApi = require('./erroresApi/errors');
+const ArtistController = require('./controllers/artistController');
+const PlaylistController = require('./controllers/playlistController');
+const ControllerAlbum = require('./controllers/AlbumController');
+const ControllerTrack = require('./controllers/TrackController');
 
 
 

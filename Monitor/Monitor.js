@@ -1,15 +1,16 @@
 const rp = require('request-promise');
 const { response } = require('express');
-const URLLoggly = "http://localhost:9000/api/loggly/state"
-const URLNotificador = 'http://localhost:8080/api/state';
-const UrlUNQFY = 'http://localhost:5000/api/state';
-const url = require('../wookUrl.json')
+const endpoints = require('../endpoints');
+const URLLoggly = endpoints.loggly + '/loggly/state';
+const URLNotificador = endpoints.notification + '/state';
+const UrlUNQFY = endpoints.unqfy + '/api/state';
+const url = require('../wookUrl.json');
 
-const urlGRUPO3 = url.URLGRUPO3
+const urlGRUPO3 = url.URLGRUPO3;
 
 class Monitor {
-    servers = new Array()
-    fallenserver = new Array()
+    servers = new Array();
+    fallenserver = new Array();
     myVar
     constructor() {
         this.state = true;

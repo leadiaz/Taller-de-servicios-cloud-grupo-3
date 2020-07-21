@@ -20,7 +20,10 @@ RUN ["npm", "install"]
 EXPOSE 5000
 
 # Copia los fuentes dentro del container
-COPY service.js /home/node/my_node_app/
+COPY . /home/node/my_node_app/
+#COPY ./Notification/router-notificator.js /home/node/my_node_app/
+#COPY ./Loggly/ApiLoggly.js /home/node/my_node_app/
+#COPY ./Monitor/MonitorApi.js /home/node/my_node_app/
 
 # Le da permisos al usuario node para escribir en /home/node/my_node_app
 # Como comentario, notar que el comando RUN nos permite ejecutar culquier comando bash valido.
@@ -31,7 +34,10 @@ USER node
 
 # Comando por defecto sino se provee uno al hacer docker run
 # El comando corre el servicio
-CMD [ "node", "service" ]
+CMD [ "node", "/home/node/my_node_app/UNQfy/service" ]
+#CMD [ "node", "router-notificator" ]
+#CMD [ "node", "ApiLoggly" ]
+#CMD [ "node", "MonitorApi" ]
 
 # LISTO!
 
