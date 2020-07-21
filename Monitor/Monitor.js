@@ -1,8 +1,8 @@
 const rp = require('request-promise');
 const { response } = require('express');
 const URLLoggly = "http://localhost:9000/api/loggly/state"
-const URLNotificador = ""
-const UrlUNQFY = ""
+const URLNotificador = 'http://localhost:8080/api';
+const UrlUNQFY = 'http://localhost:5000/api';
 const url = require('../wookUrl.json')
 
 const urlGRUPO3 = url.URLGRUPO3
@@ -95,11 +95,12 @@ class Monitor {
 
     stateDeServiceNotificador() {
         const options = {
-            url: URLNotificador,
+            url: URLNotificador + '/',
             json: true
         }
-        return rp.get(options).then(body => {
-            this.servers[2].stateServer = body.state
+        return rp.get(options).then(() => {
+
+            this.servers[2].stateServer = 'Funcionando';
         })
             .catch(response => {
                 this.servers[2].stateServer = "No funcionando"
@@ -108,11 +109,11 @@ class Monitor {
 
     stateDeUnqfy() {
         const options = {
-            url: UrlUNQFY,
+            url: UrlUNQFY + '/',
             json: true
         }
-        return rp.get(options).then(body => {
-            this.servers[1].stateServer = body.state
+        return rp.get(options).then(() => {
+            this.servers[1].stateServer = 'Funcionando'
         })
             .catch(response => {
                 this.servers[1].stateServer = "No funcionando"
