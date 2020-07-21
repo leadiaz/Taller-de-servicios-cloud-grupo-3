@@ -12,9 +12,14 @@ api.post('/api/unsubscribe', NotificationController.unsubscribe);
 api.post('/api/notify', NotificationController.notify);
 api.get('/api/subscriptions',NotificationController.getSubscriptionsForArtist);
 api.delete('/api/subscription', NotificationController.deleteSubscriptions);
+api.get('/api/state',function (req,res) {
+    res.status(200)
+    res.json({state: "Funcionando"})
+})
 api.all('*', (_req, res) => {
     throw new ERRORAPI.InvalidURL();
 });
+
 
 
 app.set('json spaces',2);
