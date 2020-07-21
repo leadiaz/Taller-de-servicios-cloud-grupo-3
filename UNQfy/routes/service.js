@@ -33,6 +33,10 @@ api.delete('/api/albums/:id',ControllerAlbum.deleteAlbum);
 api.get('/api/tracks/:id/lyrics',ControllerTrack.getTrack);
 api.get('/api/albums',ControllerAlbum.searchAlbums);
 
+api.get('/api/state',function (req,res) {
+    res.status(200)
+    res.json({state: "Funcionando"})
+})
 
 
 api.all('*', (_req, res) => {

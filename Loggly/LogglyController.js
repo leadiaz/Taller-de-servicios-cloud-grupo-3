@@ -1,4 +1,4 @@
-const error = require('../Exceptions/excepcionesAPI')
+const error = require('../../Taller-de-servicios-cloud-grupo-3/UNQfy/Exceptions/excepcionesAPI')
 const LogglyService = require ('./Loggly')
 const ServicioLoggly = new LogglyService.LogglyService()
 

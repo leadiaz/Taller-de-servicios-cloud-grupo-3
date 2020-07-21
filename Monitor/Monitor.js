@@ -1,8 +1,8 @@
 const rp = require('request-promise');
 const { response } = require('express');
 const URLLoggly = "http://localhost:9000/api/loggly/state"
-const URLNotificador = 'http://localhost:8080/api';
-const UrlUNQFY = 'http://localhost:5000/api';
+const URLNotificador = 'http://localhost:8080/api/state';
+const UrlUNQFY = 'http://localhost:5000/api/state';
 const url = require('../wookUrl.json')
 
 const urlGRUPO3 = url.URLGRUPO3
@@ -98,9 +98,9 @@ class Monitor {
             url: URLNotificador + '/',
             json: true
         }
-        return rp.get(options).then(() => {
+        return rp.get(options).then((body) => {
 
-            this.servers[2].stateServer = 'Funcionando';
+            this.servers[2].stateServer = body.state;
         })
             .catch(response => {
                 this.servers[2].stateServer = "No funcionando"
@@ -112,10 +112,12 @@ class Monitor {
             url: UrlUNQFY + '/',
             json: true
         }
-        return rp.get(options).then(() => {
-            this.servers[1].stateServer = 'Funcionando'
+        return rp.get(options).then((body) => {
+            console.log("entro get unqfy")
+            this.servers[1].stateServer = body.state
         })
             .catch(response => {
+                console.log('entro al catch unqfy')
                 this.servers[1].stateServer = "No funcionando"
             })
     }
@@ -126,6 +128,7 @@ class Monitor {
         await this.stateDeServiceLoggly()
         await this.stateDeServiceNotificador()
         await this.stateDeUnqfy()
+        console.log(this.servers)
         this.servers.forEach(server => {
             if (server.stateServer == "No funcionando") {
                 this.avisarServicioNoFuncionando(server.name)
@@ -147,6 +150,7 @@ class Monitor {
 
     avisarServicioVolvioAFuncionar(serverName) {
         if (this.fallenserver.indexOf(serverName) >= 0) {
+            this.eliminarServerName(serverName)
             this.notificarASlackNormalidad(serverName)
         }
 
@@ -155,7 +159,7 @@ class Monitor {
 
 
     notificarASlackNormalidad(serverName) {
-        const messege = `${this.obtenerHora()} El servicio ${nameService} ha vuelto a la normalidad `
+        const messege = `${this.obtenerHora()} El servicio ${serverName} ha vuelto a la normalidad `
         this.postMessage(messege, serverName)
         eliminarServerName(serverName)
     }
