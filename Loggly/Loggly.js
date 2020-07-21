@@ -1,7 +1,8 @@
 const  winston  = require('winston');
 const  {Loggly} = require('winston-loggly-bulk');
 const Logger = require('./Logger');
-
+const rp = require('request-promise');
+const { response } = require('express');
 
 
 
@@ -41,22 +42,43 @@ class LogglyService {
     }
 
     loguearEvento(nivel,message) {
-        
-        if (nivel === 'warning') {
-            Logger.warn(message);
-            winston.warn(message);
-        
-        }else{
-           
+        const options = {
+            url: "http://localhost:8000/api/loggly/event",
+            body: {
+                eventName: nivel,
+                message: message
+            },
+
+            json: true,
+        };
+        rp.post(options).then(()=>{
+            console.log('entraaaaaaaaa?')
+            winston.log(nivel,message)
             Logger.log(nivel,message);
-            winston.log(nivel,message);
+        })
 
-        }    
+        // if (nivel === 'warning') {
+        //     Logger.warn(message);
+        //     winston.warn(message);   
+        // }else{
+        //     Logger.log(nivel,message);
+        //     winston.log(nivel,message);
+        // }
+
     }
 
-    aviso(){
-        
+    winston(){
+        return winston
     }
+    postMessage(message, nameService) {
+        rp.post(options).then(response => {
+            console.log("envie el mensaje mostro");
+        }).catch(err => {
+            this.eliminarServerName(nameService)
+        });
+    }
+
+
     
 }
 

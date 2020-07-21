@@ -4,7 +4,7 @@ const api = express.Router();
 const LogglyController = require('./LogglyController');
 
 app.set('json spaces',2);
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 8000;
 
 api.post('/api/loggly/event',LogglyController.agregarEvento);
 api.post('/api/loggly/activar',LogglyController.activarLoggly);

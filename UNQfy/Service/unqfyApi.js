@@ -5,7 +5,7 @@ const errorHandler = require('../erroresApi/errors');
 const ControllerAlbum = require('../controllers/AlbumController');
 const ControllerTrack = require('../controllers/TrackController');
 
-const PORT = process.env.PORT || 7000;
+const PORT = process.env.PORT || 5000;
 router.post('/api/albums',ControllerAlbum.addAlbum);
 router.get('/api/albums/:id',ControllerAlbum.getAlbum);
 router.patch('/api/albums/:id',ControllerAlbum.updateAlbum);

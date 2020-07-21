@@ -7,7 +7,6 @@ function agregarEvento(req,res){
     if(ServicioLoggly.state) {
     const body = req.body;
     if (body.eventName && body.message) {
-        ServicioLoggly.loguearEvento(body.eventName,body.message)
         res.status(201);
         res.json({result : "El evento fue registrado exitosamente"}); 
     }else{
@@ -37,6 +36,12 @@ function stateLoggly(req,res){
     res.status(200)
     res.json({stateLoggly: ServicioLoggly.estadoLoggly()})
 }
+
+
+
+
+
+
 
 
 module.exports = {
