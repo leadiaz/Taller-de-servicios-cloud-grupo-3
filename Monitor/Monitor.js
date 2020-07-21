@@ -128,6 +128,7 @@ class Monitor {
         await this.stateDeServiceLoggly()
         await this.stateDeServiceNotificador()
         await this.stateDeUnqfy()
+        console.log(this.servers)
         this.servers.forEach(server => {
             if (server.stateServer == "No funcionando") {
                 this.avisarServicioNoFuncionando(server.name)
