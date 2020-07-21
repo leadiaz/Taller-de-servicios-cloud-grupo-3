@@ -150,6 +150,7 @@ class Monitor {
 
     avisarServicioVolvioAFuncionar(serverName) {
         if (this.fallenserver.indexOf(serverName) >= 0) {
+            this.eliminarServerName(serverName)
             this.notificarASlackNormalidad(serverName)
         }
 
@@ -158,7 +159,7 @@ class Monitor {
 
 
     notificarASlackNormalidad(serverName) {
-        const messege = `${this.obtenerHora()} El servicio ${nameService} ha vuelto a la normalidad `
+        const messege = `${this.obtenerHora()} El servicio ${serverName} ha vuelto a la normalidad `
         this.postMessage(messege, serverName)
         eliminarServerName(serverName)
     }
