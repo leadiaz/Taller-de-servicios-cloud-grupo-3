@@ -103,13 +103,14 @@ export class UNQfy {
         let artista;
         try {
             artista = this.agregarArtista(artistData);
-            this.observador.loguearEvento('info','Se ha agregado un nuevo artista: ' + artista.name );
+
         } catch (error) {
             if (error instanceof ArtistExistsWithThatName) {
                 console.log(error.message);
             }
             throw error;
         }
+        this.observador.loguearEvento('info','Se ha agregado un nuevo artista: ' + artista.name );
         return artista;
     }
 

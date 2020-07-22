@@ -3,7 +3,7 @@ const { response } = require('express');
 const endpoints = require('../endpoints');
 const URLLoggly = endpoints.loggly + '/loggly/state';
 const URLNotificador = endpoints.notification + '/state';
-const UrlUNQFY = endpoints.unqfy + '/api/state';
+const UrlUNQFY = endpoints.unqfy + '/state';
 const url = require('../wookUrl.json');
 
 const urlGRUPO3 = url.URLGRUPO3;
@@ -13,7 +13,6 @@ class Monitor {
         this.state = true;
         this.servers = new Array();
         this.fallenserver = new Array();
-        this.myVar;
         this.servers.push({ stateServer: "", name: 'Logger' });
         this.servers.push({ stateServer: "", name: 'UNQfy' });
         this.servers.push({ stateServer: "", name: 'Notificador' });

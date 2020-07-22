@@ -94,7 +94,6 @@ var UNQfy = /** @class */ (function () {
         var artista;
         try {
             artista = this.agregarArtista(artistData);
-            this.observador.loguearEvento('info', 'Se ha agregado un nuevo artista: ' + artista.name);
         }
         catch (error) {
             if (error instanceof artistExcepcion_1.ArtistExistsWithThatName) {
@@ -102,6 +101,7 @@ var UNQfy = /** @class */ (function () {
             }
             throw error;
         }
+        this.observador.loguearEvento('info', 'Se ha agregado un nuevo artista: ' + artista.name);
         return artista;
     };
     //Agrego un usuario a UNQFy, si user ya existe lanza una excepcion

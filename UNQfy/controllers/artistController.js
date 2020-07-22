@@ -35,7 +35,7 @@ function saveArtist(req, res){
         try {
             const artist = UNQfy.addArtist({name: body.name, country: body.country});
             saveUNQfy(UNQfy);
-            res.status(201).json(artist);    
+            res.status(201).json(artist);
         } catch (error) {
             throw new ERROR_API.Duplicate();
         }
