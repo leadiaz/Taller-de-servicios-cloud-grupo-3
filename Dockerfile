@@ -34,10 +34,10 @@ USER node
 
 # Comando por defecto sino se provee uno al hacer docker run
 # El comando corre el servicio
-CMD [ "node", "/home/node/my_node_app/UNQfy/service" ]
-#CMD [ "node", "router-notificator" ]
-#CMD [ "node", "ApiLoggly" ]
-#CMD [ "node", "MonitorApi" ]
+#CMD [ "node", "/home/node/my_node_app/UNQfy/service" ]
+#CMD [ "node", "/home/node/my_node_app/Notification/router-notificator" ]
+#CMD [ "node", "/home/node/my_node_app/Loggly/ApiLoggly" ]
+CMD [ "node", "/home/node/my_node_app/Monitor/MonitorApi" ]
 
 # LISTO!
 

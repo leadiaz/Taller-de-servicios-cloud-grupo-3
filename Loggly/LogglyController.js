@@ -1,6 +1,6 @@
-const error = require('../../Taller-de-servicios-cloud-grupo-3/UNQfy/Exceptions/excepcionesAPI')
-const LogglyService = require ('./Loggly')
-const ServicioLoggly = new LogglyService.LogglyService()
+const error = require('../UNQfy/Exceptions/excepcionesAPI');
+const LogglyService = require ('./Loggly');
+const ServicioLoggly = new LogglyService.LogglyService();
 
 
 function agregarEvento(req,res){

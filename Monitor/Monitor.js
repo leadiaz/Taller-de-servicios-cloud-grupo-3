@@ -9,11 +9,11 @@ const url = require('../wookUrl.json');
 const urlGRUPO3 = url.URLGRUPO3;
 
 class Monitor {
-    servers = new Array();
-    fallenserver = new Array();
-    myVar
     constructor() {
         this.state = true;
+        this.servers = new Array();
+        this.fallenserver = new Array();
+        this.myVar;
         this.servers.push({ stateServer: "", name: 'Logger' });
         this.servers.push({ stateServer: "", name: 'UNQfy' });
         this.servers.push({ stateServer: "", name: 'Notificador' });

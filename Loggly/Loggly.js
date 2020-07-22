@@ -1,6 +1,8 @@
 const  winston  = require('winston');
 const  {Loggly} = require('winston-loggly-bulk');
 const Logger = require('./Logger');
+const endpoints = require('../endpoints');
+const apiloggly = endpoints.loggly + '/loggly/event';
 const rp = require('request-promise');
 const { response } = require('express');
 
@@ -43,7 +45,7 @@ class LogglyService {
 
     loguearEvento(nivel,message) {
         const options = {
-            url: "http://localhost:8000/api/loggly/event",
+            url: apiloggly,
             body: {
                 eventName: nivel,
                 message: message
